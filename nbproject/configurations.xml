@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="89">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>system/ComputationalSystem.h</itemPath>
+      <itemPath>execution/ConfigManager.h</itemPath>
+      <itemPath>../ESimCO/processor/ControlUnit.h</itemPath>
+      <itemPath>../ESimCO/processor/ExecuteStage.h</itemPath>
+      <itemPath>../ESimCO/execution/ExecutionManager.h</itemPath>
+      <itemPath>processor/FPRegister.h</itemPath>
+      <itemPath>../ESimCO/processor/FetchStage.h</itemPath>
+      <itemPath>../ESimCO/processor/FunctionalUnit.h</itemPath>
+      <itemPath>exceptions/IllegalInstructionBinaryException.h</itemPath>
+      <itemPath>exceptions/IllegalInstructionLengthException.h</itemPath>
+      <itemPath>exceptions/IllegalInstructionSyntaxException.h</itemPath>
+      <itemPath>../ESimCO/architecture/Instruction.h</itemPath>
+      <itemPath>../ESimCO/processor/IntRegister.h</itemPath>
+      <itemPath>system/InterconnectionNetwork.h</itemPath>
+      <itemPath>../ESimCO/processor/IssueQueueEntry.h</itemPath>
+      <itemPath>../ESimCO/processor/IssueStage.h</itemPath>
+      <itemPath>architecture/Loader.h</itemPath>
+      <itemPath>memory/MemoryAddress.h</itemPath>
+      <itemPath>memory/MemoryAddress32Bit.h</itemPath>
+      <itemPath>../ESimCO/memory/MemoryRequest.h</itemPath>
+      <itemPath>../ESimCO/memory/MemoryResponse.h</itemPath>
+      <itemPath>system/MemorySystem.h</itemPath>
+      <itemPath>../ESimCO/memory/Message.h</itemPath>
+      <itemPath>../ESimCO/processor/PipelineStage.h</itemPath>
+      <itemPath>../ESimCO/processor/Processor.h</itemPath>
+      <itemPath>../ESimCO/common/Queue.h</itemPath>
+      <itemPath>processor/ROBEntry.h</itemPath>
+      <itemPath>../ESimCO/processor/RetireStage.h</itemPath>
+      <itemPath>../ESimCO/exceptions/RuntimeException.h</itemPath>
+      <itemPath>../ESimCO/processor/ScoreboardEntry.h</itemPath>
+      <itemPath>common/SimpleFileParser.h</itemPath>
+      <itemPath>../ESimCO/architecture/StaticInstruction.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>system/ComputationalSystem.cpp</itemPath>
+      <itemPath>execution/ConfigManager.cpp</itemPath>
+      <itemPath>../ESimCO/execution/ExecutionManager.cpp</itemPath>
+      <itemPath>../ESimCO/processor/FetchStage.cpp</itemPath>
+      <itemPath>../ESimCO/architecture/Instrucition.cpp</itemPath>
+      <itemPath>../ESimCO/system/InterconnectionNetwork.cpp</itemPath>
+      <itemPath>architecture/Loader.cpp</itemPath>
+      <itemPath>architecture/MIPS32ISA.cpp</itemPath>
+      <itemPath>architecture/MIPS32Loader.cpp</itemPath>
+      <itemPath>system/MemoryMapEntry.cpp</itemPath>
+      <itemPath>../ESimCO/memory/MemoryRequest.cpp</itemPath>
+      <itemPath>../ESimCO/memory/MemoryResponse.cpp</itemPath>
+      <itemPath>system/MemorySystem.cpp</itemPath>
+      <itemPath>../ESimCO/processor/Processor.cpp</itemPath>
+      <itemPath>../ESimCO/common/Queue.cpp</itemPath>
+      <itemPath>common/SimpleFileParser.cpp</itemPath>
+      <itemPath>architecture/StaticInstruction.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f2"
+                     displayName="MIPS32ISAUnitTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/MIPS32ISAUnitTest.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f1"
+                     displayName="UnitTests"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/ConfigFileTest.cpp</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+      </compileType>
+      <item path="../ESimCO/architecture/Instrucition.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/architecture/Instruction.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/architecture/StaticInstruction.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/common/Queue.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../ESimCO/common/Queue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/exceptions/RuntimeException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/execution/ExecutionManager.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/execution/ExecutionManager.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/memory/MemoryRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../ESimCO/memory/MemoryRequest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/memory/MemoryResponse.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/memory/MemoryResponse.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/memory/Message.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/ControlUnit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/ExecuteStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/FetchStage.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/FetchStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/FunctionalUnit.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/IntRegister.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/IssueQueueEntry.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/IssueStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/PipelineStage.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/Processor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/Processor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/RetireStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/ScoreboardEntry.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/system/InterconnectionNetwork.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="architecture/Loader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="architecture/Loader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="architecture/MIPS32ISA.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="architecture/MIPS32Loader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="architecture/StaticInstruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="common/SimpleFileParser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="common/SimpleFileParser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="exceptions/IllegalInstructionBinaryException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="exceptions/IllegalInstructionLengthException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="exceptions/IllegalInstructionSyntaxException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="execution/ConfigManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="execution/ConfigManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+        </linkerTool>
+      </folder>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="memory/MemoryAddress.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="memory/MemoryAddress32Bit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/FPRegister.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/ROBEntry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="system/ComputationalSystem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="system/ComputationalSystem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="system/InterconnectionNetwork.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="system/MemoryMapEntry.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="system/MemorySystem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="system/MemorySystem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/ConfigFileTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/MIPS32ISAUnitTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="../ESimCO/architecture/Instrucition.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/architecture/Instruction.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/architecture/StaticInstruction.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/common/Queue.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../ESimCO/common/Queue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/exceptions/RuntimeException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/execution/ExecutionManager.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/execution/ExecutionManager.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/memory/MemoryRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../ESimCO/memory/MemoryRequest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/memory/MemoryResponse.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/memory/MemoryResponse.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/memory/Message.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/ControlUnit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/ExecuteStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/FetchStage.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/FetchStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/FunctionalUnit.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/IntRegister.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/IssueQueueEntry.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/IssueStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/PipelineStage.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/Processor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/Processor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/RetireStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../ESimCO/processor/ScoreboardEntry.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../ESimCO/system/InterconnectionNetwork.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="architecture/Loader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="architecture/Loader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="architecture/MIPS32ISA.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="architecture/MIPS32Loader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="architecture/StaticInstruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="common/SimpleFileParser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="common/SimpleFileParser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="exceptions/IllegalInstructionBinaryException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="exceptions/IllegalInstructionLengthException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="exceptions/IllegalInstructionSyntaxException.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="execution/ConfigManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="execution/ConfigManager.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+        </linkerTool>
+      </folder>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="memory/MemoryAddress.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="memory/MemoryAddress32Bit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/FPRegister.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/ROBEntry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="system/ComputationalSystem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="system/ComputationalSystem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="system/InterconnectionNetwork.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="system/MemoryMapEntry.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="system/MemorySystem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="system/MemorySystem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/ConfigFileTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/MIPS32ISAUnitTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
