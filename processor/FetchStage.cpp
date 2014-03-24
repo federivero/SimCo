@@ -28,11 +28,12 @@ void FetchStage::simulateStage(PipelineStage* retValue){
     int cantInstToQueue = fetchWidth < instWindowSpace? fetchWidth:instWindowSpace; 
     for (int i = 0; i < cantInstToQueue; i++){
         // TODO: pooling?
-        MemoryRequest* mreq = new MemoryRequest(instructionPointer);
+        /*MemoryRequest* mreq = new MemoryRequest(instructionPointer,M);
         MemoryResponse* mres = memoryBus->getAdress(mreq);
         Instruction* inst = processor->getISA()->decodeInstruction(mres->getRawData()); 
         FetchStage* fetchStage = (FetchStage*) retValue;
         fetchStage->addIntructionToInstructionWindow(inst);
+         */
     }
         
 }

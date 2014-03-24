@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-#include "execution/ConfigManager.h"
+#include "simulator/ConfigManager.h"
 #include <exception>
 
 using namespace std;
@@ -30,7 +30,7 @@ void test2() {
     std::cout << "ConfigFileTest test 2" << std::endl;
 }
 
-int main(int argc, char** argv) {
+int main2(int argc, char** argv) {
     std::cout << "%SUITE_STARTING% ConfigFileTest" << std::endl;
     std::cout << "%SUITE_STARTED%" << std::endl;
 

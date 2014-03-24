@@ -45,7 +45,7 @@ public:
     /* PRE: size > 0*/
     T* dequeue(){
         T* retVal = array[startIndex];
-        startIndex += (startIndex + 1) % size;
+        startIndex = (startIndex + 1) % maxSize;
         size--;
         return retVal;
     }

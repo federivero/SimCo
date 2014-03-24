@@ -10,6 +10,8 @@
 
 #include "../memory/MemoryDevice.h"
 
+class MemoryDevice;
+
 class MemoryMapEntry{
 private:
     /* Global memory map, use binary global adresses */

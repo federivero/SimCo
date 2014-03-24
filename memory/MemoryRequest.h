@@ -8,16 +8,28 @@
 #ifndef MEMORYREQUEST_H
 #define	MEMORYREQUEST_H
 
-#include "Message.h"
+#include "../interconnect/Message.h"
 #include "MemoryChunk.h"
 
 class MemoryRequest : public Message{
+    /* Class For memory read - write request Meessages */
     private:
         unsigned int adress;
+        // Number of bytes requested
+        unsigned int requestSize;
         MemoryChunk* rawData;
+        
+        // Pointer to the original request which originated this object 
+        // e.g: Cache misses generate new memory requests, which asks for 
+        // an entire memory block
+        MemoryRequest* originalRequest;
     public:
-        MemoryRequest(unsigned int adress);
+        MemoryRequest(unsigned int adress, unsigned int size, MessageType type);
         MemoryChunk* getRawData();
+        unsigned int getMemoryAdress();
+        unsigned int getRequestSize();
+        void setRawData(MemoryChunk* data);
+        MemoryRequest* getOriginalRequest();
 };
 
 #endif	/* MEMORYREQUEST_H */

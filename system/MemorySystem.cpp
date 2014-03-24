@@ -1,6 +1,6 @@
 
 #include "MemorySystem.h"
-#include "../execution/ConfigManager.h"
+#include "../simulator/ConfigManager.h"
 
 #include <sys/mman.h>
 

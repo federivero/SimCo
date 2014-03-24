@@ -10,7 +10,7 @@
 
 #include "../processor/Processor.h"
 #include "MemorySystem.h"
-#include "InterconnectionNetwork.h"
+#include "../interconnect/InterconnectionNetwork.h"
 
 class InterconnectionNetwork;
 class MemorySystem;

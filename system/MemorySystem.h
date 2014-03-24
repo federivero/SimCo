@@ -14,6 +14,7 @@
 #include "MemoryMapEntry.h"
 
 class ComputationalSystem;
+class MemoryMapEntry;
 
 class MemorySystem{
     private:

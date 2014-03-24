@@ -22,6 +22,5 @@ class IllegalInstructionBinaryException : public exception{
             const char* what() const throw() { return this->err_msg.c_str(); };
 };
 
-
 #endif	/* ILLEGALINSTRUCTIONBINARYEXCEPTION_H */
 

@@ -8,7 +8,7 @@
 #ifndef GENERICPROCESSOR_H
 #define	GENERICPROCESSOR_H
 
-#include "../system/InterconnectionNetwork.h"
+#include "../interconnect/InterconnectionNetwork.h"
 #include "PipelineStage.h"
 #include "../architecture/ISA.h"
 

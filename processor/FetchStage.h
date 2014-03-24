@@ -8,9 +8,9 @@
 #ifndef FETCHSTAGE_H
 #define	FETCHSTAGE_H
 
-#include "../system/InterconnectionNetwork.h"
+#include "../interconnect/InterconnectionNetwork.h"
 #include "../common/Queue.h"
-#include "../execution/ConfigManager.h"
+#include "../simulator/ConfigManager.h"
 #include "PipelineStage.h"
 #include "IssueStage.h"
 

@@ -1,7 +1,10 @@
 architecture
 common
+debug
 exceptions
-execution
+interconnect
 memory
 processor
+simulator
 system
+tests

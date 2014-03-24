@@ -8,16 +8,24 @@
 #ifndef MEMORYRESPONSE_H
 #define	MEMORYRESPONSE_H
 
-#include "Message.h"
+#include "../interconnect/Message.h"
+#include "MemoryRequest.h"
 #include "MemoryChunk.h"
+
+class MemoryRequest;
 
 class MemoryResponse : public Message{
         private:
             unsigned int adress;
             MemoryChunk* rawData;
+            
+            // Pointer to the request which originated this response
+            MemoryRequest* request;
         public:
-            MemoryResponse(unsigned int adr);
+            MemoryResponse(unsigned int adr, MessageType type, MemoryRequest*);
             MemoryChunk* getRawData();
+            unsigned int getMemoryAdress();
+            MemoryRequest* getMemoryRequest();
 };
 
 #endif	/* MEMORYRESPONSE_H */
