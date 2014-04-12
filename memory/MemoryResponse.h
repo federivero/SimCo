@@ -23,9 +23,12 @@ class MemoryResponse : public Message{
             MemoryRequest* request;
         public:
             MemoryResponse(unsigned int adr, MessageType type, MemoryRequest*);
+            // Getters
             MemoryChunk* getRawData();
             unsigned int getMemoryAdress();
             MemoryRequest* getMemoryRequest();
+            // Setters
+            void setRawData(MemoryChunk* chunk);
 };
 
 #endif	/* MEMORYRESPONSE_H */

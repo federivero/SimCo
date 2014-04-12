@@ -8,12 +8,12 @@
 #ifndef GENERICPROCESSOR_H
 #define	GENERICPROCESSOR_H
 
-#include "../interconnect/InterconnectionNetwork.h"
 #include "PipelineStage.h"
-#include "../architecture/ISA.h"
+#include "../interconnect/InterconnectionNetwork.h"
 
 class InterconnectionNetwork;
 class PipelineStage;
+class ISA;
 
 class Processor{
 private:

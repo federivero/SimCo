@@ -1,16 +1,17 @@
 
 #include "MemorySystem.h"
 #include "../simulator/ConfigManager.h"
+#include "../memory/MemoryDevice.h"
 
-#include <sys/mman.h>
+#include <sys/mman.h>           
 
-MemorySystem::MemorySystem(ComputationalSystem* compSys):compSystem(compSys){
-    distributedMemory = ConfigManager::getInstance()->getBoolParameter(DISTRIBUTED_MEMORY);
-    memoryDeviceCount = ConfigManager::getInstance()->getIntParameter(DIST_MEMORY_DEVICE_COUNT);
-    globalMemoryMap = new MemoryMapEntry*[memoryDeviceCount];
+MemorySystem::MemorySystem(ComputationalSystem* compSys, int deviceCount, int distributedMemoryDeviceCount):compSystem(compSys){
+    globalMemoryMap = new MemoryMapEntry*[distributedMemoryDeviceCount];
     /* for the moment, there's only one device of DRAM */
     globalMemoryMap[0] = new MemoryMapEntry();
     
+    memoryDeviceCount = deviceCount;
+    devices = new MemoryDevice*[memoryDeviceCount];
 }
 
 void MemorySystem::setMemoryContent(MemoryChunk* content, MemoryAddress* initialAdress){
@@ -28,12 +29,20 @@ void MemorySystem::setMemoryContent(MemoryChunk* content, MemoryAddress* initial
             
         }else{
             /* This is the current entry! */
-            search->getMemoryDevice()->setMemoryContent(content, initialAdress);
+            search->getMemoryDevice()->setMemoryContent(content, initialAdress->toGlobalAddress());
         }
     }
 }
 
+void MemorySystem::addMemoryDevice(MemoryDevice* device, int position){
+    devices[position] = device;
+}
 
+MemoryDevice** MemorySystem::getDevices(){
+    return devices;
+}
 
-
+int MemorySystem::getMemoryDeviceCount(){
+    return memoryDeviceCount;
+}
 

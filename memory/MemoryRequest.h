@@ -19,7 +19,7 @@ class MemoryRequest : public Message{
         unsigned int requestSize;
         MemoryChunk* rawData;
         
-        // Pointer to the original request which originated this object 
+        // Pointer to the  request which originated this object 
         // e.g: Cache misses generate new memory requests, which asks for 
         // an entire memory block
         MemoryRequest* originalRequest;
@@ -30,6 +30,7 @@ class MemoryRequest : public Message{
         unsigned int getRequestSize();
         void setRawData(MemoryChunk* data);
         MemoryRequest* getOriginalRequest();
+        void setOriginalRequest(MemoryRequest* req);
 };
 
 #endif	/* MEMORYREQUEST_H */

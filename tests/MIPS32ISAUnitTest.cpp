@@ -45,7 +45,7 @@ void instructionEncodingTest() {
 void loaderTest() {
     try{
         std::cout << "MIPS32ISAUnitTest load test" << std::endl;
-        MemorySystem* memSystem = new MemorySystem(NULL);
+        MemorySystem* memSystem = new MemorySystem(NULL,1,1);
         MIPS32Loader* loader = new MIPS32Loader(memSystem);
         loader->loadProgram((char*)"example1",NULL);
     }catch(exception e){

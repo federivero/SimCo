@@ -21,6 +21,9 @@ unsigned int MemoryResponse::getMemoryAdress(){
     return adress;
 }
 
+void MemoryResponse::setRawData(MemoryChunk* chunk){
+    rawData = chunk;
+}
 
 
 

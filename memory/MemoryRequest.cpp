@@ -23,6 +23,10 @@ void MemoryRequest::setRawData(MemoryChunk* data){
     rawData = data;
 }
 
+void MemoryRequest::setOriginalRequest(MemoryRequest* req){
+    originalRequest = req;
+}
+
 MemoryRequest* MemoryRequest::getOriginalRequest(){
     return originalRequest;
 }

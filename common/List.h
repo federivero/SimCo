@@ -32,25 +32,6 @@ class ListNode{
 };
 
 template <class T>
-class ListIterator: public Iterator<T>{
-    private:
-        ListNode<T>* current;
-        
-    public:
-        ListIterator(ListNode<T>* first){
-            current = first;
-        }
-        virtual bool hasNext(){
-            return (current != NULL);
-        }
-        virtual T* next(){
-            T* result = current->getData();
-            current = current->getNext();
-            return result;
-        }
-};
-
-template <class T>
 class List{
     private:
         ListNode<T>* first;
@@ -86,12 +67,54 @@ class List{
         int getSize(){
             return size;
         }
-        Iterator<T>* iterator(){
-            Iterator<T>* result = new ListIterator<T>(first);
-            return result;
+        Iterator<T>* iterator();
+        void setFirst(ListNode<T>* f){
+            first = f;
         }
 };
 
+template <class T>
+class ListIterator: public Iterator<T>{
+    private:
+        ListNode<T>* current;
+        ListNode<T>* lastIterated;
+        ListNode<T>* lastIteratedPrevious;
+        List<T>* list;
+    public:
+        ListIterator(List<T>* l, ListNode<T>* first){
+            current = first;
+            lastIterated = NULL;
+            lastIteratedPrevious = NULL;
+            list = l;
+        }
+        virtual bool hasNext(){
+            return (current != NULL);
+        }
+        virtual T* next(){
+            T* result = current->getData();
+            lastIteratedPrevious = lastIterated;
+            lastIterated = current;
+            current = current->getNext();
+            return result;
+        }
+        virtual void remove(){
+            // LastIteratedPrevious != NULL -> there is a previous one
+            if (lastIteratedPrevious != NULL){
+                lastIteratedPrevious->setNext(current);
+            }else{
+                // If lastIteratedPrevious == NULL, the first element of the list is trying to be removed
+                list->setFirst(current);
+            }
+            delete lastIterated;
+            lastIterated = lastIteratedPrevious;
+        }
+};
 
+template <class T>
+Iterator<T>* List<T>::iterator(){
+    Iterator<T>* result = new ListIterator<T>(this,first);
+    return result;
+}
+    
 #endif	/* LIST_H */
 

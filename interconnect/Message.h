@@ -10,16 +10,32 @@
 
 enum MessageType{
     MEMORY_REQUEST_MEMORY_READ,
-    MEMORY_REQUEST_MEMORY_WRITE
+    MEMORY_REQUEST_MEMORY_WRITE,
+    MEMORY_RESPONSE,
+    CACHE_COHERENCE_INVALIDATE
 };
 
 class Message{
     private:
         MessageType messageType;
+        // for tracing
+        unsigned long messageId;
+    public: 
+        Message(MessageType type);
+        MessageType getMessageType();
+        unsigned long getMessageId();
+};
+
+
+class InvalidateMessage : public Message{
+    private:
+        unsigned int invalidateAddress;
     public:
-        Message(MessageType type):messageType(type){}; 
-        MessageType getMessageType() { return messageType; };
+        InvalidateMessage(MessageType type);
+        unsigned int getInvalidateAddress();
+        void setInvalidateAddress(unsigned int address);
 };
 
 #endif	/* MESSAGE_H */
+
 

@@ -26,10 +26,19 @@ class MemorySystem{
          * adress */
         bool distributedMemory;
         MemoryMapEntry** globalMemoryMap;
+        int globalMemoryMapLength;
+        
+       // Pointer to all memory devices in the system
+        MemoryDevice** devices;
         int memoryDeviceCount;
     public:
-        MemorySystem(ComputationalSystem* compSystem);
+        MemorySystem(ComputationalSystem* compSystem, int memoryDeviceCount, int distributedMemoryDeviceCount);
         void setMemoryContent(MemoryChunk* content, MemoryAddress* initialAdress);
+        
+        // Getters and setters
+        void addMemoryDevice(MemoryDevice* device, int position);
+        MemoryDevice** getDevices();
+        int getMemoryDeviceCount();
 };
 
 #endif	/* MEMORYSYSTEM_H */

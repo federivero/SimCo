@@ -9,11 +9,29 @@
 #define	ISIMULABLE_H
 
 #include "IEventCallback.h"
+#include "StatisticManager.h"
+#include "ExecutionManager.h"
+#include "TraceManager.h"
 
 class ISimulable{
     private:
+    
+    protected:
+        unsigned long id;
+        char* name;
+        
+        // Pointer to simulator utilities
+        ExecutionManager* simulator;
+        TraceManager* tracer;
+        StatisticManager* stats;
     public:
+        ISimulable(unsigned long id, char* name = NULL);
         virtual void initCycle() = 0;
+        virtual void printStatistics(ofstream* file);
+        
+        // Getters
+        unsigned long getId();
+        char* getName();
 };
 
 class ISimulableEvent: public IEventCallback{
@@ -21,6 +39,7 @@ class ISimulableEvent: public IEventCallback{
         ISimulable* simulated;
         
     public:
+        ISimulableEvent(EventName name, ISimulable* sim);
         void simulate();
 };
 

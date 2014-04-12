@@ -8,6 +8,13 @@
 #ifndef CACHELINEENTRY_H
 #define	CACHELINEENTRY_H
 
+enum CacheLineState{
+    CACHE_LINE_INVALID,
+    CACHE_LINE_MODIFIED,
+    CACHE_LINE_EXCLUSIVE,
+    CACHE_LINE_SHARED
+};
+
 class CacheLineEntry{
     // Object to represent a cache line
     private:
@@ -15,7 +22,8 @@ class CacheLineEntry{
         bool used;
         bool dirty;
         unsigned int tag;
-        // CacheLineState state; -> For coherence protocols
+        // Coherence Status Information
+        CacheLineState state;
         
         // Line data
         unsigned int lineSize; // Size in bytes
@@ -24,6 +32,7 @@ class CacheLineEntry{
     public:
         CacheLineEntry(unsigned int ls):used(0),dirty(0),tag(0),lineSize(ls){
             lineData = new unsigned char[ls];
+            state = CACHE_LINE_INVALID;
         };
         bool isUsed()   { 
             return used;  
@@ -43,6 +52,9 @@ class CacheLineEntry{
         unsigned long getTimestamp(){
             return timestamp;   
         }
+        CacheLineState getState(){
+            return state;
+        }
         void setLineData(unsigned char* data){
             // Todo: delete data?
             lineData = data;
@@ -58,7 +70,10 @@ class CacheLineEntry{
         }; 
         void setTimestamp(unsigned long t){
             timestamp = t;
-        }
+        };
+        void setCacheLineState(CacheLineState s){
+            state = s;
+        };
 };
 
 #endif	/* CACHELINEENTRY_H */

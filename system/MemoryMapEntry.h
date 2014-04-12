@@ -5,10 +5,8 @@
  * Created on 28 de enero de 2014, 07:10 PM
  */
 
-#ifndef MEMORYSEGMENTENTRY_H
-#define	MEMORYSEGMENTENTRY_H
-
-#include "../memory/MemoryDevice.h"
+#ifndef MEMORYMAPENTRY_H
+#define	MEMORYMAPENTRY_H
 
 class MemoryDevice;
 
@@ -28,5 +26,5 @@ public:
     MemoryDevice* getMemoryDevice();
 };
 
-#endif	/* MEMORYSEGMENTENTRY_H */
+#endif	/* MEMORYMAPENTRY_H */
 

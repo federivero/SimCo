@@ -8,7 +8,6 @@
 #ifndef COMPUTATIONALSYSTEM_H
 #define	COMPUTATIONALSYSTEM_H
 
-#include "../processor/Processor.h"
 #include "MemorySystem.h"
 #include "../interconnect/InterconnectionNetwork.h"
 
@@ -22,9 +21,10 @@ private:
     MemorySystem*       memory;
     Processor*  processors;
     int processorCount;
-    bool        finishedExec;
+    bool finishedExec;
     
 public:
+    ComputationalSystem();
     /* Simulates execution of one clock, calculating the state */
     void advanceClock(ComputationalSystem*);
     /* Returns true if execution has finished */

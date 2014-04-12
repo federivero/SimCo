@@ -38,9 +38,9 @@ public:
     }
     /* PRE: size < maxsize*/
     void queue(T* elem){
+        array[endIndex] = elem;
         endIndex = (endIndex + 1) % maxSize;
         size++;
-        array[endIndex] = elem;
     }
     /* PRE: size > 0*/
     T* dequeue(){
@@ -48,6 +48,10 @@ public:
         startIndex = (startIndex + 1) % maxSize;
         size--;
         return retVal;
+    }
+    /* PRE: index < size*/
+    T* getElement(int index){
+        return array[(startIndex + index) % maxSize];
     }
     
 };

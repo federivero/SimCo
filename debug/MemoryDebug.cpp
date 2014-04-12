@@ -16,10 +16,11 @@ void MemoryDebug::printCacheStatus(Cache* cache){
     cout << "Line content: " << endl;
     int lineCount = setCount * associativity;
     for (int i = 0; i < lineCount; i++){
-        cout << "  Line " << i << " - Content: ";
+        cout << "  Line " << i << ": ";
         if (cache->getCacheLine(i) == NULL){
             cout << " Empty";
         }else{
+            cout << " TAG " << cache->getCacheLine(i)->getTag() << " - Content: ";
             for (int j = 0; j < lineSize; j++) 
                 cout << cache->getCacheLine(i)->getLineData()[j];
         }

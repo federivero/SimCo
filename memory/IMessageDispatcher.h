@@ -8,19 +8,27 @@
 #ifndef IMESSAGEDISPATCHER_H
 #define	IMESSAGEDISPATCHER_H
 
-#include "../interconnect/InterconnectionNetwork.h"
+#include "../simulator/IEventCallback.h"
+#include "../simulator/ISimulable.h"
 #include "../interconnect/Message.h"
 #include "MemoryResponse.h"
+#include "../common/Map.h"
+#include "../interconnect/InterconnectionNetwork.h"
 #include "stdio.h"
 
 class InterconnectionNetwork;
 
-class IMessageDispatcher{
+class IMessageDispatcher: public ISimulable{
     private:
         
+    protected:
+        GenMap<InterconnectionNetwork,bool> *requestedAccesses;
     public:
+        IMessageDispatcher(unsigned long id, char* name = NULL);
+        virtual void initCycle() = 0;
         virtual void accessGranted(InterconnectionNetwork* port) = 0;
         virtual void submitMemoryResponse(MemoryResponse* response, InterconnectionNetwork* port) = 0;
+        void requestAccessToNetwork(InterconnectionNetwork* port);
 };
 
 class IMessageDispatcherEvent: public IEventCallback{
@@ -31,12 +39,12 @@ class IMessageDispatcherEvent: public IEventCallback{
     public:
         IMessageDispatcherEvent(EventName name, IMessageDispatcher* target);
         
-        static IMessageDispatcherEvent* createEvent(EventName name, IMessageDispatcher* target, MemoryResponse* req = NULL, InterconnectionNetwork* interface = NULL);
+        static IMessageDispatcherEvent* createEvent(EventName name, IMessageDispatcher* target, MemoryResponse* resp, InterconnectionNetwork* interface = NULL);
         void simulate();
         
         // Setters 
         void setPort(InterconnectionNetwork* interface);
-        void setRequest(MemoryResponse* req);
+        void setResponse(MemoryResponse* resp);
 };
 
 #endif	/* IMESSAGEDISPATCHER_H */

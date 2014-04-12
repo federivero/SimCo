@@ -11,14 +11,11 @@
 #include "MemoryRequest.h"
 #include "MemoryDevice.h"
 #include "CacheLineEntry.h"
-#include <cmath>
 #include <stdlib.h>
 #include "../common/Stack.h"
 #include "../common/Map.h"
 #include "../common/Queue.h"
-
-#define log2(x) (log((double) (x))) / (log(2.0))
-#define isPowerOf2(x) ((x > 0) && (!(x & (x - 1))))
+#include "../common/CustomMacros.h"
 
 enum CacheWritePolicy{
     CACHE_WRITE_WRITEBACK,
@@ -29,6 +26,12 @@ enum CacheReplacementPolicy{
     CACHE_REPLACEMENT_LRU,
     CACHE_REPLACEMENT_RANDOM,
     CACHE_REPLACEMENT_FIFO
+};
+
+enum CacheCoherenceProtocol{
+    CACHE_NO_COHERENCE,
+    CACHE_COHERENCE_MSI,
+    CACHE_COHERENCE_MESI
 };
 
 class Cache: public MemoryDevice{
@@ -50,6 +53,7 @@ class Cache: public MemoryDevice{
         // Policies
         CacheReplacementPolicy replacementPolicy;
         CacheWritePolicy writePolicy;
+        CacheCoherenceProtocol coherenceProtocol;
         
         // Masks for the adress. This is kept here for performance,
         // since otherwise has to be calculated on every acccess
@@ -60,27 +64,42 @@ class Cache: public MemoryDevice{
         
         // Queue for read requests -> maps unanswered requests from upper hierarchy to victim lines 
         GenMap<MemoryRequest,unsigned int>* pendingLineRequests;
-        // Queue for dirty lines waiting to be wrote to lower hierarchy (aka: write buffer))
-        Queue<MemoryRequest>* pendingDirtyLines;
-        // Queue for memory reads waiting to be submitted through the network, while the network
+        // Queue for memory requests waiting to be submitted through the network, while the network
         // arbitrates access
-        Queue<MemoryRequest>* pendingMemoryReads;
+        Queue<MemoryRequest>* lowerHierarchyAccessQueue;
+        
+        // Stats
+        unsigned long hitCount;
+        unsigned long missCount;
+        unsigned long replaceCount;
+        
+        
+        virtual void attendMemoryRequest(MemoryRequest* request);
+        virtual void assignPortToMemoryRequest(MemoryRequest* request);
         
         // Internal Operations
         unsigned int getVictimLine(unsigned int set);
+        void processAccessHit(MemoryRequest* request, CacheLineEntry* cacheLine, unsigned int byte);
+        void dispatchCoherenceMessages(MemoryRequest* request, CacheLineEntry* cacheLine, MessageType type, bool hit);
     public:
-        Cache(unsigned int setNumber, unsigned int setAssociativity, unsigned int lineSizeInBytes);
+        Cache(unsigned long id, unsigned int setNumber, unsigned int setAssociativity, unsigned int lineSizeInBytes, int portCount, int latency, char* name = NULL);
         void submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* port);
         void submitMemoryResponse(MemoryResponse* response, InterconnectionNetwork* port);
 
-        virtual void setMemoryContent(MemoryChunk* data, MemoryAddress* address){};
-        virtual MemoryChunk* getMemoryContent(MemoryAddress* address, InterconnectionNetwork* port){return NULL;};
+        virtual void initCycle();
+        
+        virtual void setMemoryContent(MemoryChunk* data, unsigned long address){};
+        virtual MemoryChunk* getMemoryContent(unsigned long address, unsigned int requestLength){return NULL;};
         
         virtual void accessGranted(InterconnectionNetwork* port);
         
+        virtual void printStatistics(ofstream* file);
         // Setters
         void setReplacementPolicy(CacheReplacementPolicy policy);
         void setWritePolicy(CacheWritePolicy policy);
+        void setCoherenceProtocol(CacheCoherenceProtocol protocol);
+        void setUpperMemoryHierarchyPort(InterconnectionNetwork* upperPort);
+        void setLowerMemoryHierarchyPort(InterconnectionNetwork* lowerPort);
         
         // Getters 
         unsigned int getSetCount();

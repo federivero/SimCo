@@ -34,15 +34,23 @@ class Bus: public InterconnectionNetwork{
         unsigned int busWidth;
         int availableSlotCount;
         Queue<int>* unusedSlots;
+        // Slots freed during last cycle
+        int freedSlots;
+        
+        // Queue to hold unattended access requests
+        Queue<IMessageDispatcher> *unattendedAccessRequests;
         
         // Variable used to pass information between cycles
         int finishedRequests;
     public:
-        Bus(int deviceCount);
+        Bus(unsigned long id, int deviceCount,int width);
         virtual void requestAccess(IMessageDispatcher* requester);
         virtual void submitMemoryRequest(MemoryRequest* request, IMessageDispatcher* submitter);
         virtual void submitMemoryResponse(MemoryResponse* response, IMessageDispatcher* submitter);
         virtual void initCycle();
+        
+        /* Construction Methods */
+        void addDevice(IMessageDispatcher* device, unsigned int deviceNumber);
 };
 
 #endif	/* BUS_H */

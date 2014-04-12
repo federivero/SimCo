@@ -10,7 +10,6 @@
 
 #include "StaticInstruction.h"
 #include "../memory/MemoryChunk.h"
-#include "../processor/PipelineStage.h"
 
 class PipelineStage;
 

@@ -8,6 +8,8 @@
 #ifndef MAP_H
 #define	MAP_H
 
+#include <stdio.h>
+
 template <class T, class U>
 class GenMap{
 private:
@@ -49,6 +51,7 @@ class ListMap: public GenMap<T,U>{
             return retVal;
         }
         
+        /* If key exists on the map, it returns its index. Otherwise returns -1 */
         virtual int exists(T* key){
             int index = -1;
             for (int i = 0; i <= endIndex; i++){
