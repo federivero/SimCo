@@ -13,7 +13,7 @@ class Queue{
 private:
     int size;
     int maxSize;
-    T** array;
+    T* array;
     int startIndex;
     int endIndex;
 public:
@@ -22,7 +22,7 @@ public:
         size = 0;
         startIndex = 0;
         endIndex = 0;
-        array = new T*[maxSize];
+        array = new T[maxSize];
     }
     bool isFull(){
         return (size == maxSize);
@@ -37,20 +37,20 @@ public:
         return maxSize;
     }
     /* PRE: size < maxsize*/
-    void queue(T* elem){
+    void queue(T elem){
         array[endIndex] = elem;
         endIndex = (endIndex + 1) % maxSize;
         size++;
     }
     /* PRE: size > 0*/
-    T* dequeue(){
-        T* retVal = array[startIndex];
+    T dequeue(){
+        T retVal = array[startIndex];
         startIndex = (startIndex + 1) % maxSize;
         size--;
         return retVal;
     }
     /* PRE: index < size*/
-    T* getElement(int index){
+    T getElement(int index){
         return array[(startIndex + index) % maxSize];
     }
     

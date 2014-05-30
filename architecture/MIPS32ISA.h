@@ -8,7 +8,10 @@
 #ifndef MIPS32ISA_H
 #define	MIPS32ISA_H
 
-#define MIPS32REGISTERCOUNT 64
+#define MIPS32REGISTERCOUNT 32
+#define MIPS_32_INTEGER_REGISTER_COUNT 34 // 32 Programable registers + hi + lo
+#define MIPS_32_FLOATING_POINT_REGISTER_COUNT 0
+#define MIPS_32_INSTRUCTION_LENGTH 4
 
 #include "Instruction.h"
 #include "StaticInstruction.h"
@@ -29,6 +32,7 @@ private:
     StaticInstruction* sub_;
     StaticInstruction* sll_;
     StaticInstruction* srl_;
+    StaticInstruction* xor_;
     
     /* READ_MODIFY_WRITE Instructions (for semaphore implementation) */
     StaticInstruction* ll_;
@@ -43,12 +47,18 @@ private:
     /* LOAD_STORE Instructions */
     StaticInstruction* lw_;
     StaticInstruction* sw_;
+    
+    /* Fake instruction to end execution */
+    StaticInstruction* syscall_;
+    
     MIPS32ISA();
 public:
     static MIPS32ISA* getInstance();
     Instruction* buildInstruction(char* opcode, char** operands, int operandsLength);
     Instruction* decodeInstruction(MemoryChunk* rawInst);
     MemoryChunk* encodeInstruction(Instruction* inst);
+    RegisterFile* createArchitectedRegisterFile();
+    int getInstructionLength();
 };
 
 enum InstructionEncodingType{

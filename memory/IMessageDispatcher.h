@@ -22,12 +22,12 @@ class IMessageDispatcher: public ISimulable{
     private:
         
     protected:
-        GenMap<InterconnectionNetwork,bool> *requestedAccesses;
+        GenMap<InterconnectionNetwork*,bool> *requestedAccesses;
     public:
         IMessageDispatcher(unsigned long id, char* name = NULL);
         virtual void initCycle() = 0;
         virtual void accessGranted(InterconnectionNetwork* port) = 0;
-        virtual void submitMemoryResponse(MemoryResponse* response, InterconnectionNetwork* port) = 0;
+        virtual void submitMessage(Message* message, InterconnectionNetwork* port) = 0;
         void requestAccessToNetwork(InterconnectionNetwork* port);
 };
 
@@ -35,16 +35,16 @@ class IMessageDispatcherEvent: public IEventCallback{
     private:
         IMessageDispatcher* dispatcher;
         InterconnectionNetwork* port;
-        MemoryResponse* response;
+        Message* message;
     public:
         IMessageDispatcherEvent(EventName name, IMessageDispatcher* target);
         
-        static IMessageDispatcherEvent* createEvent(EventName name, IMessageDispatcher* target, MemoryResponse* resp, InterconnectionNetwork* interface = NULL);
+        static IMessageDispatcherEvent* createEvent(EventName name, IMessageDispatcher* target, Message* message, InterconnectionNetwork* interface = NULL);
         void simulate();
         
         // Setters 
         void setPort(InterconnectionNetwork* interface);
-        void setResponse(MemoryResponse* resp);
+        void setMessage(Message* message);
 };
 
 #endif	/* IMESSAGEDISPATCHER_H */

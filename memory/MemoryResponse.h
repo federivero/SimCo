@@ -31,5 +31,14 @@ class MemoryResponse : public Message{
             void setRawData(MemoryChunk* chunk);
 };
 
+// When a memory device provides an overriding memory request, it sends an InvalidateMemoryResponse, no 
+// signalize to other devices that they should abort the corresponding Memory Request
+class InvalidatingMemoryResponse : public MemoryResponse{
+    private:
+    
+    public:
+        InvalidatingMemoryResponse(unsigned int addr, MessageType type, MemoryRequest* request);
+};
+
 #endif	/* MEMORYRESPONSE_H */
 

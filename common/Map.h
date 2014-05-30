@@ -14,18 +14,26 @@ template <class T, class U>
 class GenMap{
 private:
 public:
-    virtual U* getData(T* key) = 0;
-    virtual int exists(T* key) = 0;
-    virtual void put(T* key, U* value) = 0;
+    /* Inserts the pair <T,U> into the Map*/
+    virtual void put(T key, U value) = 0;
+    /* Given a T key, retuns a the U pair in the map, returns 0 otherwise */
+    virtual U getData(T key) = 0;
+    /* If theres a <T,U> pair in the map, returns its index, otherwise returns -1 */
+    virtual int exists(T key) = 0;
+    /* Returns true if the map is empty */
     virtual bool isEmpty() = 0;
+    /* Returns true if the map is full */
     virtual bool isFull() = 0;
-    virtual void remove(T* key) = 0;
+    /* Removes the value <T,U> from the Map, if it exists */
+    virtual void remove(T key) = 0;
+    /* Overrides the value U* of <T,U*>, with U, if the pair exists. Returns the old value of U */
+    virtual U override(T key, U newValue) = 0;
 };
 
 template <class T, class U>
 struct MapNode{
-    T* key;
-    U* value;
+    T key;
+    U value;
 };
 
 
@@ -42,9 +50,9 @@ class ListMap: public GenMap<T,U>{
             endIndex = -1;
         }
         
-        virtual U* getData(T* key){
+        virtual U getData(T key){
             int index = exists(key);
-            U* retVal = NULL;
+            U retVal = 0;
             if (index != -1){
                 retVal = array[index].value;
             }
@@ -52,7 +60,7 @@ class ListMap: public GenMap<T,U>{
         }
         
         /* If key exists on the map, it returns its index. Otherwise returns -1 */
-        virtual int exists(T* key){
+        virtual int exists(T key){
             int index = -1;
             for (int i = 0; i <= endIndex; i++){
                 if (array[i].key == key){
@@ -63,7 +71,7 @@ class ListMap: public GenMap<T,U>{
             return index;
         }
         
-        virtual void put(T* key, U* value){
+        virtual void put(T key, U value){
             endIndex++;
             array[endIndex].key = key;
             array[endIndex].value = value;
@@ -77,12 +85,23 @@ class ListMap: public GenMap<T,U>{
             return (endIndex == (maxSize -1));
         }
         
-        virtual void remove(T* key){
+        virtual void remove(T key){
             int index = exists(key);
             for (int i = index; i < endIndex; i++){
                 array[i].key = array[i+1].key;
                 array[i].value = array[i+1].value;
             }
+            endIndex--;
+        }
+        
+        virtual U override(T key, U newValue){
+            int index = exists(key);
+            U retVal = 0;
+            if (index != -1){
+                retVal = array[index].value;
+                array[index].value = newValue;
+            }
+            return retVal;
         }
             
 };

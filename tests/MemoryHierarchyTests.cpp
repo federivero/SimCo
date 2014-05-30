@@ -46,7 +46,7 @@ void ramTests() {
         DummyDispatcher* dummyDispatcher = new DummyDispatcher(3);
 
         // Initialize devices
-        Bus* localBus = new Bus(1,2,2);
+        Bus* localBus = new Bus(1,(char*)"localBus",2,2);
         MemoryDevice* ram = new RAM(2,1024,1,2,localBus);
         localBus->addDevice(ram,0); 
         localBus->addDevice(dummyDispatcher,1);
@@ -118,22 +118,23 @@ void cacheAndRamTest(){
         DummyDispatcher* dummyDispatcher = new DummyDispatcher(3);
 
         // Initialize devices
-        Bus* CPUCacheBus = new Bus(1,2,1);
-        Bus* cacheRAMBus = new Bus(2,2,1);
+        Bus* CPUCacheBus = new Bus(1,(char*)"CPUCacheBus",2,1);
+        Bus* cacheRAMBus = new Bus(2,(char*)"cacheRAMBus",2,1);
         MemoryDevice* ram = new RAM(3,1024,1,2,cacheRAMBus,(char*) "ram");
         Cache* cache = new Cache(4,8,2,16,1,1, (char*) "L1 Cache");
-        tracer->traceNewBus(1);
-        tracer->traceNewBus(2);
+        tracer->traceNewBus(CPUCacheBus);
+        tracer->traceNewBus(cacheRAMBus);
         tracer->traceNewRAM(3);
-        tracer->traceNewCache(4);
+        tracer->traceNewCache(cache);
         CPUCacheBus->addDevice(dummyDispatcher,0);
         CPUCacheBus->addDevice(cache,1); 
         cacheRAMBus->addDevice(cache,0);
         cacheRAMBus->addDevice(ram,1);
         cache->setUpperMemoryHierarchyPort(CPUCacheBus);
-        cache->setLoweerMemoryHierarchyPort(cacheRAMBus);
+        cache->setLowerMemoryHierarchyPort(cacheRAMBus);
         cache->setReplacementPolicy(CACHE_REPLACEMENT_LRU);
         cache->setWritePolicy(CACHE_WRITE_WRITEBACK);
+        cache->setCoherenceProtocol(CACHE_COHERENCE_MSI);
                 
         ISimulableEvent* fixedEvent1 = new ISimulableEvent(SIMULABLE_START_CYCLE,CPUCacheBus);
         ISimulableEvent* fixedEvent2 = new ISimulableEvent(SIMULABLE_START_CYCLE,ram);
@@ -202,7 +203,7 @@ void cacheAndRamTest(){
 void multilevelCacheTest(){
     try{
         std::cout << "MemoryHierarchyTests - MutilevelCache test" << std::endl;
-
+ 
         // Initialize tracer
         TraceManager* tracer = TraceManager::getInstance();
         tracer->setFileName((char*) "MultilevelCache.trace");
@@ -220,18 +221,18 @@ void multilevelCacheTest(){
         DummyDispatcher* dummyDispatcher = new DummyDispatcher(3);
 
         // Initialize devices
-        Bus* CPUCacheBus = new Bus(1,2,1);
-        Bus* cacheRAMBus = new Bus(2,2,1);
+        Bus* CPUCacheBus = new Bus(1,(char*)"CPUCacheBus",2,1);
+        Bus* cacheRAMBus = new Bus(2,(char*)"cacheRAMBus",2,1);
         MemoryDevice* ram = new RAM(3,16384,1,2,cacheRAMBus,(char*) "ram"); // capacity 16 KB
         Cache* cacheL1 = new Cache(4,8,2,16,1,1, (char*) "L1 Cache");   // capacity 256 B
         Cache* cacheL2 = new Cache(5,16,4,64,1,1, (char*) "L2 Cache");  // capacity 4BB
-        Bus* interCacheBus = new Bus(6,2,1);
-        tracer->traceNewBus(1);
-        tracer->traceNewBus(2);
+        Bus* interCacheBus = new Bus(6,(char*)"interCacheBus",2,1);
+        tracer->traceNewBus(CPUCacheBus);
+        tracer->traceNewBus(cacheRAMBus);
         tracer->traceNewRAM(3);
-        tracer->traceNewCache(4);
-        tracer->traceNewCache(5);
-        tracer->traceNewBus(6);
+        tracer->traceNewCache(cacheL1);
+        tracer->traceNewCache(cacheL2);
+        tracer->traceNewBus(interCacheBus);
         CPUCacheBus->addDevice(dummyDispatcher,0);
         CPUCacheBus->addDevice(cacheL1,1);
         interCacheBus->addDevice(cacheL1,0);
@@ -239,15 +240,16 @@ void multilevelCacheTest(){
         cacheRAMBus->addDevice(cacheL2,0);
         cacheRAMBus->addDevice(ram,1);
         cacheL1->setUpperMemoryHierarchyPort(CPUCacheBus);
-        cacheL1->setLoweerMemoryHierarchyPort(interCacheBus);
+        cacheL1->setLowerMemoryHierarchyPort(interCacheBus);
         cacheL1->setReplacementPolicy(CACHE_REPLACEMENT_LRU);
         cacheL1->setWritePolicy(CACHE_WRITE_WRITETHROUGH);
+        cacheL1->setCoherenceProtocol(CACHE_COHERENCE_MSI);
         
         cacheL2->setUpperMemoryHierarchyPort(interCacheBus);
-        cacheL2->setLoweerMemoryHierarchyPort(cacheRAMBus);
+        cacheL2->setLowerMemoryHierarchyPort(cacheRAMBus);
         cacheL2->setReplacementPolicy(CACHE_REPLACEMENT_LRU);
         cacheL2->setWritePolicy(CACHE_WRITE_WRITEBACK);
-                       
+        cacheL2->setCoherenceProtocol(CACHE_COHERENCE_MSI);               
         ISimulableEvent* fixedEvent1 = new ISimulableEvent(SIMULABLE_START_CYCLE,CPUCacheBus);
         ISimulableEvent* fixedEvent2 = new ISimulableEvent(SIMULABLE_START_CYCLE,ram);
         ISimulableEvent* fixedEvent3 = new ISimulableEvent(SIMULABLE_START_CYCLE,cacheL1);
@@ -325,7 +327,7 @@ int main(int argc, char** argv) {
 
     std::cout << "%TEST_STARTED% CacheAndRamTest (MemoryHierarchyTests)\n" << std::endl;
     
-    //cacheAndRamTest();
+    cacheAndRamTest();
     
     std::cout << "%TEST_FINISHED% time=0 CacheAndRamTest (MemoryHierarchyTests)" << std::endl;
     

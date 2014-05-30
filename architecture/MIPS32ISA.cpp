@@ -1,8 +1,10 @@
 
+#include "../processor/RegisterFile.h"
 #include "MIPS32ISA.h"
 #include "../exceptions/IllegalInstructionLengthException.h"
 #include "../exceptions/IllegalInstructionBinaryException.h"
 #include "../exceptions/IllegalInstructionSyntaxException.h"
+#include "Operand.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -12,25 +14,28 @@ using namespace std;
 MIPS32ISA* MIPS32ISA::instance = NULL;
 
 MIPS32ISA::MIPS32ISA(){
-    nop_  = new StaticInstruction(0,NOP);
+    nop_  = new StaticInstruction(0,INSTRUCTION_TYPE_NOP);
     
-    add_  = new StaticInstruction(3,INT_ALU);
-    and_  = new StaticInstruction(3,INT_ALU);
-    or_   = new StaticInstruction(3,INT_ALU);
-    sub_  = new StaticInstruction(3,INT_ALU);
-    sll_  = new StaticInstruction(3,INT_ALU);
-    srl_  = new StaticInstruction(3,INT_ALU);
+    add_  = new StaticInstruction(3,INSTRUCTION_TYPE_INT_ALU);
+    and_  = new StaticInstruction(3,INSTRUCTION_TYPE_INT_ALU);
+    or_   = new StaticInstruction(3,INSTRUCTION_TYPE_INT_ALU);
+    sub_  = new StaticInstruction(3,INSTRUCTION_TYPE_INT_ALU);
+    sll_  = new StaticInstruction(3,INSTRUCTION_TYPE_INT_ALU);
+    srl_  = new StaticInstruction(3,INSTRUCTION_TYPE_INT_ALU);
+    xor_  = new StaticInstruction(3,INSTRUCTION_TYPE_INT_ALU);
     
-    ll_   = new StaticInstruction(2,READ_MODIFY_WRITE);
-    sc_   = new StaticInstruction(2,READ_MODIFY_WRITE);
+    ll_   = new StaticInstruction(2,INSTRUCTION_TYPE_READ_MODIFY_WRITE);
+    sc_   = new StaticInstruction(2,INSTRUCTION_TYPE_READ_MODIFY_WRITE);
     
-    jal_  = new StaticInstruction(1,JUMP_BRANCH);
-    jalr_ = new StaticInstruction(2,JUMP_BRANCH);
-    bne_  = new StaticInstruction(2,JUMP_BRANCH);
-    bnez_ = new StaticInstruction(2,JUMP_BRANCH);
+    jal_  = new StaticInstruction(1,INSTRUCTION_TYPE_JUMP_BRANCH);
+    jalr_ = new StaticInstruction(2,INSTRUCTION_TYPE_JUMP_BRANCH);
+    bne_  = new StaticInstruction(2,INSTRUCTION_TYPE_JUMP_BRANCH);
+    bnez_ = new StaticInstruction(2,INSTRUCTION_TYPE_JUMP_BRANCH);
     
-    lw_   = new StaticInstruction(2,LOAD_STORE);
-    sw_   = new StaticInstruction(2,LOAD_STORE);
+    lw_   = new StaticInstruction(2,INSTRUCTION_TYPE_LOAD_STORE);
+    sw_   = new StaticInstruction(2,INSTRUCTION_TYPE_LOAD_STORE);
+    
+    syscall_ = new StaticInstruction(0,INSTRUCTION_TYPE_SYSCALL);
 }
 
 MIPS32ISA* MIPS32ISA::getInstance(){
@@ -82,10 +87,15 @@ Instruction* MIPS32ISA::buildInstruction(char* opcode, char** operands, int oper
         encodingSubtype = MIPS32_ARITHLOG;
         function = 32; /* 100000 */
         encodingType = MIPS32_R_FORMAT;
-    }else if (strcmp(opcode,"AND") == 0){
+    }else if (strcmp(opcode,"AND") == 0){ 
         encodingSubtype = MIPS32_ARITHLOG;
         archetype = and_;
         function = 36;
+        encodingType = MIPS32_R_FORMAT;
+    }else if (strcmp(opcode,"XOR") == 0){
+        encodingSubtype = MIPS32_ARITHLOG;
+        archetype = xor_; 
+        function = 38; /* 100110 */
         encodingType = MIPS32_R_FORMAT;
     }else if (strcmp(opcode,"BNE") == 0){
         archetype = bne_;
@@ -126,6 +136,14 @@ Instruction* MIPS32ISA::buildInstruction(char* opcode, char** operands, int oper
         binOpcode = OP_SW;
         encodingSubtype = MIPS32_LOADSTORE;
         encodingType = MIPS32_I_FORMAT;
+    }else if (strcmp(opcode,"SYSCALL") == 0){
+        // Fake instruction to end execution
+        bytes = new unsigned char[4];
+        bytes[0] = 255;
+        bytes[1] = 255;
+        bytes[2] = 255;
+        bytes[3] = 255;
+        rawInstruction = new MemoryChunk(bytes,4);
     }else{
         throw new IllegalInstructionSyntaxException("Illegal opcode");
     }
@@ -209,6 +227,7 @@ Instruction* MIPS32ISA::buildInstruction(char* opcode, char** operands, int oper
             immediate = decodeLabelOperand(operands[1]);
             sourceRegisterOne = decodeRegisterOperand(operands[2]);
         }
+        // TODO: build RAW instruction!
     }else if (encodingType == MIPS32_J_FORMAT){
         if (encodingSubtype == MIPS32_JUMP){
             if (operandsLength < 1){
@@ -221,7 +240,7 @@ Instruction* MIPS32ISA::buildInstruction(char* opcode, char** operands, int oper
             }
             immediate = decodeIntOperand(operands[0]);
         }
-            
+        // TODO: build RAW instruction!    
     }
     /* Check for valid values */
     if ((sourceRegisterOne >= MIPS32REGISTERCOUNT) || 
@@ -236,13 +255,7 @@ Instruction* MIPS32ISA::buildInstruction(char* opcode, char** operands, int oper
     }
     Instruction* retVal = new Instruction();
     retVal->setArchetype(archetype);
-    retVal->setImmediate(immediate);
-    retVal->setDestinationRegister(destinationRegister);
-    retVal->setSourceRegisterOne(sourceRegisterOne);
-    retVal->setSourceRegisterTwo(sourceRegisterTwo);
-    retVal->setShiftAmmount(shiftAmmount);
     retVal->setInstructionOpcode(binOpcode);
-    retVal->setFunction(function);
     retVal->setRawInstruction(rawInstruction);
     return retVal;
 }
@@ -251,9 +264,12 @@ Instruction* MIPS32ISA::decodeInstruction(MemoryChunk* rawInst){
     if (rawInst->getBytesLength() != 4){
         throw new IllegalInstructionLengthException("MIPS32ISA instructions are 4 bytes long");
     }else{
-        unsigned char* bytes = rawInst->getBytes(); 
-        Instruction* inst = new Instruction();
-        inst->setRawInstruction(rawInst);
+        unsigned char* bytes = rawInst->getBytes();
+        Instruction* inst;
+        Operand* sourceOperandOne;
+        Operand* sourceOperandTwo;
+        Operand* destinationOperand;
+        ALUFunction aluFunction;
         unsigned char opcode = (0xFC & bytes[0]) >> 2;
         unsigned int sourceRegisterOne;
         unsigned int sourceRegisterTwo;
@@ -261,20 +277,16 @@ Instruction* MIPS32ISA::decodeInstruction(MemoryChunk* rawInst){
         unsigned int shiftAmmount;
         unsigned int immediate;
         unsigned char function;
+        StaticInstruction* archetype = NULL;
         switch(opcode){
             case 0:
                 /* Opcode 0 resumes all R type instruction, decode operands
-                 * Register Format:  ooooooss sssttttt dddddaaa aaffffff */       
-                sourceRegisterOne = ((0x3 & bytes[0]) << 3) | (0xE0 & bytes[1] >> 5);
+                 * Register Format:  ooooooss sssttttt dddddaaa aaffffff */
+                sourceRegisterOne = ((0x3 & bytes[0]) << 3) | ((0xE0 & bytes[1]) >> 5);
                 sourceRegisterTwo = 0x1F & bytes[1];
                 destinationRegister = (0xF8 & bytes[2]) >> 3;
                 shiftAmmount = (0x07 & bytes[2] << 3) | ((0xC0 & bytes[3]) >> 6);
-                inst->setSourceRegisterOne(sourceRegisterOne);
-                inst->setSourceRegisterTwo(sourceRegisterTwo);
-                inst->setDestinationRegister(destinationRegister);
-                inst->setShiftAmmount(shiftAmmount);
-                function = 0xCF & bytes[3];
-                inst->setFunction(function);
+                function = 0x3F & bytes[3];
                 /* Check if function binary is legal*/
                 switch (function){
                     case 0:  /* sll */
@@ -287,17 +299,20 @@ Instruction* MIPS32ISA::decodeInstruction(MemoryChunk* rawInst){
                     case 17: /* mthi */
                     case 18: /* mflo */
                     case 19: /* mtlo */
+                        aluFunction = ALU_FUNCTION_MOV; break;
                     case 24: /* mult */
                     case 25: /* multu */
                     case 26: /* div */
                     case 27: /* divu */
                     case 32: /* add */
+                        aluFunction = ALU_FUNCTION_INT_ADD; break; 
                     case 33: /* addu */
                     case 34: /* sub */ 
                     case 35: /* subu */
                     case 36: /* and */
                     case 37: /* or */
                     case 38: /* xor */
+                        aluFunction = ALU_FUNCTION_XOR; break;
                     case 39: /* nor */
                     case 41: /* sltu */
                     case 42: /* slt */
@@ -307,6 +322,16 @@ Instruction* MIPS32ISA::decodeInstruction(MemoryChunk* rawInst){
                         //msg.append(())
                         throw new IllegalInstructionBinaryException("Illegal MIPS32 instruction ALU function");
                 }
+                sourceOperandOne = new RegisterOperand();
+                sourceOperandTwo = new RegisterOperand();
+                destinationOperand = new RegisterOperand();
+                inst = new ALUInstruction(3,aluFunction);
+                ((RegisterOperand*) sourceOperandOne)->setRegisterNumber(sourceRegisterOne);
+                ((RegisterOperand*) sourceOperandTwo)->setRegisterNumber(sourceRegisterTwo);
+                ((RegisterOperand*) destinationOperand)->setRegisterNumber(destinationRegister);
+                inst->setOperand(sourceOperandOne,0);
+                inst->setOperand(sourceOperandTwo,1);
+                inst->setOperand(destinationOperand,2);
                 break;
             case 2:  /* j */
             case 3:  /* jal */
@@ -317,7 +342,7 @@ Instruction* MIPS32ISA::decodeInstruction(MemoryChunk* rawInst){
                           (bytes[1] << 16) | 
                           (bytes[2] << 8) | 
                           (bytes[3]));
-                inst->setImmediate(immediate);
+                //inst->setImmediate(immediate);
                 break;
             case 4:  /* beq */
             case 5:  /* bne */
@@ -343,20 +368,70 @@ Instruction* MIPS32ISA::decodeInstruction(MemoryChunk* rawInst){
                 /* Immediate format: ooooooss sssttttt iiiiiiii iiiiiiii*/
                 sourceRegisterOne = ((0x3 & bytes[0]) << 3) | ((0xE0 & bytes[1]) >> 5);
                 sourceRegisterTwo = 0x1F & bytes[1];
-                inst->setSourceRegisterOne(sourceRegisterOne);
-                inst->setSourceRegisterTwo(sourceRegisterTwo);
+                //inst->setSourceRegisterOne(sourceRegisterOne);
+                //inst->setSourceRegisterTwo(sourceRegisterTwo);
                 immediate = ((bytes[2]) << 8) | bytes[3];
-                inst->setImmediate(immediate);
+                //inst->setImmediate(immediate);
+                break;
+            case 63:
+                // System Call 
+                inst = new Instruction();
                 break;
             default:
                 throw new IllegalInstructionBinaryException("Illegal MIPS32 instruction opcode");
                 break;
         }
+        // Pass again and set Archetype
+        switch(opcode){
+            case 0:
+                switch (function){
+                    case 0:  /* sll */
+                    case 2:  /* srl */
+                    case 3:  /* sra */
+                    case 4:  /* sllv */
+                    case 6:  /* srlv */
+                    case 7:  /* srav */
+                    case 16: /* mfhi */
+                    case 17: /* mthi */
+                    case 18: /* mflo */
+                    case 19: /* mtlo */
+                        aluFunction = ALU_FUNCTION_MOV; break;
+                    case 24: /* mult */
+                    case 25: /* multu */
+                    case 26: /* div */
+                    case 27: /* divu */
+                    case 32: /* add */
+                        aluFunction = ALU_FUNCTION_INT_ADD; break; 
+                    case 33: /* addu */
+                    case 34: /* sub */ 
+                    case 35: /* subu */
+                    case 36: /* and */
+                    case 37: /* or */
+                    case 38: /* xor */
+                        archetype = xor_;
+                        break;
+                    case 39: /* nor */
+                    case 41: /* sltu */
+                    case 42: /* slt */
+                        break;
+                }
+                break;
+            case 63:
+                archetype = syscall_;
+                break;
+            // TODO! Complete rest of instructions
+            default:
+                break;
+        }
+        
+        // Last, add general information and return
+        inst->setRawInstruction(rawInst);
+        inst->setArchetype(archetype);
         return inst;
     }
 }
 
-/* Given an instruction, returns the binary encoing of that instruction */
+/* Given an instruction, returns the binary encoding of that instruction */
 MemoryChunk* MIPS32ISA::encodeInstruction(Instruction* inst){
     return inst->getRawInstruction();
     /*
@@ -392,3 +467,12 @@ MemoryChunk* MIPS32ISA::encodeInstruction(Instruction* inst){
     } // No other options, its coded like this for simplicity while reading
     */
 }
+
+RegisterFile* MIPS32ISA::createArchitectedRegisterFile(){
+    return new RegisterFile(MIPS_32_INTEGER_REGISTER_COUNT,MIPS_32_FLOATING_POINT_REGISTER_COUNT);
+}
+
+int MIPS32ISA::getInstructionLength(){
+    return MIPS_32_INSTRUCTION_LENGTH;
+}
+

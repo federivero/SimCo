@@ -18,8 +18,8 @@ class ComputationalSystem;
 class StatisticManager{
     private:
         /* Structure to hold the statistics */
-        GenMap<string,int> * intStats;
-        GenMap<string,double> * realStats;
+        GenMap<string*,int> * intStats;
+        GenMap<string*,double> * realStats;
         
         MemorySystem* memSystem;
         ComputationalSystem* compSystem;

@@ -50,7 +50,7 @@ class MemoryDevice : public IMessageDispatcher{
         
         // When memory requests exceedes available ports on RAM, requests are
         // Queued to be processed on subsecuent clock cycles
-        Queue<MemoryRequest> *unattendedMemoryRequests;
+        Queue<MemoryRequest*> *unattendedMemoryRequests;
         // List of MemoryRequests waiting for simulated delay to end
         List<WaitingMemoryRequest> *pendingMemoryRequests;
         
@@ -64,8 +64,8 @@ class MemoryDevice : public IMessageDispatcher{
         virtual MemoryChunk* getMemoryContent(unsigned long address, unsigned int requestLength) = 0;
         // Submits a memory request for the event system to handle 
         virtual void submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* port) = 0;
-        // Submits a memory Response from a lower level hierarchy 
-        virtual void submitMemoryResponse(MemoryResponse* response, InterconnectionNetwork* port) = 0;
+        // Submits a message
+        virtual void submitMessage(Message* message, InterconnectionNetwork* port) = 0;
         
         virtual void printStatistics(ofstream* file);
 };

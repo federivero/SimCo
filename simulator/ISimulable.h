@@ -15,7 +15,7 @@
 
 class ISimulable{
     private:
-    
+        static unsigned long lastAvailableId;
     protected:
         unsigned long id;
         char* name;
@@ -26,6 +26,7 @@ class ISimulable{
         StatisticManager* stats;
     public:
         ISimulable(unsigned long id, char* name = NULL);
+        static unsigned long getNextAvailableId();
         virtual void initCycle() = 0;
         virtual void printStatistics(ofstream* file);
         

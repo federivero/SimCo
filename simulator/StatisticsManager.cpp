@@ -10,8 +10,8 @@
 StatisticManager* StatisticManager::instance = NULL;
 
 StatisticManager::StatisticManager(){
-    intStats = new ListMap<string,int>(100);
-    realStats = new ListMap<string,double>(100);
+    intStats = new ListMap<string*,int>(100);
+    realStats = new ListMap<string*,double>(100);
 }
 
 StatisticManager* StatisticManager::getInstance(){
@@ -49,41 +49,34 @@ void StatisticManager::addIntStat(string name){
     if (intStats->exists(&name) != -1){
         throw new RuntimeException("Already registered int stat ");
     }
-    int* a = new int; *a = 0;
-    intStats->put(&name,a);
+    intStats->put(&name,0);
 }
 
 void StatisticManager::addRealStat(string name){
     if (realStats->exists(&name) != -1){
         throw new RuntimeException("Already registered real stat");
     }
-    double* d = new double; *d = 0;
-    realStats->put(&name,d);
+    realStats->put(&name,0);
 }
 
 void StatisticManager::increaseIntStat(string statName, int ammount){
-    int* data = intStats->getData(&statName);
-    if (data != NULL){
-        *data += ammount;
-    }else{
+    if (intStats->exists(&statName) == -1){
         throw new RuntimeException("Unregistered int stat ");
     }
+    int data = intStats->getData(&statName);
+    intStats->override(&statName,ammount + data);
 }
 
 void StatisticManager::setIntStat(string statName, int value){
-    int* data = intStats->getData(&statName);
-    if (data != NULL){
-        *data = value;
-    }else{
-        throw new RuntimeException("Unregistered int stat");
+    if (intStats->exists(&statName) == -1){
+        throw new RuntimeException("Unregistered int stat ");
     }
+    intStats->override(&statName,value);
 }
 
 void StatisticManager::setRealStat(string statName, double value){
-    double* data = realStats->getData(&statName);
-    if (data != NULL){
-        *data = value;
-    }else{
-        throw new RuntimeException("Unregistered real stat");
+    if (realStats->exists(&statName) == -1){
+        throw new RuntimeException("Unregistered int stat ");
     }
+    realStats->override(&statName,value);
 }

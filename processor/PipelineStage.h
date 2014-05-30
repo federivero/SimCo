@@ -19,8 +19,8 @@ private:
 protected:
     Processor* processor;
 public:
-    virtual void pipeInstruction(Instruction*) = 0;
-    virtual void simulateStage(PipelineStage* retValue) = 0;
+    //virtual void pipeInstruction(Instruction*) = 0;
+    //virtual void simulateStage(PipelineStage* retValue) = 0;
 };
 
 #endif	/* PIPELINESTAGE_H */

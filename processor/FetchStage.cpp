@@ -1,21 +1,86 @@
 
 #include "FetchStage.h"
+#include "../memory/IMessageDispatcher.h"
+#include "../architecture/ISA.h"
+#include "../architecture/Instruction.h"
 
-using namespace std;
+FetchStage::FetchStage(unsigned long id, char* name, Processor* processor, InterconnectionNetwork* memoryInterface, int instructionFetchQueueSize)
+        :IMessageDispatcher(id,name),instructionMemoryInterface(memoryInterface){
+    fetchQueue = new Queue<Instruction*>(instructionFetchQueueSize); 
+    instructionsQueued = 0;
+    this->processor = processor;
+    
+    requestedAccesses = new ListMap<InterconnectionNetwork*,bool>(1);
+    requestedAccesses->put(memoryInterface,false);
 
-FetchStage::FetchStage(InterconnectionNetwork* mbus):memoryBus(mbus){
-    ConfigManager* cm = ConfigManager::getInstance();
-    fetchWidth = cm->getIntParameter(FETCH_WIDTH);
-    fetchQueueMaxSize = cm->getIntParameter(INST_FETCH_QUEUE_SIZE);
 }
 
+
+/* IMessageDispatcher operations */
+void FetchStage::accessGranted(InterconnectionNetwork* port){
+    if (instructionMemoryInterface == port){
+        int instructionSize = processor->getISA()->getInstructionLength();
+        MemoryRequest* req = new MemoryRequest((int) processor->getPCValue(), instructionSize ,MEMORY_REQUEST_MEMORY_READ);
+        InterconnectionNetworkEvent* memoryRequestEvent = InterconnectionNetworkEvent::createEvent(
+                INTERCONNECTION_NETWORK_EVENT_SUBMIT_MESSAGE, 
+                instructionMemoryInterface,
+                this,
+                req);
+        this->simulator->addEvent(memoryRequestEvent,0);
+        processor->setPCValue(processor->getPCValue() + instructionSize);
+        tracer->traceNewPCValue(processor->getId(),processor->getPCValue());
+        // Set variable to notify that the bus was not requested
+        requestedAccesses->override(instructionMemoryInterface,false);
+    } // TODO: else throw exception ?
+    
+}
+
+void FetchStage::submitMessage(Message* message, InterconnectionNetwork* port){
+    if (port == instructionMemoryInterface){
+        MemoryResponse* resp;
+        Instruction* instruction;
+        switch(message->getMessageType()){
+            case MEMORY_RESPONSE:
+                resp = (MemoryResponse*) message;
+                instruction = processor->getISA()->decodeInstruction(resp->getRawData());
+                cycleFetchedInstrutions++;
+                fetchQueue->queue(instruction);
+                processor->instructionFetched();
+                break;
+            default:
+                // Ignore, broadcast message on shared medium
+                break;
+        }
+    } // TODO: else throw exception for receiving a message from an incorrect interface? 
+}
+
+void FetchStage::doFetch(){
+    // An instruction needs to be fetched, first request access to network 
+    requestAccessToNetwork(instructionMemoryInterface);
+}
+
+void FetchStage::initCycle(){
+    // Set last cycle fetched instructions as accesible and instructions fetched this cycle to 0
+    instructionsQueued += cycleFetchedInstrutions;
+    cycleFetchedInstrutions = 0;
+}
+
+int FetchStage::getInstructionFetchQueueSize(){
+    return instructionsQueued;
+}
+
+Instruction* FetchStage::getNextInstructionFetched(){
+    instructionsQueued--;
+    return fetchQueue->dequeue();
+}
+
+/*
 void FetchStage::pipeInstruction(Instruction* inst){
-    /*
-    throw new RuntimeException("Should not be invoked -> Fetch Stage gets its "
-            "instructions from memory");
-     */
+    
 }
+*/
 
+/*
 void FetchStage::simulateStage(PipelineStage* retValue){
     for (int i = 0; i < decodeWidth; i++){
         if (!fetchQueue->isEmpty()){
@@ -28,20 +93,21 @@ void FetchStage::simulateStage(PipelineStage* retValue){
     int cantInstToQueue = fetchWidth < instWindowSpace? fetchWidth:instWindowSpace; 
     for (int i = 0; i < cantInstToQueue; i++){
         // TODO: pooling?
-        /*MemoryRequest* mreq = new MemoryRequest(instructionPointer,M);
+        MemoryRequest* mreq = new MemoryRequest(instructionPointer,M);
         MemoryResponse* mres = memoryBus->getAdress(mreq);
         Instruction* inst = processor->getISA()->decodeInstruction(mres->getRawData()); 
         FetchStage* fetchStage = (FetchStage*) retValue;
         fetchStage->addIntructionToInstructionWindow(inst);
-         */
     }
         
 }
-
+*/
+/*
 void FetchStage::addIntructionToInstructionWindow(Instruction* inst){
     //
     //Queue->addInstruction();
 }
+*/
 
 
 

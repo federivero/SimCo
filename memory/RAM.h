@@ -26,17 +26,21 @@ class RAM: public MemoryDevice{
         // Pointer to the network interface
         InterconnectionNetwork* port;
         
+        // Stats
+        unsigned int canceledRequests;
+        
         virtual void attendMemoryRequest(MemoryRequest* request);
         virtual void assignPortToMemoryRequest(MemoryRequest* request);
     public:
         RAM(unsigned long id, unsigned long capacity, int ports, int latency, InterconnectionNetwork* interface, char* name = 0);
         
-        virtual void setMemoryContent(MemoryChunk* data, unsigned long address);
-        virtual MemoryChunk* getMemoryContent(unsigned long address, unsigned int requestLength);
-        virtual void initCycle();
-        virtual void accessGranted(InterconnectionNetwork* port);
-        virtual void submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* port);
-        virtual void submitMemoryResponse(MemoryResponse* response, InterconnectionNetwork* port);
+        void setMemoryContent(MemoryChunk* data, unsigned long address);
+        MemoryChunk* getMemoryContent(unsigned long address, unsigned int requestLength);
+        void initCycle();
+        void accessGranted(InterconnectionNetwork* port);
+        void submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* port);
+        void submitMemoryResponse(MemoryResponse* response, InterconnectionNetwork* port);
+        void submitMessage(Message* message, InterconnectionNetwork* port);
         
         virtual void printStatistics(ofstream* file);
 };

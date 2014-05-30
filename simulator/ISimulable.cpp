@@ -1,6 +1,16 @@
 #include "ISimulable.h"
 #include "../exceptions/UnsuportedEventException.h"
 
+// Static Operations:
+unsigned long ISimulable::lastAvailableId = -1;
+
+unsigned long ISimulable::getNextAvailableId(){
+    ISimulable::lastAvailableId++;
+    return ISimulable::lastAvailableId;
+}
+// Static operations end
+
+
 ISimulable::ISimulable(unsigned long id, char* name){
     this->id = id;
     this->name = name;

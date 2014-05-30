@@ -56,19 +56,42 @@ void testStack() {
     }
 }
 
+void testQueue() {
+    MemoryRequest* m = new MemoryRequest(1000,10,MEMORY_REQUEST_MEMORY_READ);
+    MemoryRequest* m2 = new MemoryRequest(1010,12,MEMORY_REQUEST_MEMORY_READ);
+    MemoryRequest* m3 = new MemoryRequest(1020,14,MEMORY_REQUEST_MEMORY_READ);
+
+    std::cout << "Queue test 1" << std::endl;
+    Queue<MemoryRequest*>* queue = new Queue<MemoryRequest*>(3);
+    queue->queue(m);
+    queue->queue(m2);
+    queue->queue(m3);
+    if (queue->isFull()){
+        cout << "La cola está llena! OK " << endl;
+    }else{
+        throw new RuntimeException("ERROR: La cola debería estar llena!");
+    }
+    MemoryRequest* ret = queue->dequeue();
+    if (ret->getMemoryAdress() != 1000){
+        throw new RuntimeException("ERROR: Mensaje incorrecto!");
+    }else{
+        cout << "Ok: Mensaje correcto" << endl;
+    }
+}
+
 void mapTest(){
     MemoryRequest* m = new MemoryRequest(1000,10,MEMORY_REQUEST_MEMORY_READ);
     MemoryRequest* m2 = new MemoryRequest(1010,12,MEMORY_REQUEST_MEMORY_READ);
     MemoryRequest* m3 = new MemoryRequest(1020,14,MEMORY_REQUEST_MEMORY_READ);
 
     std::cout << "Map test 1" << std::endl;
-    GenMap<MemoryRequest,int>* mmap = new ListMap<MemoryRequest,int>(3);
+    GenMap<MemoryRequest*,int>* mmap = new ListMap<MemoryRequest*,int>(3);
     int valor1 = 3;
     int valor2 = 4;
     int valor3 = 6;
-    mmap->put(m,&valor1);
-    mmap->put(m2,&valor2);
-    mmap->put(m3,&valor3);
+    mmap->put(m,valor1);
+    mmap->put(m2,valor2);
+    mmap->put(m3,valor3);
     if (mmap->isFull()){
         cout << "El mapa está lleno! OK " << endl;
     }else{
@@ -204,11 +227,17 @@ int main(int argc, char** argv) {
     std::cout << "%SUITE_STARTING% DataStructure test" << std::endl;
     std::cout << "%SUITE_STARTED%" << std::endl;
 
-    std::cout << "%TEST_STARTED% test1 (testStack1)" << std::endl;
+    std::cout << "%TEST_STARTED% testStack (testStack1)" << std::endl;
     
     testStack();
     
-    std::cout << "%TEST_FINISHED% time=0 test1 (testStack1)" << std::endl;
+    std::cout << "%TEST_FINISHED% time=0 testStack (testStack1)" << std::endl;
+
+     std::cout << "%TEST_STARTED% testQueue (testStack1)" << std::endl;
+    
+    testQueue();
+    
+    std::cout << "%TEST_FINISHED% time=0 testQueue (testStack1)" << std::endl;
 
    
     std::cout << "%TEST_STARTED% test2 (mapTest1)" << std::endl;

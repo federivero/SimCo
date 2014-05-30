@@ -14,26 +14,42 @@
 #include "PipelineStage.h"
 #include "IssueStage.h"
 
-class FetchStage : public PipelineStage{
+class FetchStage : public IMessageDispatcher{
     private:
+        // Pointer to the processor containing this FetchStage
+        Processor* processor;
+        
+        // Instruction Fetch Queue variables. Instructions Queued contains the value seen
+        // by other cpu parts during cycle, since fetchQueue 
         Queue<Instruction*>* fetchQueue;
+        int instructionsQueued;
+        int cycleFetchedInstrutions;
+        
         /* Pointer to the memory bus which connects to the 1st element in the
-         * memory hierarchy. It's of the base type 'InterconnectionNetwork' for
-         * configurability, but generally it'll be a bus. */
-        InterconnectionNetwork* memoryBus;
-        IssueStage* nextStage;
+         * instruction memory hierarchy. */
+        InterconnectionNetwork* instructionMemoryInterface;
         int fetchQueueMaxSize;
         int fetchWidth;
         int decodeWidth;
         
-        /* TODO: think of a more generic structure? -> by now its a 32 bit architecture (MIPS?) */
-        unsigned int instructionPointer;
-        
     public:
-        FetchStage(InterconnectionNetwork* fetchNetwork);
-        void pipeInstruction(Instruction*);
-        void simulateStage(PipelineStage* retValue);
-        void addIntructionToInstructionWindow(Instruction* inst);
+        FetchStage(unsigned long id, char* name, Processor* processor, InterconnectionNetwork* instructionMemoryInterface, int instructionFetchQueueSize);
+        void accessGranted(InterconnectionNetwork* port);
+        void submitMessage(Message* message, InterconnectionNetwork* port);
+        
+        /* Trigger function to fetch an instruction */
+        void doFetch();
+        
+        /* ISimulable operations */
+        void initCycle();
+        
+        // Getters 
+        int getInstructionFetchQueueSize();
+        Instruction* getNextInstructionFetched();
+        
+        //void pipeInstruction(Instruction*);
+        //void simulateStage(PipelineStage* retValue);
+        //void addIntructionToInstructionWindow(Instruction* inst);
 };
 
 #endif	/* FETCHSTAGE_H */

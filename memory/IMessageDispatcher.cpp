@@ -18,8 +18,8 @@ IMessageDispatcherEvent::IMessageDispatcherEvent(EventName name, IMessageDispatc
 
 void IMessageDispatcherEvent::simulate(){
     switch(eventName){
-        case MESSAGE_DISPATCHER_SUBMIT_MEMORY_RESPONSE:
-            dispatcher->submitMemoryResponse(response,port);
+        case MESSAGE_DISPATCHER_SUBMIT_MESSAGE:
+            dispatcher->submitMessage(message,port);
             break;
         default:
             throw new RuntimeException("Inappropiate event type for IMessageDispatcherEvent");
@@ -31,26 +31,26 @@ void IMessageDispatcherEvent::setPort(InterconnectionNetwork* interface){
     port = interface;
 }
 
-void IMessageDispatcherEvent::setResponse(MemoryResponse* resp){
-    response = resp;
+void IMessageDispatcherEvent::setMessage(Message* message){
+    this->message = message;
 }
 
-IMessageDispatcherEvent* IMessageDispatcherEvent::createEvent(EventName name, IMessageDispatcher* target, MemoryResponse* resp, InterconnectionNetwork* interface){
+IMessageDispatcherEvent* IMessageDispatcherEvent::createEvent(EventName name, IMessageDispatcher* target, Message* message, InterconnectionNetwork* interface){
     IMessageDispatcherEvent* e = new IMessageDispatcherEvent(name,target);
     e->setPort(interface);
-    e->setResponse(resp);
+    e->setMessage(message);
     return e;
 }
 
 void IMessageDispatcher::requestAccessToNetwork(InterconnectionNetwork* port){
-    bool* accessRequested = requestedAccesses->getData(port);
-    if (accessRequested == NULL){
+    if (requestedAccesses->exists(port) == -1){
         throw new RuntimeException("Access requested from a dispatcher to an unattached network interface");
     }
-    if (*accessRequested == false){
-        *accessRequested = true;
+    bool accessRequested = requestedAccesses->getData(port);
+    if (accessRequested == false){
+        requestedAccesses->override(port,true);
         InterconnectionNetworkEvent* e = InterconnectionNetworkEvent::createEvent(INTERCONNECTION_NETWORK_EVENT_REQUEST_ACCESS,
-                port,this,NULL,NULL);
+                port,this,NULL);
         simulator->addEvent(e,0);
     } // Else ignore, for access has already been requested
 }

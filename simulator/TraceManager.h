@@ -13,6 +13,14 @@
 #include <iostream>
 #include <fstream>
 
+class Cache;
+class CacheLineEntry;
+class Bus;
+class MemoryChunk;
+class Register;
+class SimpleUnpipedProcessor;
+class Instruction;
+        
 using namespace std;
 
 /* The TraceManager class is responsible for storing the information the 
@@ -44,12 +52,25 @@ class TraceManager{
         
         void traceNewCycle(unsigned long cycleNumber);
         void traceNewMessage(unsigned long messageId);
-        void traceNewBus(unsigned long deviceId);
+        void traceNewBus(Bus* bus);
         void traceNewRAM(unsigned long deviceId);
-        void traceNewCache(unsigned long deviceId);
+        void traceNewCache(Cache* cache);
         void traceNewMemoryRequest(unsigned long messageId, unsigned long address, MessageType type);
         void traceSubmittedMemoryRequest(unsigned long deviceId, unsigned long messageId);
         void traceSubmittedMemoryResponse(unsigned long deviceId, unsigned long messageId);
+        
+        // Processor Trace operations
+        void traceNewSimpleUnpipedProcessor(SimpleUnpipedProcessor* simpleProcessor);
+        void traceNewPCValue(unsigned long processorId, unsigned long pcValue);
+        void traceRegisterValue(unsigned long processorId, Register* reg);
+        void traceFlagsValue(unsigned long processorId, bool zflag, bool nflag, bool cflag, bool vflag);
+        void traceInstructionRegisterValue(unsigned long processorId, Instruction* registerValue);
+        
+        void traceSubmittedMessageToBus(Bus* bus, Message* message);
+        void traceCacheLineChange(unsigned long id, unsigned int cacheLineNumber, CacheLineEntry* cacheLine);
+        
+        /* Internal Operations */
+        void traceMemoryChunk(MemoryChunk* chunk);
         
         // Setters
         void setFileName(char* fname);

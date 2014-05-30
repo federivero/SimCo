@@ -35,10 +35,10 @@ Cache::Cache(unsigned long id, unsigned int s, unsigned int a, unsigned int ls, 
     }
     upperMemoryHierarchyPort = NULL;
     lowerMemoryHierarchyPort = NULL;
-    requestedAccesses = new ListMap<InterconnectionNetwork,bool>(1);
+    requestedAccesses = new ListMap<InterconnectionNetwork*,bool>(1);
     
-    pendingLineRequests = new ListMap<MemoryRequest,unsigned int>(10); 
-    lowerHierarchyAccessQueue = new Queue<MemoryRequest>(10);
+    pendingLineRequests = new ListMap<MemoryRequest*,unsigned int>(10); 
+    lowerHierarchyAccessQueue = new Queue<Message*>(10);
   
     // Initialize stats
     hitCount = 0;
@@ -55,53 +55,115 @@ void Cache::submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* 
             writeCount++;
         }
         // MemoryRequest comming from upper memory hiearchy (or CPU)
-        unsigned int adress = request->getMemoryAdress();
-        unsigned int byte = byteMask & adress;
-        unsigned int set = 0;
-        unsigned int tag = adress >> (log2lineSize + log2setCount);
-        if (sets != 1){
-            // not fully associative
-            set = (setMask & adress) >> log2lineSize;
-        }
+        unsigned int address = request->getMemoryAdress();
+        unsigned int tag, set, byte;
+        getTagSetAndByteFromAddress(address,tag,set,byte);
         // Search on set for tag
-        bool hit = false;
-        unsigned char* cacheLine = NULL;
-        int startIndex = set * associativity;
-        int endIndex = (set + 1) * associativity;
-        int i;
-        for (i = startIndex; i < endIndex; i++){
-            if (cacheLineEntry[i] != NULL && (cacheLineEntry[i]->getTag() == tag)){
-                // if a coherence protocol is used, then the block cannot be invalid
-                if ((coherenceProtocol == CACHE_NO_COHERENCE) || (cacheLineEntry[i]->getState() != CACHE_LINE_INVALID)){
-                    hit = true;
-                    cacheLine = cacheLineEntry[i]->getLineData();
-                    break;
-                }
-            }
-        }
+        bool hit; unsigned int lineHit;
+        checkAddressHit(tag,set,hit,lineHit);
         if (hit){
             hitCount++;
-            processAccessHit(request,cacheLineEntry[i],byte);
+            dispatchCoherenceMessages(request,cacheLineEntry[lineHit],request->getMessageType(),hit);
+            processAccessHit(request,cacheLineEntry[lineHit],byte);
+            tracer->traceCacheLineChange(id,lineHit,cacheLineEntry[lineHit]);
         }else{
             missCount++;
             // Cache Miss: determine victim and ask lower hierarchy for the block!
             unsigned int victimLine = getVictimLine(set);
+            if (cacheLineEntry[victimLine] != NULL) // if not a new block
+                dispatchCoherenceMessages(request,cacheLineEntry[victimLine],request->getMessageType(),hit);
             unsigned int blockStartAdress = (tag << (log2lineSize + log2setCount)) | 
                                             (set << (log2lineSize)); // Ignore byte
             MemoryRequest* req = new MemoryRequest(blockStartAdress,lineSize,MEMORY_REQUEST_MEMORY_READ);
             req->setOriginalRequest(request);
-            // TODO: Use integer pool
-            unsigned int* aux = new unsigned int;
-            *aux = victimLine;
             // Save request until response arrives, mapped to victim line number )
-            pendingLineRequests->put(request,aux);
+            pendingLineRequests->put(request,victimLine);
             // Request access to bus and hold request until access is granted
             tracer->traceNewMemoryRequest(req->getMessageId(),req->getMemoryAdress(),req->getMessageType());
             requestAccessToNetwork(lowerMemoryHierarchyPort);
             lowerHierarchyAccessQueue->queue(req);
         }
     }else{
-        // use this as bus snooping?
+        snoopRequest(request);
+    }
+}
+
+void Cache::snoopRequest(MemoryRequest* request){
+    // MemoryRequest comming from upper memory hiearchy (or CPU)
+    unsigned int address = request->getMemoryAdress();
+    unsigned int tag, set, byte;
+    getTagSetAndByteFromAddress(address,tag,set,byte);
+    bool hit; unsigned int lineHit;
+    checkAddressHit(tag,set,hit,lineHit);
+    if (hit){
+         InvalidatingMemoryResponse* resp;
+         MemoryChunk* rawData;
+         unsigned char* data;
+         switch(coherenceProtocol){
+             case CACHE_COHERENCE_MSI:
+                 switch(cacheLineEntry[lineHit]->getState()){
+                     case CACHE_LINE_MODIFIED:
+                         // Access to modified line, set as shared, provide value and invalidate lower memory resonse!
+                         resp = new InvalidatingMemoryResponse(address,INVALIDATING_MEMORY_RESPONSE,request);
+                         data = new unsigned char[request->getRequestSize()];
+                         rawData = new MemoryChunk(data,request->getRequestSize());
+                         rawData->copyFrom(&cacheLineEntry[lineHit]->getLineData()[byte]);
+                         resp->setRawData(rawData);
+                         lowerMemoryHierarchyPort->submitMessage(resp,this);
+                         if (request->getMessageType() == MEMORY_REQUEST_MEMORY_READ){
+                             cacheLineEntry[lineHit]->setCacheLineState(CACHE_LINE_SHARED);
+                             tracer->traceCacheLineChange(id,lineHit,cacheLineEntry[lineHit]);
+                         }
+                     case CACHE_LINE_SHARED:
+                         if (request->getMessageType() == MEMORY_REQUEST_MEMORY_WRITE){
+                             cacheLineEntry[lineHit]->setCacheLineState(CACHE_LINE_INVALID);
+                             tracer->traceCacheLineChange(id,lineHit,cacheLineEntry[lineHit]);
+                         }
+                         break;
+                     default:
+                         break;
+                 }
+             case CACHE_COHERENCE_MESI:
+                 // TODO
+                 break;
+             default:
+                 break;
+         }
+    }
+}
+
+void Cache::submitMessage(Message* message, InterconnectionNetwork* port){
+    switch(message->getMessageType()){
+        case MEMORY_RESPONSE:
+        case INVALIDATING_MEMORY_RESPONSE:
+            if (port == lowerMemoryHierarchyPort)
+                submitMemoryResponse(dynamic_cast<MemoryResponse*>(message),port);
+            break;
+        case MEMORY_REQUEST_MEMORY_READ:
+        case MEMORY_REQUEST_MEMORY_WRITE:
+            if (port == upperMemoryHierarchyPort)
+                submitMemoryRequest(dynamic_cast<MemoryRequest*>(message),port);
+            break;
+        case CACHE_COHERENCE_INVALIDATE:
+            if (port == lowerMemoryHierarchyPort)
+                invalidateLine(dynamic_cast<InvalidateMessage*>(message));
+            break;
+        default:
+            break;
+    }
+}
+
+void Cache::invalidateLine(InvalidateMessage* message){
+    unsigned int address = message->getInvalidateAddress();
+    unsigned int tag, set, byte;
+    getTagSetAndByteFromAddress(address,tag,set,byte);
+    int startIndex = set * associativity;
+    int endIndex = (set + 1) * associativity;
+    // Search all lines where the block could be and invalidate them!
+    for (int i = startIndex; i < endIndex; i++){
+        if (cacheLineEntry[i] != NULL && (cacheLineEntry[i]->getTag() == tag)){
+            cacheLineEntry[i]->setCacheLineState(CACHE_LINE_INVALID);
+        }
     }
 }
 
@@ -111,7 +173,9 @@ void Cache::submitMemoryResponse(MemoryResponse* response, InterconnectionNetwor
             MemoryRequest* originalRequest = response->getMemoryRequest()->getOriginalRequest();
             int pendingMemoryRequestIndex = pendingLineRequests->exists(originalRequest);
             if (pendingMemoryRequestIndex != -1){
-                unsigned int lineToReplace = *(pendingLineRequests->getData(originalRequest));
+                unsigned int lineToReplace = pendingLineRequests->getData(originalRequest);
+                // TODO: Check this
+                pendingLineRequests->remove(originalRequest);
                 if (cacheLineEntry[lineToReplace]==NULL){
                     cacheLineEntry[lineToReplace] = new CacheLineEntry(lineSize);
                 }else{
@@ -143,6 +207,8 @@ void Cache::submitMemoryResponse(MemoryResponse* response, InterconnectionNetwor
                 // TODO: erase request to lower hiearchy
                 unsigned int byte = byteMask & originalRequest->getMemoryAdress();
                 processAccessHit(originalRequest,cacheLineEntry[lineToReplace],byte);
+                // Trace cache change
+                tracer->traceCacheLineChange(id,lineToReplace,cacheLineEntry[lineToReplace]);
             }else{
                 // Broadcast message in lower hierarchy: ignore
             }
@@ -180,10 +246,27 @@ void Cache::processAccessHit(MemoryRequest* request, CacheLineEntry* cacheLine, 
                 lowerHierarchyAccessQueue->queue(writeRequest);
             }
         }
-        InterconnectionNetworkEvent* responseEvent = InterconnectionNetworkEvent::createEvent(INTERCONNECTION_NETWORK_EVENT_SUBMIT_MEMORY_RESPONSE,
-                upperMemoryHierarchyPort,this,NULL,response);
+        updateCoherenceState(request,cacheLine);
+        InterconnectionNetworkEvent* responseEvent = InterconnectionNetworkEvent::createEvent(INTERCONNECTION_NETWORK_EVENT_SUBMIT_MESSAGE,
+                upperMemoryHierarchyPort,this,response);
         simulator->addEvent(responseEvent,0);
     } // Else throw illegal message?
+}
+
+void Cache::updateCoherenceState(MemoryRequest* request, CacheLineEntry* line){
+    switch(coherenceProtocol){
+        case CACHE_COHERENCE_MSI:
+            if (request->getMessageType() == MEMORY_REQUEST_MEMORY_WRITE){
+                line->setCacheLineState(CACHE_LINE_MODIFIED);
+            }else if (request->getMessageType() == MEMORY_REQUEST_MEMORY_READ){
+                if (line->getState() == CACHE_LINE_INVALID){
+                    line->setCacheLineState(CACHE_LINE_SHARED);
+                }  
+            }
+            break;
+        case CACHE_COHERENCE_MESI:
+            break;
+    }
 }
 
 unsigned int Cache::getSetCount(){
@@ -206,6 +289,21 @@ CacheWritePolicy Cache::getWritePolicy(){
     return writePolicy;
 }
 
+void Cache::checkAddressHit(unsigned int tag, unsigned int set, bool& hit, unsigned int& lineHit){
+    // Search on set for tag
+    hit = false;
+    int startIndex = set * associativity;
+    int endIndex = (set + 1) * associativity;
+    for (lineHit = startIndex; lineHit < endIndex; lineHit++){
+        if (cacheLineEntry[lineHit] != NULL && (cacheLineEntry[lineHit]->getTag() == tag)){
+            // if a coherence protocol is used, then the block cannot be invalid
+            if ((coherenceProtocol == CACHE_NO_COHERENCE) || (cacheLineEntry[lineHit]->getState() != CACHE_LINE_INVALID)){
+                hit = true;
+                break;
+            }
+        }
+    }
+}
 unsigned int Cache::getVictimLine(unsigned int set){
     unsigned int victimLine = -1;
     int startIndex = set * associativity;
@@ -240,6 +338,16 @@ unsigned int Cache::getVictimLine(unsigned int set){
     return victimLine;
 }
 
+void Cache::getTagSetAndByteFromAddress(unsigned int address, unsigned int& tag, unsigned int& set, unsigned int& byte){
+    byte = byteMask & address;
+    set = 0;
+    tag = address >> (log2lineSize + log2setCount);
+    if (sets != 1){
+        // not fully associative
+        set = (setMask & address) >> log2lineSize;
+    }
+}
+
 void Cache::printStatistics(ofstream* file){
     *file << "Memory Cache" << endl;
     MemoryDevice::printStatistics(file);
@@ -266,22 +374,21 @@ void Cache::setUpperMemoryHierarchyPort(InterconnectionNetwork* upperPort){
 
 void Cache::setLowerMemoryHierarchyPort(InterconnectionNetwork* lowerPort){
     lowerMemoryHierarchyPort = lowerPort;
-    bool* b = new bool; *b = false;
-    requestedAccesses->put(lowerMemoryHierarchyPort,b);
+    requestedAccesses->put(lowerMemoryHierarchyPort,false);
 }
 
 void Cache::accessGranted(InterconnectionNetwork* port){
     if (port == upperMemoryHierarchyPort || port == lowerMemoryHierarchyPort){
         // Add event to send memory request
         InterconnectionNetworkEvent* e = new InterconnectionNetworkEvent(
-                INTERCONNECTION_NETWORK_EVENT_SUBMIT_MEMORY_REQUEST,
+                INTERCONNECTION_NETWORK_EVENT_SUBMIT_MESSAGE,
                 port,this);
         if (lowerHierarchyAccessQueue->isEmpty()){
             throw new RuntimeException("Empty queue of messages for access to bus");
         }
-        e->setMemoryRequest(lowerHierarchyAccessQueue->dequeue());
+        e->setMessage(lowerHierarchyAccessQueue->dequeue());
         ExecutionManager::getInstance()->addEvent(e,0);
-        *requestedAccesses->getData(lowerMemoryHierarchyPort) = false;
+        requestedAccesses->override(lowerMemoryHierarchyPort,false);
         // if queue is not empty, request access again!
         if (!lowerHierarchyAccessQueue->isEmpty())
             requestAccessToNetwork(lowerMemoryHierarchyPort);
@@ -308,12 +415,10 @@ void Cache::dispatchCoherenceMessages(MemoryRequest* request, CacheLineEntry* ca
             switch(cacheLine->getState()){
                 case CACHE_LINE_SHARED:
                     if ((type == MEMORY_REQUEST_MEMORY_WRITE) && hit){
-                        /*
                         // Write on a shared block, place invalidate message!
-                        Message* invalidateMessage = new Message(CACHE_COHERENCE_INVALIDATE);
+                        InvalidateMessage* invalidateMessage = new InvalidateMessage(request->getMemoryAdress(),CACHE_COHERENCE_INVALIDATE);
                         requestAccessToNetwork(lowerMemoryHierarchyPort);
-                        lowerHierarchyAccessQueue->queue(writeRequest);
-                         * */
+                        lowerHierarchyAccessQueue->queue(invalidateMessage);
                     }
                     break;
                 case CACHE_LINE_INVALID:

@@ -25,5 +25,11 @@ void MemoryResponse::setRawData(MemoryChunk* chunk){
     rawData = chunk;
 }
 
+/* Invalidate Memory Response */
+
+InvalidatingMemoryResponse::InvalidatingMemoryResponse(unsigned int addr, MessageType type, MemoryRequest* request):MemoryResponse(addr,type,request)
+{
+    
+}
 
 

@@ -13,6 +13,7 @@ RAM::RAM(unsigned long id, unsigned long capacity, int ports, int delayCount, In
     memoryMap = MultilevelMemoryTable::createMultilevelMemoryTable(capacity,2);
     pendingMemoryRequests = new List<WaitingMemoryRequest>();
     availablePorts = ports;
+    canceledRequests = 0;
 }
 
 void RAM::initCycle(){
@@ -56,7 +57,18 @@ void RAM::submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* ne
 }
 
 void RAM::submitMemoryResponse(MemoryResponse* response, InterconnectionNetwork* port){
-    // RAM shouldn't care about other memory responses (in certain organizations, it can't happen)
+    // Check for cancel operations on pending memory requests
+    MemoryRequest* req = response->getMemoryRequest();
+    Iterator<WaitingMemoryRequest> *iter = pendingMemoryRequests->iterator();
+    while(iter->hasNext()){
+        if (iter->next()->request == req){
+            iter->remove();
+            canceledRequests++;
+            freedPorts++;
+            break;
+        }
+    }
+    // TODO: iterate on 'unnatendedMemoryRequest'
 }
 
 void RAM::attendMemoryRequest(MemoryRequest* request){
@@ -71,25 +83,27 @@ void RAM::attendMemoryRequest(MemoryRequest* request){
         // Set memory values
         memoryMap->setMemoryContent(request->getMemoryAdress(),request->getRawData());
     }
-    InterconnectionNetworkEvent* e = InterconnectionNetworkEvent::createEvent(INTERCONNECTION_NETWORK_EVENT_SUBMIT_MEMORY_RESPONSE,port,this,NULL,response);
+    InterconnectionNetworkEvent* e = InterconnectionNetworkEvent::createEvent(INTERCONNECTION_NETWORK_EVENT_SUBMIT_MESSAGE,port,this,response);
     ExecutionManager::getInstance()->addEvent(e,0);
     freedPorts++;
 }
 
-// Non - Simulator methods
-
-void RAM::setMemoryContent(MemoryChunk* data, unsigned long address){
-    
-}
-
-MemoryChunk* RAM::getMemoryContent(unsigned long address, unsigned int requestLength){
-    return NULL;
-}
-
-void RAM::printStatistics(ofstream* file){
-    *file << "RAM" << endl;
-    MemoryDevice::printStatistics(file);
-    *file << endl;
+void RAM::submitMessage(Message* message, InterconnectionNetwork* port){
+    MemoryRequest* req;
+    switch(message->getMessageType()){
+        case MEMORY_REQUEST_MEMORY_READ:
+        case MEMORY_REQUEST_MEMORY_WRITE:
+            req = dynamic_cast<MemoryRequest*>(message);
+            submitMemoryRequest(req,port);
+            break;
+        case INVALIDATING_MEMORY_RESPONSE:
+            submitMemoryResponse(dynamic_cast<MemoryResponse*>(message),port);
+            break;
+        default:
+            // Ignore, broadcast messages on shared medium
+            break;
+            
+    }
 }
 
 void RAM::assignPortToMemoryRequest(MemoryRequest* request){
@@ -104,6 +118,23 @@ void RAM::assignPortToMemoryRequest(MemoryRequest* request){
         wmr->request = request;
         pendingMemoryRequests->add(wmr);
     }
+}
+
+// Non - Simulator methods
+
+void RAM::setMemoryContent(MemoryChunk* data, unsigned long address){
+    memoryMap->setMemoryContent(address,data);
+}
+
+MemoryChunk* RAM::getMemoryContent(unsigned long address, unsigned int requestLength){
+    return memoryMap->getMemoryContent(address,requestLength);
+}
+
+void RAM::printStatistics(ofstream* file){
+    *file << "RAM" << endl;
+    MemoryDevice::printStatistics(file);
+    *file << "Canceled Requests: " << canceledRequests << endl;
+    *file << endl;
 }
 
 

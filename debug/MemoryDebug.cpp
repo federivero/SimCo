@@ -20,7 +20,26 @@ void MemoryDebug::printCacheStatus(Cache* cache){
         if (cache->getCacheLine(i) == NULL){
             cout << " Empty";
         }else{
-            cout << " TAG " << cache->getCacheLine(i)->getTag() << " - Content: ";
+            cout << " TAG " << cache->getCacheLine(i)->getTag() << " Status: ";
+            switch(cache->getCacheLine(i)->getState()){
+                case CACHE_LINE_INVALID:
+                    cout << "Invalid ";
+                    break;
+                case CACHE_LINE_MODIFIED:
+                    cout << "Modified ";
+                    break;
+                case CACHE_LINE_SHARED:
+                    cout << "Shared ";
+                    break;
+                case CACHE_LINE_EXCLUSIVE:
+                    cout << "Exclusive ";
+                    break;
+                default:
+                    break;
+            }
+                    
+                    
+            cout << " - Content: ";
             for (int j = 0; j < lineSize; j++) 
                 cout << cache->getCacheLine(i)->getLineData()[j];
         }

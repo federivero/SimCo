@@ -27,8 +27,8 @@ public:
     InterconnectionNetwork(unsigned long id);
     MemoryResponse* getAdress(MemoryRequest* adress);
     virtual void requestAccess(IMessageDispatcher* requester);
-    virtual void submitMemoryRequest(MemoryRequest* request, IMessageDispatcher* submitter) = 0;
-    virtual void submitMemoryResponse(MemoryResponse* response, IMessageDispatcher* submitter) = 0;
+    virtual void submitMessage(Message* message, IMessageDispatcher* submitter) = 0;
+    //virtual void submitMemoryResponse(MemoryResponse* response, IMessageDispatcher* submitter) = 0;
     //void arbitrateAccess(IMessageDispatcher* requester);
 };
 
@@ -37,19 +37,16 @@ class InterconnectionNetworkEvent: public IEventCallback{
     private:
         InterconnectionNetwork* network;
         IMessageDispatcher* submitter;
-        MemoryRequest* request;
-        MemoryResponse* response;
+        Message* message;
     public:
         InterconnectionNetworkEvent(EventName name, InterconnectionNetwork* inetwork, IMessageDispatcher* irequester);
         void simulate();
         
         static InterconnectionNetworkEvent* createEvent(EventName name, 
-                                                        InterconnectionNetwork* net, IMessageDispatcher* dispatcher = 0, 
-                                                        MemoryRequest* req = NULL, MemoryResponse* res = NULL);
+                                                        InterconnectionNetwork* net, IMessageDispatcher* dispatcher = 0, Message* message = 0);
         
         // Setters
-        void setMemoryRequest(MemoryRequest* m);
-        void setMemoryResponse(MemoryResponse* m);
+        void setMessage(Message* message);
 };
 
 #endif	/* INTERCONNECTIONNETWORK_H */

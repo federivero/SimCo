@@ -7,7 +7,7 @@ MemoryDevice::MemoryDevice(unsigned long id, int portNumber, int latencyCycles, 
         portCount(portNumber),
         latency(latencyCycles)
 {
-    unattendedMemoryRequests = new Queue<MemoryRequest>(portNumber * latency);
+    unattendedMemoryRequests = new Queue<MemoryRequest*>(portNumber * latency);
     freedPorts = 0;
     // Initialize stats
     accessCount = 0;

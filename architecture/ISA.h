@@ -11,6 +11,7 @@
 #include "Instruction.h"
 #include "../memory/MemoryChunk.h"
 
+class RegisterFile;
 class Instruction;
 
 class ISA{
@@ -19,6 +20,11 @@ public:
     virtual Instruction* buildInstruction(char* opcode, char** operands, int operandsLength) = 0;
     virtual Instruction* decodeInstruction(MemoryChunk*) = 0;
     virtual MemoryChunk* encodeInstruction(Instruction* inst) = 0;
+    /* Creates a data structure with the Architected Register File */
+    virtual RegisterFile* createArchitectedRegisterFile() = 0;
+    
+    /* ISA basic information */ 
+    virtual int getInstructionLength() = 0;
 };
 
 #endif	/* ISA_H */

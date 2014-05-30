@@ -11,52 +11,111 @@
 #include "StaticInstruction.h"
 #include "../memory/MemoryChunk.h"
 
-class PipelineStage;
+enum ALUFunction{
+    ALU_FUNCTION_INT_ADD,       // Unsigned add
+    ALU_FUNCTION_INT_SUB,       // Unsigned sub
+    ALU_FUNCTION_SHIFT_RIGHT,   // Shift Right
+    ALU_FUNCTION_SHIFT_LEFT,    // Shift Left
+    ALU_FUNCTION_AND,           // Binary And
+    ALU_FUNCTION_OR,            // Binary OR
+    ALU_FUNCTION_XOR,           // Binary XOR
+    ALU_FUNCTION_MOV,           // Copy instruction
+    ALU_FUNCTION_INT_MUL,       // Integer Multiplication
+    ALU_FUNCTION_INT_DIV        // Integer Division
+};
+
+enum InstructionResultType{
+    INSTRUCTION_RESULT_INT,
+    INSTRUCTION_RESULT_FP
+};
+
+class Operand;
+class InstructionResult;
 
 class Instruction{
 private:
-    /* Reference to instruction archetype*/
-    StaticInstruction* archetype;
-    
-    /* Reference to the pipeline Stage where the instruction is atm */
-    PipelineStage* pipeStage;
-    
     /* Binary codification of instruction */
     MemoryChunk* rawInstruction;
     
-    /* Decoded info */
-    unsigned short sourceRegisterOne;
-    unsigned short sourceRegisterTwo;
-    unsigned short destinationRegister;
     unsigned short instructionOpcode;
-    unsigned int immediate;
+protected:
+    /* Reference to instruction archetype*/
+    StaticInstruction* archetype;
     
-    /* MIPS32 specific -> TODO: think of a class hierarchy tree for this: 
-                                more clear and without useless information? */
-    unsigned int shiftAmmount;
-    /* For ALU instructions, the ALU fucntion to perform */
-    unsigned char function;
+    // Data structure holding instruction result
+    InstructionResult* instructionResult;
 public:
     Instruction();
     void setArchetype(StaticInstruction* archetype);
     StaticInstruction* getArchetype();
-    unsigned short getSourceRegisterOne();
-    unsigned short getSourceRegisterTwo();
-    unsigned short getDestinationRegister();
+    
+    virtual Operand* getOperand(int operandNumber);
+    virtual Operand* getDestinationOperand();
+    virtual void setOperand(Operand* operand, int operandNumber);
+    
+    // Access Methods
+    virtual void setInstructionResult(InstructionResult* result);
+    InstructionResult* getInstructionResult();
     unsigned short getInstructionOpcode();
-    unsigned short getShiftAmmount();
-    unsigned char getFunction();
-    unsigned int getImmediate();
-    MemoryChunk* getRawInstruction();
-    void setSourceRegisterOne(unsigned short value);
-    void setSourceRegisterTwo(unsigned short value);
-    void setDestinationRegister(unsigned short value);
     void setInstructionOpcode(unsigned short value);
+    MemoryChunk* getRawInstruction();
     void setRawInstruction(MemoryChunk* value);
-    void setShiftAmmount(unsigned int value);
-    void setFunction(unsigned char value);
-    void setImmediate(unsigned int value);
 };
+
+/* Generic class to map instruction results */
+class InstructionResult{
+    private:
+        InstructionResultType type;
+    public:    
+        InstructionResult(InstructionResultType instType):type(instType){};
+        InstructionResultType getType(){
+            return type;
+        };
+};
+
+// int result -> Used for int operations of 32 bit architectures
+class InstructionResultInt : public InstructionResult{
+    private:
+        int result;
+    public:
+        InstructionResultInt(int instructionResult)
+                :InstructionResult(INSTRUCTION_RESULT_INT)
+                ,result(instructionResult){};
+        int getResult(){
+            return result;
+        }
+};
+
+// fp result -> Used for FP operations of 32 bit architectures
+class InstructionResultFP : public InstructionResult{
+    private:
+        float result;
+    public:
+        InstructionResultFP(float instructionResult)
+                :InstructionResult(INSTRUCTION_RESULT_FP)
+                ,result(instructionResult){};
+        float getResult(){
+            return result;
+        }
+};
+
+
+class ALUInstruction: public Instruction{
+    private:
+        Operand** operands;
+        ALUFunction function;
+        
+    public:
+        ALUInstruction(int operandCount, ALUFunction function);
+        ALUFunction getALUFunction();
+        Operand* getOperand(int operandNumber);
+        Operand* getDestinationOperand();
+        void setOperand(Operand* oper, int operandNumber);
+        void setInstructionResult(InstructionResult* result);
+};
+
+
+
 
 #endif	/* INSTRUCTION_H */
 

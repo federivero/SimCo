@@ -29,11 +29,11 @@ private:
     unsigned long maxSimulatedCycles;
     
     /* Queue of events to simulate */
-    Queue<IEventCallback> *events;
+    Queue<IEventCallback*> *events;
     /* Queue of events to be simultad on every cycle*/
     List<IEventCallback> *fixedEvents;
     /* Queue of events to be simulated on next Cycles */
-    Queue<Queue<IEventCallback> > *upcomingEvents;
+    Queue<Queue<IEventCallback*> *> *upcomingEvents;
     
     // Pointer to tracer
     TraceManager* tracer;

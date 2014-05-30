@@ -4,7 +4,7 @@
 #include "../memory/MemoryDevice.h"
 #include "stdio.h"
 
-Bus::Bus(unsigned long id, int devCount, int width):InterconnectionNetwork(id){
+Bus::Bus(unsigned long id, char* name, int devCount, int width):InterconnectionNetwork(id){
     devices = new IMessageDispatcher*[devCount];
     deviceCount = devCount;
     for (int i = 0; i < deviceCount; i++){
@@ -12,13 +12,14 @@ Bus::Bus(unsigned long id, int devCount, int width):InterconnectionNetwork(id){
     }
     busWidth = width;
     availableSlotCount = busWidth;
-    currentMessages = new ListMap<MemoryRequest,BusOwnership>(100);
+    currentMessages = new ListMap<MemoryRequest*,BusOwnership*>(100);
     unusedSlots = new Queue<int>(busWidth);
     for (int i = 0; i < busWidth; i++){
-        unusedSlots->queue(new int);
+        unusedSlots->queue(i);
     }   
-    unattendedAccessRequests = new Queue<IMessageDispatcher>(100);
+    unattendedAccessRequests = new Queue<IMessageDispatcher*>(100);
     freedSlots = 0;
+    this->name = name;
 }
 
 // TODO: this functions should hold the requester until all posible dispatchers
@@ -35,12 +36,45 @@ void Bus::requestAccess(IMessageDispatcher* requester){
     }
 }
 
+void Bus::submitMessage(Message* message, IMessageDispatcher* submitter){
+    switch(message->getMessageType()){
+        case MEMORY_REQUEST_MEMORY_READ:
+        case MEMORY_REQUEST_MEMORY_WRITE:
+            submitMemoryRequest(dynamic_cast<MemoryRequest*>(message),submitter);
+            break;
+        case MEMORY_RESPONSE:
+        case INVALIDATING_MEMORY_RESPONSE:
+            submitMemoryResponse(dynamic_cast<MemoryResponse*>(message),submitter);
+            break;
+        case CACHE_COHERENCE_INVALIDATE:
+            submitInfoMessage(message,submitter);
+            break;
+        default:
+            break;
+    }
+    tracer->traceSubmittedMessageToBus(this,message);
+}
+
+void Bus::submitInfoMessage(Message* message, IMessageDispatcher* submitter){
+    broadcastMessage(message,submitter);
+    freedSlots++;
+}
+
+void Bus::broadcastMessage(Message* message, IMessageDispatcher* submitter){
+    for (int i = 0; i < deviceCount; i++){
+        if (devices[i] != submitter){ 
+            IMessageDispatcherEvent* e = IMessageDispatcherEvent::createEvent(MESSAGE_DISPATCHER_SUBMIT_MESSAGE,devices[i],message,this);
+            ExecutionManager::getInstance()->addEvent(e,0);
+        }
+    }
+}
+
 void Bus::submitMemoryRequest(MemoryRequest* request, IMessageDispatcher* submitter){
     if (unusedSlots->isEmpty()){
         throw new RuntimeException("No available bus slots for memory request");
     }
-    // Allocate message in software structures
-    int busSlot = *unusedSlots->dequeue();
+    // A memory request on a non-pipelined bus holds the bus until the response arrives
+    int busSlot = unusedSlots->dequeue();
     BusOwnership* b = new BusOwnership;
     b->master = submitter;
     b->busSlotNumber = busSlot;
@@ -66,17 +100,10 @@ void Bus::submitMemoryResponse(MemoryResponse* response, IMessageDispatcher* sub
         BusOwnership* b = currentMessages->getData(req);
         currentMessages->remove(req);
         finishedRequests++;
-        int* temporal = new int;
-        *temporal = b->busSlotNumber;
-        unusedSlots->queue(temporal);
+        unusedSlots->queue(b->busSlotNumber);
         freedSlots++;
         // Dispatch event to process response to all other attached devices
-        for (int i = 0; i < deviceCount; i++){
-            if (devices[i] != submitter){ 
-                IMessageDispatcherEvent* e = IMessageDispatcherEvent::createEvent(MESSAGE_DISPATCHER_SUBMIT_MEMORY_RESPONSE,devices[i],response,this);
-                ExecutionManager::getInstance()->addEvent(e,0);
-            }
-        }
+        broadcastMessage(response,submitter);
     }
 }
 
@@ -87,6 +114,12 @@ void Bus::initCycle(){
         availableSlotCount--;
         unattendedAccessRequests->dequeue()->accessGranted(this);
     }
+}
+
+/* Getters */
+
+unsigned int Bus::getBusWidth(){
+    return busWidth;
 }
 
 /* Construction Methods */

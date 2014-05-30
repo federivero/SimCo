@@ -29,7 +29,7 @@ class Bus: public InterconnectionNetwork{
         IMessageDispatcher** devices;
         int deviceCount;
         // Map from meesages being sent in this bus to the owners and slots
-        GenMap<MemoryRequest,BusOwnership>* currentMessages;
+        GenMap<MemoryRequest*,BusOwnership*>* currentMessages;
         // Logical bus width, dictates how many addressable messages can be sent in parallel through the bus
         unsigned int busWidth;
         int availableSlotCount;
@@ -38,16 +38,23 @@ class Bus: public InterconnectionNetwork{
         int freedSlots;
         
         // Queue to hold unattended access requests
-        Queue<IMessageDispatcher> *unattendedAccessRequests;
+        Queue<IMessageDispatcher*> *unattendedAccessRequests;
         
         // Variable used to pass information between cycles
         int finishedRequests;
+        
+        void submitMemoryRequest(MemoryRequest* request, IMessageDispatcher* submitter);
+        void submitMemoryResponse(MemoryResponse* response, IMessageDispatcher* submitter);
+        void submitInfoMessage(Message* message, IMessageDispatcher* submitter);
+        void broadcastMessage(Message* message, IMessageDispatcher* submitter);
     public:
-        Bus(unsigned long id, int deviceCount,int width);
+        Bus(unsigned long id, char* name, int deviceCount,int width);
+        virtual void submitMessage(Message* message, IMessageDispatcher* submitter);
         virtual void requestAccess(IMessageDispatcher* requester);
-        virtual void submitMemoryRequest(MemoryRequest* request, IMessageDispatcher* submitter);
-        virtual void submitMemoryResponse(MemoryResponse* response, IMessageDispatcher* submitter);
         virtual void initCycle();
+        
+        /* getters */
+        unsigned int getBusWidth();
         
         /* Construction Methods */
         void addDevice(IMessageDispatcher* device, unsigned int deviceNumber);

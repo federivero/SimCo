@@ -13,25 +13,52 @@
 
 using namespace std;
 
+struct ScheduledMemoryRequests{
+    long scheduledCycle;
+    List<MemoryRequest> *memoryRequests;
+};
+
 class DummyDispatcher: public IMessageDispatcher{
     private:
     
         InterconnectionNetwork* interface;
-        Queue<MemoryRequest> *unsubmittedMemoryRequests;    
+        Queue<MemoryRequest*> *unsubmittedMemoryRequests;
+        List<ScheduledMemoryRequests> *scheduledMemoryRequests;
+        
     public:
         DummyDispatcher(unsigned long id):IMessageDispatcher(id){
-            unsubmittedMemoryRequests = new Queue<MemoryRequest>(100);
+            unsubmittedMemoryRequests = new Queue<MemoryRequest*>(100);
+            scheduledMemoryRequests = new List<ScheduledMemoryRequests>();
         };
         
         void addMemoryRequest(MemoryRequest* req){
             unsubmittedMemoryRequests->queue(req);
         }
         
-        virtual void initCycle(){}
+        void queueMemoryRequest(MemoryRequest* req, long dispatchCycle){
+            Iterator<ScheduledMemoryRequests> *iter = scheduledMemoryRequests->iterator();
+            bool found = false;
+            while(iter->hasNext()){
+                ScheduledMemoryRequests* actual = iter->next();
+                if (actual->scheduledCycle == dispatchCycle){
+                    found = true;
+                    actual->memoryRequests->add(req);
+                    break;
+                }
+            }
+            if (!found){
+                ScheduledMemoryRequests* smr = new ScheduledMemoryRequests;
+                smr->memoryRequests = new List<MemoryRequest>();
+                smr->memoryRequests->add(req);
+                smr->scheduledCycle = dispatchCycle;
+                scheduledMemoryRequests->add(smr);
+            }
+        }
+        
         virtual void accessGranted(InterconnectionNetwork* port){
             if (!unsubmittedMemoryRequests->isEmpty()){
                 MemoryRequest* request = unsubmittedMemoryRequests->dequeue();
-                InterconnectionNetworkEvent* e = InterconnectionNetworkEvent::createEvent(INTERCONNECTION_NETWORK_EVENT_SUBMIT_MEMORY_REQUEST,
+                InterconnectionNetworkEvent* e = InterconnectionNetworkEvent::createEvent(INTERCONNECTION_NETWORK_EVENT_SUBMIT_MESSAGE,
                         port,this,request);
                 simulator->addEvent(e,0);
                 if (!unsubmittedMemoryRequests->isEmpty()){
@@ -41,20 +68,49 @@ class DummyDispatcher: public IMessageDispatcher{
                 }
             }
         }
-        virtual void submitMemoryResponse(MemoryResponse* response, InterconnectionNetwork* port){
-            tracer->traceSubmittedMemoryResponse(id,response->getMessageId());
-            cout << "Dummy Dispatcher " << endl;
-            cout << "Received Memory Response " << endl;
-            if (response->getMemoryRequest()->getMessageType() == MEMORY_REQUEST_MEMORY_READ){
-                cout << "Memory Read response" << endl;
-                cout << "Address: " << response->getMemoryAdress() << endl;
-                cout << "MemoryContent: ";
-                response->getRawData()->print();
-                cout << endl;
-            }else{
-                // MemoryWrite
-                cout << "Memory Write Completed " << endl;
+        virtual void submitMessage(Message* message, InterconnectionNetwork* port){
+            if (message->getMessageType() == MEMORY_RESPONSE){
+                MemoryResponse* response = dynamic_cast<MemoryResponse*>(message);
+                tracer->traceSubmittedMemoryResponse(id,response->getMessageId());
+                cout << "Dummy Dispatcher " << endl;
+                cout << "Received Memory Response " << endl;
+                if (response->getMemoryRequest()->getMessageType() == MEMORY_REQUEST_MEMORY_READ){
+                    cout << "Memory Read response" << endl;
+                    cout << "Address: " << response->getMemoryAdress() << endl;
+                    cout << "MemoryContent: ";
+                    response->getRawData()->print();
+                    cout << endl;
+                }else{
+                    // MemoryWrite
+                    cout << "Memory Write Completed " << endl;
+                }
             }
+            
+        }
+        
+        virtual void initCycle(){
+            // Check schedule List for 
+            long actualCycle = simulator->getCurrentCycle();
+            Iterator<ScheduledMemoryRequests> *iter = scheduledMemoryRequests->iterator();
+            while (iter->hasNext()){
+                ScheduledMemoryRequests* smr = iter->next();
+                if (smr->scheduledCycle == actualCycle){
+                    iter->remove();
+                    Iterator<MemoryRequest> *iterMR = smr->memoryRequests->iterator();
+                    while(iterMR->hasNext()){
+                        unsubmittedMemoryRequests->queue(iterMR->next());
+                    }
+                    InterconnectionNetworkEvent* e = InterconnectionNetworkEvent::createEvent(INTERCONNECTION_NETWORK_EVENT_REQUEST_ACCESS,
+                        interface,this);
+                    simulator->addEvent(e,0);
+                    break;
+                }
+            }
+            
+        }
+        
+        void setInterface(InterconnectionNetwork* port){
+            interface = port;
         }
 };
 

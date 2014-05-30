@@ -63,10 +63,10 @@ class Cache: public MemoryDevice{
         unsigned int log2lineSize;
         
         // Queue for read requests -> maps unanswered requests from upper hierarchy to victim lines 
-        GenMap<MemoryRequest,unsigned int>* pendingLineRequests;
+        GenMap<MemoryRequest*,unsigned int>* pendingLineRequests;
         // Queue for memory requests waiting to be submitted through the network, while the network
         // arbitrates access
-        Queue<MemoryRequest>* lowerHierarchyAccessQueue;
+        Queue<Message*>* lowerHierarchyAccessQueue;
         
         // Stats
         unsigned long hitCount;
@@ -81,11 +81,18 @@ class Cache: public MemoryDevice{
         unsigned int getVictimLine(unsigned int set);
         void processAccessHit(MemoryRequest* request, CacheLineEntry* cacheLine, unsigned int byte);
         void dispatchCoherenceMessages(MemoryRequest* request, CacheLineEntry* cacheLine, MessageType type, bool hit);
+        
+        void invalidateLine(InvalidateMessage* message);
+        void getTagSetAndByteFromAddress(unsigned int address, unsigned int &tag, unsigned int &set, unsigned int &byte);
+        void checkAddressHit(unsigned int tag, unsigned int set, bool &hit, unsigned int &lineHit);
+        void snoopRequest(MemoryRequest* request);
+        void updateCoherenceState(MemoryRequest* request, CacheLineEntry* line);
     public:
         Cache(unsigned long id, unsigned int setNumber, unsigned int setAssociativity, unsigned int lineSizeInBytes, int portCount, int latency, char* name = NULL);
         void submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* port);
+        void submitMessage(Message* message, InterconnectionNetwork* port);
         void submitMemoryResponse(MemoryResponse* response, InterconnectionNetwork* port);
-
+        
         virtual void initCycle();
         
         virtual void setMemoryContent(MemoryChunk* data, unsigned long address){};
