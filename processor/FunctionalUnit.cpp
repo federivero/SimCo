@@ -1,5 +1,8 @@
 #include "FunctionalUnit.h"
 #include "ExecuteStage.h"
+#include "../interconnect/InterconnectionNetwork.h"
+#include "Processor.h"
+#include "../architecture/ISA.h"
 
 // ISimulable operations
 void FunctionalUnit::initCycle(){
@@ -15,14 +18,6 @@ FunctionalUnitType FunctionalUnit::getType(){
     return type;
 }
 
-void FunctionalUnit::initExecution(){
-    // TODO: This function has to be pure virtual when all implementations of FunctionalUnit are implemented
-}
-
-void FunctionalUnit::endExecution(){
-    // TODO: This function has to be pure virtual when all implementations of FunctionalUnit are implemented
-}
-
 InstructionResult* FunctionalUnit::getInstructionResult(){
     // TODO: This function has to be pure virtual when all implementations of FunctionalUnit are implemented
     return NULL;
@@ -31,6 +26,73 @@ InstructionResult* FunctionalUnit::getInstructionResult(){
 bool FunctionalUnit::isALU(){
     // Overriden on ALU class to correct this
     return false;
+}
+
+// LoadStore Unit operations 
+LoadStoreUnit::LoadStoreUnit(unsigned long id, char* name, ExecuteStage* execStage, int latency)
+        :FunctionalUnit(id,name,FUNCTIONAL_UNIT_LOADSTOREUNIT,execStage,latency)
+{
+    
+}
+
+void LoadStoreUnit::setMemoryResponse(MemoryResponse* memoryResponse){
+    this->memoryResponse = memoryResponse;
+}
+        
+void LoadStoreUnit::setDataMemoryInterface(InterconnectionNetwork* dataMemoryInterface){
+    dataMemoryAdapter = new LoadStoreUnitMemoryAdapter(this, dataMemoryInterface);
+}
+
+void LoadStoreUnit::setLoadStoreOperation(MemoryRequest* request){
+    this->targetRequest = request;
+}
+
+void LoadStoreUnit::initExecution(){
+    dataMemoryAdapter->sendMessageThroughInterface(targetRequest);
+}
+
+void LoadStoreUnit::endExecution(){
+    // Execution ended, tell execcution stage to get results
+    if (targetRequest->getMessageType() == MEMORY_REQUEST_MEMORY_READ){
+        int result = memoryResponse->getRawData()->asInt(executionStage->getProcessor()->getISA()->isLittleEndian());
+        this->instructionResult = new InstructionResultInt(result);
+    }
+    executionStage->finishedExecution(this);
+}
+
+InstructionResult* LoadStoreUnit::getInstructionResult(){
+    return instructionResult;
+}
+
+LoadStoreUnitMemoryAdapter* LoadStoreUnit::getMemoryAdapter(){
+    return dataMemoryAdapter;
+}
+
+// LoadStoreUnitMemoryAdapter
+LoadStoreUnitMemoryAdapter::LoadStoreUnitMemoryAdapter(LoadStoreUnit* loadStoreUnit, InterconnectionNetwork* port){
+    this->loadStoreUnit = loadStoreUnit;
+    this->memoryInterface = port;
+}
+
+void LoadStoreUnitMemoryAdapter::submitMessage(Message* message, InterconnectionNetwork* port){
+    if (message->getMessageType() == MEMORY_RESPONSE){
+        MemoryResponse* memoryResponse = (MemoryResponse*) message;
+        if (memoryResponse->getMemoryRequest() == this->message){
+            // Got response from message, time to end execution
+            loadStoreUnit->setMemoryResponse(memoryResponse);
+            loadStoreUnit->endExecution();
+        }
+    }
+}
+
+void LoadStoreUnitMemoryAdapter::accessGranted(InterconnectionNetwork* port){
+    // TODO: check if port != mmemoryInteface?
+    memoryInterface->submitMessage(message,this);
+}
+
+void LoadStoreUnitMemoryAdapter::sendMessageThroughInterface(Message* message){
+    this->message = message;
+    memoryInterface->requestAccess(this);
 }
 
 /* ALU Operations*/
@@ -63,6 +125,7 @@ bool ALU::isALU(){
 
 IntALU::IntALU(unsigned long id, char* name, ExecuteStage* execStage, int latency)
     :ALU(id,name,FUNCTIONAL_UNIT_INT_ALU,execStage,latency){
+    
 }
 
 void IntALU::setALUFunction(ALUFunction function){
@@ -95,6 +158,12 @@ void IntALU::initExecution(){
                 cFlag = 1;
             }
             break;
+        case ALU_FUNCTION_INT_ADD_UNSIGNED:
+            result = ((unsigned int) firstOperand) + (unsigned int) secondOperand;
+            if (result < (((unsigned int) firstOperand) + (unsigned int) secondOperand)){
+                cFlag = 1;
+            }
+            break;
         case ALU_FUNCTION_INT_SUB:
             result = firstOperand - secondOperand;
             break;
@@ -107,15 +176,37 @@ void IntALU::initExecution(){
         case ALU_FUNCTION_XOR:
             result = firstOperand ^ secondOperand;
             break;
-        case ALU_FUNCTION_SHIFT_LEFT:
+        case ALU_FUNCTION_SHIFT_RIGHT_LOGICAL:
             result = firstOperand >> secondOperand;
             break;
-        case ALU_FUNCTION_SHIFT_RIGHT:
+        case ALU_FUNCTION_SHIFT_LEFT:
             result = firstOperand << secondOperand;
             if (result < (firstOperand << secondOperand)){
                 cFlag = 1;
                 vFlag = 1;
             }
+            break;
+        case ALU_FUNCTION_SHIFT_RIGHT_ARITHMETIC:
+            result = firstOperand >> secondOperand;
+            if (firstOperand < 0){
+                // if negative, add ones at the beggining
+                int oneCount = secondOperand;
+                if (oneCount > 32){
+                    oneCount = 32;
+                }
+                int realBits = 32 - oneCount;
+                if (realBits < 0){
+                    realBits = 0;
+                }
+                int oneMask = ((1 << oneCount) - 1) << (realBits);
+                result = result | oneMask;
+            }
+            break;
+        case ALU_FUNCTION_MOV_LOWER_16_BITS:
+            result = (firstOperand & 0xFFFF0000) | secondOperand;
+            break;
+        case ALU_FUNCTION_MOV_UPPER_16_BITS:
+            result = (firstOperand & 0x0000FFFF) | (secondOperand << 16);
             break;
         default:
             // TODO: Throw exception
@@ -123,9 +214,13 @@ void IntALU::initExecution(){
     }
     if (result < 0){
         nFlag = 1;
+    }else{
+        nFlag = 0;
     }
     if (result == 0){
         zFlag = 1;
+    }else{
+        zFlag = 0;
     }
     
     // TODO: Object Pooling?

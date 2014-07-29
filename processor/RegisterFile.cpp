@@ -49,4 +49,13 @@ void RegisterFile::setIntegerRegisterValue(int registerNumber, int value){
     integerRegisterFile[registerNumber]->setRegisterValue(value);
 }
 
+void RegisterFile::traceRegisterFile(unsigned long processorId, TraceManager* tracer){
+    /* Trace int registerValues */
+    for (int i = 0; i < intRegisterCount; i++){
+        tracer->traceNewRegister(processorId, integerRegisterFile[i]);
+    }
+    for (int i = 0; i < floatingPointRegisterCount; i++){
+        tracer->traceNewRegister(processorId, floatingPointRegisterFile[i]);
+    }
+}
 

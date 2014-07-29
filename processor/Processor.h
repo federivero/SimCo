@@ -8,15 +8,19 @@
 #ifndef PROCESSOR_H
 #define	PROCESSOR_H
 
-class ISimulable;
 class ISA;
 class RegisterFile;
 class FetchStage;
 class ExecuteStage;
 
+#include "../simulator/ISimulable.h"
+
 class Processor : public ISimulable{
 private:
 protected:
+    /* Pointer to the computational system in the context of this processor */
+    ComputationalSystem* compSystem;
+    
     /* Pointer to implementation */
     FetchStage* fetchStage;
     ExecuteStage* executeStage;
@@ -34,8 +38,15 @@ protected:
     bool nFlag;  // Negative Flag
     bool cFlag;  // Carry Flag
     bool vFlag;  // Overflow Flag
+    
+    // Statistic variables
+    unsigned long executedInstructions;
+    unsigned long jumpInstructions;
+    unsigned long aluInstructions;
+    unsigned long memoryInstructions;
 public:
     
+    Processor();
     Processor(unsigned long id, char* name,ISA* isa);
     ISA* getISA();
     unsigned long getPCValue();
@@ -49,16 +60,26 @@ public:
     virtual void instructionExecuted(Instruction* inst){};
     
     virtual bool hasFinishedExecution() = 0;
+    /* Function called by this processor when if finished execution */
+    void finishedExecution();
+    
+    // Statistic function
+    virtual void printStatistics(ofstream* file);
+    
+    virtual void scheduleInitExecutionEvent() = 0;
     
     // Control Functions 
     void setZFlagValue(bool newValue);
     void setNFlagValue(bool newValue);
     void setCFlagValue(bool newValue);
     void setVFlagValue(bool newValue);
+    void setISA(ISA* isa);
+    void setComputationalSystem(ComputationalSystem* compSys);
     
     // Access Functions
     FetchStage* getFetchStage();
     ExecuteStage* getExecuteStage();
+    
 };
 
 #endif	/* GENERICPROCESSOR_H */

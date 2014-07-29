@@ -1,0 +1,78 @@
+SIMULATION STATS
+Total simulated clock cycles 38
+
+Simple Unpiped Processor 
+Name: simpleprocessor2
+Processor total executed instructions:        6
+Processor total executed jump instructions:   0
+Processor total executed alu instructions:    5
+Processor total executed memory instrucitons: 1
+
+Simple Unpiped Processor 
+Name: simpleprocessor1
+Processor total executed instructions:        7
+Processor total executed jump instructions:   0
+Processor total executed alu instructions:    5
+Processor total executed memory instrucitons: 2
+
+Memory Cache
+Name: cpu2L2cache
+MemoryDevice Accesses: 3
+MemoryDevice Reads:    3
+MemoryDevice Writes:   0
+Hit Count:   1
+Miss Count:  2
+Repl. Count: 0
+
+Memory Cache
+Name: cpu1L2cache
+MemoryDevice Accesses: 5
+MemoryDevice Reads:    3
+MemoryDevice Writes:   2
+Hit Count:   3
+Miss Count:  2
+Repl. Count: 0
+
+Memory Cache
+Name: cpu2Dl1cache
+MemoryDevice Accesses: 1
+MemoryDevice Reads:    1
+MemoryDevice Writes:   0
+Hit Count:   0
+Miss Count:  1
+Repl. Count: 0
+
+Memory Cache
+Name: cpu2Il1cache
+MemoryDevice Accesses: 7
+MemoryDevice Reads:    7
+MemoryDevice Writes:   0
+Hit Count:   5
+Miss Count:  2
+Repl. Count: 0
+
+Memory Cache
+Name: cpu1Dl1cache
+MemoryDevice Accesses: 2
+MemoryDevice Reads:    0
+MemoryDevice Writes:   2
+Hit Count:   1
+Miss Count:  1
+Repl. Count: 0
+
+Memory Cache
+Name: cpu1Il1cache
+MemoryDevice Accesses: 8
+MemoryDevice Reads:    8
+MemoryDevice Writes:   0
+Hit Count:   6
+Miss Count:  2
+Repl. Count: 0
+
+RAM
+Name: ram
+MemoryDevice Accesses: 3
+MemoryDevice Reads:    3
+MemoryDevice Writes:   0
+Canceled Requests: 1
+

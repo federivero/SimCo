@@ -25,14 +25,20 @@ class ISimulable{
         TraceManager* tracer;
         StatisticManager* stats;
     public:
+        ISimulable();
         ISimulable(unsigned long id, char* name = NULL);
         static unsigned long getNextAvailableId();
         virtual void initCycle() = 0;
         virtual void printStatistics(ofstream* file);
+        virtual void traceSimulable();
+        
+        void scheduleInitCycleFixedEvent();
         
         // Getters
         unsigned long getId();
         char* getName();
+        // Setters
+        virtual void setName(char* name);
 };
 
 class ISimulableEvent: public IEventCallback{

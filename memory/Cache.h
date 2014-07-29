@@ -88,6 +88,8 @@ class Cache: public MemoryDevice{
         void snoopRequest(MemoryRequest* request);
         void updateCoherenceState(MemoryRequest* request, CacheLineEntry* line);
     public:
+        // Constructors
+        Cache();
         Cache(unsigned long id, unsigned int setNumber, unsigned int setAssociativity, unsigned int lineSizeInBytes, int portCount, int latency, char* name = NULL);
         void submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* port);
         void submitMessage(Message* message, InterconnectionNetwork* port);
@@ -100,8 +102,17 @@ class Cache: public MemoryDevice{
         
         virtual void accessGranted(InterconnectionNetwork* port);
         
-        virtual void printStatistics(ofstream* file);
+        void printStatistics(ofstream* file);
+        void traceSimulable();
+        
+        void initialize();
+        
         // Setters
+        void setSetCount(unsigned int setCount);
+        void setLineSize(unsigned int lineSize);
+        void setAssociativity(unsigned int associativity);
+        void setPortCount(unsigned int portCount);
+        void setLatency(unsigned int latency);
         void setReplacementPolicy(CacheReplacementPolicy policy);
         void setWritePolicy(CacheWritePolicy policy);
         void setCoherenceProtocol(CacheCoherenceProtocol protocol);

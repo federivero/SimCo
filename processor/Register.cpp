@@ -42,6 +42,7 @@ void FPRegister::printRegisterValue(ofstream* file){
 
 /* IntRegister operations */
 IntRegister::IntRegister(int registerNumber):Register(REGISTER_TYPE_INT,registerNumber){
+    this->value = 0;
 }
 
 int IntRegister::getRegisterValue(){

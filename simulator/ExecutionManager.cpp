@@ -19,13 +19,14 @@ ExecutionManager* ExecutionManager::getInstance(){
 
 void ExecutionManager::initialize(){
     events = new Queue<IEventCallback*>(100);
-    fixedEvents = new List<IEventCallback>();
+    fixedEvents = new List<IEventCallback*>();
     tracer = TraceManager::getInstance();
     int upcomingEventsSize = 100;
     upcomingEvents = new Queue<Queue<IEventCallback*> *>(upcomingEventsSize);
     for (int i = 0; i < upcomingEventsSize; i++)
         upcomingEvents->queue(new Queue<IEventCallback*>(100));
     currentCycle = 0;
+    unlimitedCycles = false;
 }
 
 void ExecutionManager::simulate(){
@@ -37,7 +38,7 @@ void ExecutionManager::simulate(){
         events = upcomingEvents->dequeue();
         
         /* Execute fixed events */
-        Iterator<IEventCallback> *it = fixedEvents->iterator();
+        Iterator<IEventCallback*> *it = fixedEvents->iterator();
         while(it->hasNext()){
             it->next()->simulate();
         }

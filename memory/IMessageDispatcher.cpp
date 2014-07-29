@@ -4,6 +4,10 @@
 
 /* IMessageDispatcher */
 
+IMessageDispatcher::IMessageDispatcher(){
+    
+}
+
 IMessageDispatcher::IMessageDispatcher(unsigned long id, char* name):ISimulable(id,name){
     
 }

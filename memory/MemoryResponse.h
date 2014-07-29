@@ -22,7 +22,7 @@ class MemoryResponse : public Message{
             // Pointer to the request which originated this response
             MemoryRequest* request;
         public:
-            MemoryResponse(unsigned int adr, MessageType type, MemoryRequest*);
+            MemoryResponse(unsigned int adr, MessageType type, MemoryRequest* req, unsigned long originDeviceId);
             // Getters
             MemoryChunk* getRawData();
             unsigned int getMemoryAdress();
@@ -37,7 +37,7 @@ class InvalidatingMemoryResponse : public MemoryResponse{
     private:
     
     public:
-        InvalidatingMemoryResponse(unsigned int addr, MessageType type, MemoryRequest* request);
+        InvalidatingMemoryResponse(unsigned int addr, MessageType type, MemoryRequest* request,unsigned long originDeviceId);
 };
 
 #endif	/* MEMORYRESPONSE_H */

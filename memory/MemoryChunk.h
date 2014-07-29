@@ -9,6 +9,7 @@
 #define	MEMORYCHUNK_H
 
 #include <iostream>
+#include "../exceptions/RuntimeException.h"
 
 using namespace std;
 
@@ -41,6 +42,38 @@ public:
         other->copyTo(&bytes[i]);
         delete aux;
         bytesLength += other->getBytesLength();
+    }
+    
+    // PRE: size <= 4
+    int asInt(bool littleEndian){
+        if (this->bytesLength > 4){
+            throw new RuntimeException("Bad use of MemoryChunk function 'asInt', byteLength greater than 4");
+        }
+        int result = 0;
+        if (littleEndian){
+            for (int i = bytesLength - 1; i > 0; i--){
+                result = (result << 8) | bytes[i];
+            }
+        }else{
+            for (int i = 0; i < bytesLength; i++){
+                result = (result << 8) | bytes[i];
+            }
+        }
+    }
+    // PRE:
+    static MemoryChunk* fromInt(unsigned long value, int chunkLength, bool littleEndian){
+        unsigned char* rawData = new unsigned char[chunkLength];
+        if (littleEndian){
+            for (int i = 0; i < chunkLength; i++){
+                unsigned char pos = (value & 255); // keep last 8 bits 
+                rawData[i] = pos;
+                value = value >> 8;
+            }
+        }else{
+            // TODO
+            
+        }
+        return new MemoryChunk(rawData,chunkLength);
     }
     
     // Debug 

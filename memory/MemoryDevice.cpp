@@ -2,12 +2,20 @@
 #include "MemoryDevice.h"
 #include <sstream>
 
+MemoryDevice::MemoryDevice(){
+    
+}
+
 MemoryDevice::MemoryDevice(unsigned long id, int portNumber, int latencyCycles, char* name)
         :IMessageDispatcher(id,name),
         portCount(portNumber),
         latency(latencyCycles)
 {
-    unattendedMemoryRequests = new Queue<MemoryRequest*>(portNumber * latency);
+    
+}
+
+void MemoryDevice::initialize(){
+    unattendedMemoryRequests = new Queue<MemoryRequest*>(portCount * latency);
     freedPorts = 0;
     // Initialize stats
     accessCount = 0;

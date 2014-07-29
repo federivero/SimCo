@@ -2,11 +2,11 @@
 #include "MemoryResponse.h"
 #include "MemoryRequest.h"
 
-MemoryResponse::MemoryResponse(unsigned int adr, MessageType type, MemoryRequest* mreq)
+MemoryResponse::MemoryResponse(unsigned int adr, MessageType type, MemoryRequest* mreq, unsigned long originDeviceId)
         :adress(adr),
-        Message(type),
+        Message(type,originDeviceId),
         request(mreq){
-    
+    rawData = NULL;
 }
 
 MemoryChunk* MemoryResponse::getRawData(){
@@ -27,7 +27,7 @@ void MemoryResponse::setRawData(MemoryChunk* chunk){
 
 /* Invalidate Memory Response */
 
-InvalidatingMemoryResponse::InvalidatingMemoryResponse(unsigned int addr, MessageType type, MemoryRequest* request):MemoryResponse(addr,type,request)
+InvalidatingMemoryResponse::InvalidatingMemoryResponse(unsigned int addr, MessageType type, MemoryRequest* request, unsigned long originDeviceId):MemoryResponse(addr,type,request,originDeviceId)
 {
     
 }

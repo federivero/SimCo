@@ -24,12 +24,20 @@ class InterconnectionNetwork: public ISimulable{
 private:
     ComputationalSystem* system;
 public:
+    // Constructors
+    InterconnectionNetwork();
     InterconnectionNetwork(unsigned long id);
+    virtual void initialize() = 0;
+    
     MemoryResponse* getAdress(MemoryRequest* adress);
     virtual void requestAccess(IMessageDispatcher* requester);
     virtual void submitMessage(Message* message, IMessageDispatcher* submitter) = 0;
     //virtual void submitMemoryResponse(MemoryResponse* response, IMessageDispatcher* submitter) = 0;
     //void arbitrateAccess(IMessageDispatcher* requester);
+    
+    // Function to add a device to the network
+    virtual void addDevice(IMessageDispatcher* device, int deviceNumber) = 0;
+    virtual void setDeviceCount(int deviceCount){};
 };
 
 /*PRE: cyclesToExecute > 0*/

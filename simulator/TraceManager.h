@@ -20,6 +20,7 @@ class MemoryChunk;
 class Register;
 class SimpleUnpipedProcessor;
 class Instruction;
+class RAM;
         
 using namespace std;
 
@@ -53,7 +54,7 @@ class TraceManager{
         void traceNewCycle(unsigned long cycleNumber);
         void traceNewMessage(unsigned long messageId);
         void traceNewBus(Bus* bus);
-        void traceNewRAM(unsigned long deviceId);
+        void traceNewRAM(RAM* ram);
         void traceNewCache(Cache* cache);
         void traceNewMemoryRequest(unsigned long messageId, unsigned long address, MessageType type);
         void traceSubmittedMemoryRequest(unsigned long deviceId, unsigned long messageId);
@@ -61,6 +62,7 @@ class TraceManager{
         
         // Processor Trace operations
         void traceNewSimpleUnpipedProcessor(SimpleUnpipedProcessor* simpleProcessor);
+        void traceNewRegister(unsigned long processorId, Register* reg);
         void traceNewPCValue(unsigned long processorId, unsigned long pcValue);
         void traceRegisterValue(unsigned long processorId, Register* reg);
         void traceFlagsValue(unsigned long processorId, bool zflag, bool nflag, bool cflag, bool vflag);
@@ -71,6 +73,7 @@ class TraceManager{
         
         /* Internal Operations */
         void traceMemoryChunk(MemoryChunk* chunk);
+        void traceByteArrayAsHex(unsigned char* data, int length);
         
         // Setters
         void setFileName(char* fname);

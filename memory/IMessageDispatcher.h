@@ -24,6 +24,7 @@ class IMessageDispatcher: public ISimulable{
     protected:
         GenMap<InterconnectionNetwork*,bool> *requestedAccesses;
     public:
+        IMessageDispatcher();
         IMessageDispatcher(unsigned long id, char* name = NULL);
         virtual void initCycle() = 0;
         virtual void accessGranted(InterconnectionNetwork* port) = 0;

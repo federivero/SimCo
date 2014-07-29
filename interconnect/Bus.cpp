@@ -4,22 +4,35 @@
 #include "../memory/MemoryDevice.h"
 #include "stdio.h"
 
+Bus::Bus(){
+    
+}
+
 Bus::Bus(unsigned long id, char* name, int devCount, int width):InterconnectionNetwork(id){
-    devices = new IMessageDispatcher*[devCount];
+    transfersPerCycle = width;
+    this->name = name;
     deviceCount = devCount;
+    initialize();
+}
+
+void Bus::setDeviceCount(int devCount){
+    this->deviceCount = devCount;
+}
+
+void Bus::initialize(){
+    devices = new IMessageDispatcher*[deviceCount];
+    deviceCount = deviceCount;
     for (int i = 0; i < deviceCount; i++){
         devices[i] = NULL;
     }
-    busWidth = width;
-    availableSlotCount = busWidth;
+    availableSlotCount = transfersPerCycle;
     currentMessages = new ListMap<MemoryRequest*,BusOwnership*>(100);
-    unusedSlots = new Queue<int>(busWidth);
-    for (int i = 0; i < busWidth; i++){
+    unusedSlots = new Queue<int>(transfersPerCycle);
+    for (int i = 0; i < transfersPerCycle; i++){
         unusedSlots->queue(i);
     }   
-    unattendedAccessRequests = new Queue<IMessageDispatcher*>(100);
+    unattendedAccessRequests = new Queue<IMessageDispatcher*>(deviceCount);
     freedSlots = 0;
-    this->name = name;
 }
 
 // TODO: this functions should hold the requester until all posible dispatchers
@@ -118,15 +131,29 @@ void Bus::initCycle(){
 
 /* Getters */
 
-unsigned int Bus::getBusWidth(){
-    return busWidth;
+unsigned int Bus::getTransfersPerCycle(){
+    return transfersPerCycle;
+}
+
+void Bus::setTransfersPerCycle(int transfersPerCycle){
+    this->transfersPerCycle = transfersPerCycle;
 }
 
 /* Construction Methods */
 
 // Attachs a device to the bus, this function should only be called during initialization
-void Bus::addDevice(IMessageDispatcher* device, unsigned int deviceNumber){
+void Bus::addDevice(IMessageDispatcher* device, int deviceNumber){
     devices[deviceNumber] = device;
+    deviceNumber++;
+}
+
+/* ISimulable operations */
+void Bus::printStatistics(ofstream* file){
+    // TODO
+}
+
+void Bus::traceSimulable(){
+    tracer->traceNewBus(this);
 }
 
 

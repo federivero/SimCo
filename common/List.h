@@ -15,15 +15,15 @@ template <class T>
 class ListNode{
     private:
         ListNode* next;
-        T* data;
+        T data;
     public:
         ListNode<T>* getNext(){
             return next;
         }
-        T* getData(){
+        T getData(){
             return data;
         }
-        void setData(T* d){
+        void setData(T d){
             data = d;
         }
         void setNext(ListNode* n){
@@ -42,15 +42,15 @@ class List{
             first = NULL;
         }
         
-        void add(T* element){
+        void add(T element){
             ListNode<T>* n = new ListNode<T>();
             n->setNext(first);
             n->setData(element);
             first = n;
             size++;
         }
-        bool exists(T* element){
-            ListNode<T>* aux = first;
+        bool exists(T element){
+            ListNode<T> aux = first;
             bool result = false;
             while (aux != NULL){
                 if (aux->getData() == element){
@@ -90,8 +90,8 @@ class ListIterator: public Iterator<T>{
         virtual bool hasNext(){
             return (current != NULL);
         }
-        virtual T* next(){
-            T* result = current->getData();
+        virtual T next(){
+            T result = current->getData();
             lastIteratedPrevious = lastIterated;
             lastIterated = current;
             current = current->getNext();

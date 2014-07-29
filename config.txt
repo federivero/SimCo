@@ -1,7 +1,0 @@
-
-instFetchQueueSize = 8 
-
-fetchWidth = 5
-
-
-averQueOndaCon = asjdfdif  ; prueba = 1

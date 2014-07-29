@@ -1,0 +1,278 @@
+Processor-type:SimpleUnpipedProcessor-id:16-name:simpleprocessor2
+Register-processorId:16-registerNumber:0-registerType:0
+Register-processorId:16-registerNumber:1-registerType:0
+Register-processorId:16-registerNumber:2-registerType:0
+Register-processorId:16-registerNumber:3-registerType:0
+Register-processorId:16-registerNumber:4-registerType:0
+Register-processorId:16-registerNumber:5-registerType:0
+Register-processorId:16-registerNumber:6-registerType:0
+Register-processorId:16-registerNumber:7-registerType:0
+Register-processorId:16-registerNumber:8-registerType:0
+Register-processorId:16-registerNumber:9-registerType:0
+Register-processorId:16-registerNumber:10-registerType:0
+Register-processorId:16-registerNumber:11-registerType:0
+Register-processorId:16-registerNumber:12-registerType:0
+Register-processorId:16-registerNumber:13-registerType:0
+Register-processorId:16-registerNumber:14-registerType:0
+Register-processorId:16-registerNumber:15-registerType:0
+Register-processorId:16-registerNumber:16-registerType:0
+Register-processorId:16-registerNumber:17-registerType:0
+Register-processorId:16-registerNumber:18-registerType:0
+Register-processorId:16-registerNumber:19-registerType:0
+Register-processorId:16-registerNumber:20-registerType:0
+Register-processorId:16-registerNumber:21-registerType:0
+Register-processorId:16-registerNumber:22-registerType:0
+Register-processorId:16-registerNumber:23-registerType:0
+Register-processorId:16-registerNumber:24-registerType:0
+Register-processorId:16-registerNumber:25-registerType:0
+Register-processorId:16-registerNumber:26-registerType:0
+Register-processorId:16-registerNumber:27-registerType:0
+Register-processorId:16-registerNumber:28-registerType:0
+Register-processorId:16-registerNumber:29-registerType:0
+Register-processorId:16-registerNumber:30-registerType:0
+Register-processorId:16-registerNumber:31-registerType:0
+Register-processorId:16-registerNumber:32-registerType:0
+Register-processorId:16-registerNumber:33-registerType:0
+Processor-type:SimpleUnpipedProcessor-id:7-name:simpleprocessor1
+Register-processorId:7-registerNumber:0-registerType:0
+Register-processorId:7-registerNumber:1-registerType:0
+Register-processorId:7-registerNumber:2-registerType:0
+Register-processorId:7-registerNumber:3-registerType:0
+Register-processorId:7-registerNumber:4-registerType:0
+Register-processorId:7-registerNumber:5-registerType:0
+Register-processorId:7-registerNumber:6-registerType:0
+Register-processorId:7-registerNumber:7-registerType:0
+Register-processorId:7-registerNumber:8-registerType:0
+Register-processorId:7-registerNumber:9-registerType:0
+Register-processorId:7-registerNumber:10-registerType:0
+Register-processorId:7-registerNumber:11-registerType:0
+Register-processorId:7-registerNumber:12-registerType:0
+Register-processorId:7-registerNumber:13-registerType:0
+Register-processorId:7-registerNumber:14-registerType:0
+Register-processorId:7-registerNumber:15-registerType:0
+Register-processorId:7-registerNumber:16-registerType:0
+Register-processorId:7-registerNumber:17-registerType:0
+Register-processorId:7-registerNumber:18-registerType:0
+Register-processorId:7-registerNumber:19-registerType:0
+Register-processorId:7-registerNumber:20-registerType:0
+Register-processorId:7-registerNumber:21-registerType:0
+Register-processorId:7-registerNumber:22-registerType:0
+Register-processorId:7-registerNumber:23-registerType:0
+Register-processorId:7-registerNumber:24-registerType:0
+Register-processorId:7-registerNumber:25-registerType:0
+Register-processorId:7-registerNumber:26-registerType:0
+Register-processorId:7-registerNumber:27-registerType:0
+Register-processorId:7-registerNumber:28-registerType:0
+Register-processorId:7-registerNumber:29-registerType:0
+Register-processorId:7-registerNumber:30-registerType:0
+Register-processorId:7-registerNumber:31-registerType:0
+Register-processorId:7-registerNumber:32-registerType:0
+Register-processorId:7-registerNumber:33-registerType:0
+Cache-id:31-name:cpu2L2cache-setCount:16-lineSize:32-associativity:4
+Cache-id:30-name:cpu1L2cache-setCount:16-lineSize:32-associativity:4
+Cache-id:29-name:cpu2Dl1cache-setCount:8-lineSize:16-associativity:2
+Cache-id:28-name:cpu2Il1cache-setCount:8-lineSize:16-associativity:2
+Cache-id:27-name:cpu1Dl1cache-setCount:8-lineSize:16-associativity:2
+Cache-id:26-name:cpu1Il1cache-setCount:8-lineSize:16-associativity:2
+RAM-id:25
+Bus-id:6-name:cpu2L1cacheL2cacheBus-width:1
+Bus-id:5-name:cpu1L1cacheL2cacheBus-width:1
+Bus-id:4-name:membus-width:1
+Bus-id:3-name:cpu2DL1bus-width:1
+Bus-id:2-name:cpu2IL1bus-width:1
+Bus-id:1-name:cpu1DL1bus-width:1
+Bus-id:0-name:cpu1IL1bus-width:1
+Cycle 1
+PCValue-processorId:16-pcValue:24580
+PCValue-processorId:7-pcValue:20484
+BusMessage-busId:2-messageId:1-messageType:0-submitter:17-address:24576
+BusMessage-busId:0-messageId:2-messageType:0-submitter:8-address:20480
+MemoryRequest-Id3-Address24576-MessageType0
+MemoryRequest-Id4-Address20480-MessageType0
+BusMessage-busId:6-messageId:3-messageType:0-submitter:28-address:24576
+BusMessage-busId:5-messageId:4-messageType:0-submitter:26-address:20480
+MemoryRequest-Id5-Address24576-MessageType0
+MemoryRequest-Id6-Address20480-MessageType0
+BusMessage-busId:4-messageId:5-messageType:0-submitter:31-address:24576
+MemoryRequest-25-5
+Cycle 2
+Cycle 3
+BusMessage-busId:4-messageId:7-messageType:2-submitter:25-data:0x30420000302100006002000A30210000302100008C220000FFFFFFFF00000000
+CacheLine-cacheId:31-lineNumber:0-tag:48-state:3-data:0x30420000302100006002000A30210000302100008C220000FFFFFFFF00000000
+BusMessage-busId:6-messageId:8-messageType:2-submitter:31-data:0x30420000302100006002000A30210000
+CacheLine-cacheId:28-lineNumber:0-tag:192-state:3-data:0x30420000302100006002000A30210000
+BusMessage-busId:2-messageId:9-messageType:2-submitter:28-data:0x30420000
+Cycle 4
+InstructionRegisterValue-processorId:16-irValue:0x30420000
+BusMessage-busId:4-messageId:6-messageType:0-submitter:30-address:20480
+MemoryRequest-25-6
+Cycle 5
+FlagsValue-processorId:16-zFlag:1-nFlag:0-cFlag:0-vFlag:0
+Cycle 6
+RegisterValue-processorId:16-registerNumber:2-registerType:0-value:0
+BusMessage-busId:4-messageId:10-messageType:2-submitter:25-data:0x304200003021000060020023AC2200002042000120420001AC220000FFFFFFFF
+CacheLine-cacheId:30-lineNumber:0-tag:40-state:3-data:0x304200003021000060020023AC2200002042000120420001AC220000FFFFFFFF
+BusMessage-busId:5-messageId:11-messageType:2-submitter:30-data:0x304200003021000060020023AC220000
+CacheLine-cacheId:26-lineNumber:0-tag:160-state:3-data:0x304200003021000060020023AC220000
+BusMessage-busId:0-messageId:12-messageType:2-submitter:26-data:0x30420000
+Cycle 7
+InstructionRegisterValue-processorId:7-irValue:0x30420000
+PCValue-processorId:16-pcValue:24584
+BusMessage-busId:2-messageId:13-messageType:0-submitter:17-address:24580
+CacheLine-cacheId:28-lineNumber:0-tag:192-state:3-data:0x30420000302100006002000A30210000
+BusMessage-busId:2-messageId:14-messageType:2-submitter:28-data:0x30210000
+Cycle 8
+InstructionRegisterValue-processorId:16-irValue:0x30210000
+FlagsValue-processorId:7-zFlag:1-nFlag:0-cFlag:0-vFlag:0
+Cycle 9
+RegisterValue-processorId:7-registerNumber:2-registerType:0-value:0
+FlagsValue-processorId:16-zFlag:1-nFlag:0-cFlag:0-vFlag:0
+Cycle 10
+RegisterValue-processorId:16-registerNumber:1-registerType:0-value:0
+PCValue-processorId:7-pcValue:20488
+BusMessage-busId:0-messageId:15-messageType:0-submitter:8-address:20484
+CacheLine-cacheId:26-lineNumber:0-tag:160-state:3-data:0x304200003021000060020023AC220000
+BusMessage-busId:0-messageId:16-messageType:2-submitter:26-data:0x30210000
+Cycle 11
+InstructionRegisterValue-processorId:7-irValue:0x30210000
+PCValue-processorId:16-pcValue:24588
+BusMessage-busId:2-messageId:17-messageType:0-submitter:17-address:24584
+CacheLine-cacheId:28-lineNumber:0-tag:192-state:3-data:0x30420000302100006002000A30210000
+BusMessage-busId:2-messageId:18-messageType:2-submitter:28-data:0x6002000A
+Cycle 12
+InstructionRegisterValue-processorId:16-irValue:0x6002000A
+FlagsValue-processorId:7-zFlag:1-nFlag:0-cFlag:0-vFlag:0
+Cycle 13
+RegisterValue-processorId:7-registerNumber:1-registerType:0-value:0
+FlagsValue-processorId:16-zFlag:0-nFlag:0-cFlag:0-vFlag:0
+Cycle 14
+RegisterValue-processorId:16-registerNumber:2-registerType:0-value:10
+PCValue-processorId:7-pcValue:20492
+BusMessage-busId:0-messageId:19-messageType:0-submitter:8-address:20488
+CacheLine-cacheId:26-lineNumber:0-tag:160-state:3-data:0x304200003021000060020023AC220000
+BusMessage-busId:0-messageId:20-messageType:2-submitter:26-data:0x60020023
+Cycle 15
+InstructionRegisterValue-processorId:7-irValue:0x60020023
+PCValue-processorId:16-pcValue:24592
+BusMessage-busId:2-messageId:21-messageType:0-submitter:17-address:24588
+CacheLine-cacheId:28-lineNumber:0-tag:192-state:3-data:0x30420000302100006002000A30210000
+BusMessage-busId:2-messageId:22-messageType:2-submitter:28-data:0x30210000
+Cycle 16
+InstructionRegisterValue-processorId:16-irValue:0x30210000
+FlagsValue-processorId:7-zFlag:0-nFlag:0-cFlag:0-vFlag:0
+Cycle 17
+RegisterValue-processorId:7-registerNumber:2-registerType:0-value:35
+FlagsValue-processorId:16-zFlag:1-nFlag:0-cFlag:0-vFlag:0
+Cycle 18
+RegisterValue-processorId:16-registerNumber:1-registerType:0-value:0
+PCValue-processorId:7-pcValue:20496
+BusMessage-busId:0-messageId:23-messageType:0-submitter:8-address:20492
+CacheLine-cacheId:26-lineNumber:0-tag:160-state:3-data:0x304200003021000060020023AC220000
+BusMessage-busId:0-messageId:24-messageType:2-submitter:26-data:0xAC220000
+Cycle 19
+InstructionRegisterValue-processorId:7-irValue:0xAC220000
+PCValue-processorId:16-pcValue:24596
+BusMessage-busId:2-messageId:25-messageType:0-submitter:17-address:24592
+MemoryRequest-Id26-Address24592-MessageType0
+BusMessage-busId:6-messageId:26-messageType:0-submitter:28-address:24592
+CacheLine-cacheId:31-lineNumber:0-tag:48-state:3-data:0x30420000302100006002000A30210000302100008C220000FFFFFFFF00000000
+BusMessage-busId:6-messageId:27-messageType:2-submitter:31-data:0x302100008C220000FFFFFFFF00000000
+CacheLine-cacheId:28-lineNumber:2-tag:192-state:3-data:0x302100008C220000FFFFFFFF00000000
+BusMessage-busId:2-messageId:28-messageType:2-submitter:28-data:0x30210000
+Cycle 20
+BusMessage-busId:1-messageId:29-messageType:1-submitter:7-address:0-data:0x23000000
+InstructionRegisterValue-processorId:16-irValue:0x30210000
+MemoryRequest-Id30-Address0-MessageType0
+BusMessage-busId:5-messageId:30-messageType:0-submitter:27-address:0
+MemoryRequest-Id31-Address0-MessageType0
+BusMessage-busId:4-messageId:31-messageType:0-submitter:30-address:0
+MemoryRequest-25-31
+Cycle 21
+FlagsValue-processorId:16-zFlag:1-nFlag:0-cFlag:0-vFlag:0
+Cycle 22
+RegisterValue-processorId:16-registerNumber:1-registerType:0-value:0
+BusMessage-busId:4-messageId:32-messageType:2-submitter:25-data:0x0000000000000000000000000000000000000000000000000000000000000000
+CacheLine-cacheId:30-lineNumber:1-tag:0-state:3-data:0x0000000000000000000000000000000000000000000000000000000000000000
+BusMessage-busId:5-messageId:33-messageType:2-submitter:30-data:0x00000000000000000000000000000000
+MemoryRequest-Id35-Address0-MessageType1
+CacheLine-cacheId:27-lineNumber:0-tag:0-state:1-data:0x23000000000000000000000000000000
+BusMessage-busId:1-messageId:34-messageType:2-submitter:27
+Cycle 23
+BusMessage-busId:5-messageId:35-messageType:1-submitter:27-address:0-data:0x23000000
+PCValue-processorId:16-pcValue:24600
+CacheLine-cacheId:30-lineNumber:1-tag:0-state:1-data:0x2300000000000000000000000000000000000000000000000000000000000000
+BusMessage-busId:2-messageId:36-messageType:0-submitter:17-address:24596
+BusMessage-busId:5-messageId:38-messageType:2-submitter:30
+CacheLine-cacheId:28-lineNumber:2-tag:192-state:3-data:0x302100008C220000FFFFFFFF00000000
+BusMessage-busId:4-messageId:37-messageType:4-submitter:30-address:0
+BusMessage-busId:2-messageId:39-messageType:2-submitter:28-data:0x8C220000
+Cycle 24
+InstructionRegisterValue-processorId:16-irValue:0x8C220000
+PCValue-processorId:7-pcValue:20500
+BusMessage-busId:0-messageId:40-messageType:0-submitter:8-address:20496
+MemoryRequest-Id41-Address20496-MessageType0
+BusMessage-busId:5-messageId:41-messageType:0-submitter:26-address:20496
+CacheLine-cacheId:30-lineNumber:0-tag:40-state:3-data:0x304200003021000060020023AC2200002042000120420001AC220000FFFFFFFF
+BusMessage-busId:5-messageId:42-messageType:2-submitter:30-data:0x2042000120420001AC220000FFFFFFFF
+CacheLine-cacheId:26-lineNumber:2-tag:160-state:3-data:0x2042000120420001AC220000FFFFFFFF
+BusMessage-busId:0-messageId:43-messageType:2-submitter:26-data:0x20420001
+Cycle 25
+BusMessage-busId:3-messageId:44-messageType:0-submitter:16-address:0
+InstructionRegisterValue-processorId:7-irValue:0x20420001
+MemoryRequest-Id45-Address0-MessageType0
+BusMessage-busId:6-messageId:45-messageType:0-submitter:29-address:0
+MemoryRequest-Id46-Address0-MessageType0
+BusMessage-busId:4-messageId:46-messageType:0-submitter:31-address:0
+BusMessage-busId:4-messageId:47-messageType:3-submitter:30-data:0x2300000000000000000000000000000000000000000000000000000000000000
+CacheLine-cacheId:30-lineNumber:1-tag:0-state:3-data:0x2300000000000000000000000000000000000000000000000000000000000000
+MemoryRequest-25-46
+CacheLine-cacheId:31-lineNumber:1-tag:0-state:3-data:0x2300000000000000000000000000000000000000000000000000000000000000
+BusMessage-busId:6-messageId:48-messageType:2-submitter:31-data:0x23000000000000000000000000000000
+CacheLine-cacheId:29-lineNumber:0-tag:0-state:3-data:0x23000000000000000000000000000000
+BusMessage-busId:3-messageId:49-messageType:2-submitter:29-data:0x23000000
+Cycle 26
+RegisterValue-processorId:16-registerNumber:2-registerType:0-value:0
+FlagsValue-processorId:7-zFlag:0-nFlag:0-cFlag:0-vFlag:0
+Cycle 27
+RegisterValue-processorId:7-registerNumber:2-registerType:0-value:36
+PCValue-processorId:16-pcValue:24604
+BusMessage-busId:2-messageId:50-messageType:0-submitter:17-address:24600
+CacheLine-cacheId:28-lineNumber:2-tag:192-state:3-data:0x302100008C220000FFFFFFFF00000000
+BusMessage-busId:2-messageId:51-messageType:2-submitter:28-data:0xFFFFFFFF
+Cycle 28
+InstructionRegisterValue-processorId:16-irValue:0xFFFFFFFF
+PCValue-processorId:7-pcValue:20504
+BusMessage-busId:0-messageId:52-messageType:0-submitter:8-address:20500
+CacheLine-cacheId:26-lineNumber:2-tag:160-state:3-data:0x2042000120420001AC220000FFFFFFFF
+BusMessage-busId:0-messageId:53-messageType:2-submitter:26-data:0x20420001
+Cycle 29
+InstructionRegisterValue-processorId:7-irValue:0x20420001
+Cycle 30
+FlagsValue-processorId:7-zFlag:0-nFlag:0-cFlag:0-vFlag:0
+Cycle 31
+RegisterValue-processorId:7-registerNumber:2-registerType:0-value:37
+Cycle 32
+PCValue-processorId:7-pcValue:20508
+BusMessage-busId:0-messageId:54-messageType:0-submitter:8-address:20504
+CacheLine-cacheId:26-lineNumber:2-tag:160-state:3-data:0x2042000120420001AC220000FFFFFFFF
+BusMessage-busId:0-messageId:55-messageType:2-submitter:26-data:0xAC220000
+Cycle 33
+InstructionRegisterValue-processorId:7-irValue:0xAC220000
+Cycle 34
+BusMessage-busId:1-messageId:56-messageType:1-submitter:7-address:0-data:0x25000000
+MemoryRequest-Id58-Address0-MessageType1
+CacheLine-cacheId:27-lineNumber:0-tag:0-state:1-data:0x25000000000000000000000000000000
+BusMessage-busId:1-messageId:57-messageType:2-submitter:27
+BusMessage-busId:5-messageId:58-messageType:1-submitter:27-address:0-data:0x25000000
+CacheLine-cacheId:30-lineNumber:1-tag:0-state:1-data:0x2500000000000000000000000000000000000000000000000000000000000000
+BusMessage-busId:5-messageId:60-messageType:2-submitter:30
+BusMessage-busId:4-messageId:59-messageType:4-submitter:30-address:0
+CacheLine-cacheId:31-lineNumber:1-tag:0-state:0-data:0x2300000000000000000000000000000000000000000000000000000000000000
+Cycle 35
+Cycle 36
+PCValue-processorId:7-pcValue:20512
+BusMessage-busId:0-messageId:61-messageType:0-submitter:8-address:20508
+CacheLine-cacheId:26-lineNumber:2-tag:160-state:3-data:0x2042000120420001AC220000FFFFFFFF
+BusMessage-busId:0-messageId:62-messageType:2-submitter:26-data:0xFFFFFFFF
+Cycle 37
+InstructionRegisterValue-processorId:7-irValue:0xFFFFFFFF

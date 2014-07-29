@@ -16,7 +16,7 @@ class Iterator{
         // Returns true if next call to 'next' will return a non-null value
         virtual bool hasNext() = 0;
         // Returns next element in the iteration
-        virtual T* next() = 0;
+        virtual T next() = 0;
         // Removes last element listed from the collection
         virtual void remove() = 0;
 };

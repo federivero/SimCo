@@ -25,8 +25,16 @@
       <runprofile version="9">
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH} -config"</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH} -config config.cfg"</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"  -config config.cfg</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"  -config config.cfg -stats stats.txt</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"  -config config.cfg -stats stats.txt -endCycle 30</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"  -config config.cfg -stats stats.txt  -program program.txt</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"  -config config.cfg -stats stats.txt  -program program.txt -trace blabla -tracefile trace.trc</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"  -config config.cfg -stats stats.txt  -program program.txt -trace blabla -traceFile trace.trc</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <runcommand>"${OUTPUT_PATH}"  -config config.cfg -stats stats.txt  -program program.txt -trace blabla -traceFile trace.trc</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

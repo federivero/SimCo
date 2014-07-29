@@ -25,7 +25,7 @@ class Message{
         unsigned long originDeviceId;
         unsigned long destinationDeviceId;
     public: 
-        Message(MessageType type);
+        Message(MessageType type, unsigned long originDeviceId);
         MessageType getMessageType();
         unsigned long getMessageId();
         unsigned long getOriginDeviceId();
@@ -40,7 +40,7 @@ class InvalidateMessage : public Message{
     private:
         unsigned int invalidateAddress;
     public:
-        InvalidateMessage(unsigned int address, MessageType type);
+        InvalidateMessage(unsigned int address, MessageType type, unsigned long originDeviceId);
         unsigned int getInvalidateAddress();
         void setInvalidateAddress(unsigned int address);
 };

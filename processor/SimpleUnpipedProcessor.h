@@ -36,9 +36,15 @@ class SimpleUnpipedProcessor : public Processor{
         Instruction* instructionRegister;
         
     public:
+        // Constructors
+        SimpleUnpipedProcessor();
+        SimpleUnpipedProcessor(unsigned long id, char* name, ISA* isa, InterconnectionNetwork* instructionMemoryInterface, InterconnectionNetwork* dataMemoryInterface);
         
-        SimpleUnpipedProcessor(unsigned long id, char* name, ISA* isa, InterconnectionNetwork* memoryInterface);
-        
+        // Setters
+        void setName(char* name);
+        // Memory interface setters. Returns a reference to the object using it
+        IMessageDispatcher* setInstructionMemoryInterface(InterconnectionNetwork* memoryInterface);
+        void setDataMemoryInterface(InterconnectionNetwork* memoryInterface, List<IMessageDispatcher*> *list);
         // ISimulable functions 
         void initCycle();
         
@@ -50,8 +56,13 @@ class SimpleUnpipedProcessor : public Processor{
         void instructionExecuted(Instruction* inst);
         bool hasFinishedExecution();
         
+        // Statistic function
+        void printStatistics(ofstream* file);
+        void traceSimulable();
+        
         // Internal Operations
         void scheduleNextCycleDoAction();
+        void scheduleInitExecutionEvent();
 };
 
 class SimpleUnpipedProcessorEvent : public IEventCallback{

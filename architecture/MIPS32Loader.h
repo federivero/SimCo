@@ -17,7 +17,7 @@ class MIPS32Loader : public Loader{
         
     public:   
         MIPS32Loader(MemorySystem* memSystem);
-        void loadProgram(char* fileName, MemoryAddress* initialAdress);
+        void loadProgram(char* fileName);
 };
 
 #endif	/* MIPS32LOADER_H */

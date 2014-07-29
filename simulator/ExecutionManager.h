@@ -31,7 +31,7 @@ private:
     /* Queue of events to simulate */
     Queue<IEventCallback*> *events;
     /* Queue of events to be simultad on every cycle*/
-    List<IEventCallback> *fixedEvents;
+    List<IEventCallback*> *fixedEvents;
     /* Queue of events to be simulated on next Cycles */
     Queue<Queue<IEventCallback*> *> *upcomingEvents;
     

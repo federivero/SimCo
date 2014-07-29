@@ -2,12 +2,33 @@
 #include "Processor.h"
 #include "../architecture/Instruction.h"
 #include <string.h>
+#include "../interconnect/InterconnectionNetwork.h"
+#include "../architecture/ISA.h"
+
+ExecuteStage::ExecuteStage(Processor* processor, int intAluCount, int intAluLatency, 
+        int intMultiplierCount, int intMultiplierLatency, int fpAluCount, int fpAluLatency, 
+        int fpMultiplierCount, int fpMultiplierLatency, int loadStoreUnitCount, InterconnectionNetwork* dataMemoryInterface){
+    this->processor = processor;
+    initializeFunctionalUnits(intAluCount, intAluLatency, 
+        intMultiplierCount, intMultiplierLatency, fpAluCount, fpAluLatency, 
+        fpMultiplierCount, fpMultiplierLatency, loadStoreUnitCount, dataMemoryInterface);
+}
 
 ExecuteStage::ExecuteStage(unsigned long id, char* name, Processor* processor,
         int intAluCount, int intAluLatency, int intMultiplierCount, int intMultiplierLatency, 
-        int fpAluCount, int fpAluLatency, int fpMultiplierCount, int fpMultiplierLatency):ISimulable(id,name){
+        int fpAluCount, int fpAluLatency, int fpMultiplierCount, 
+        int fpMultiplierLatency, int loadStoreUnitCount, InterconnectionNetwork* dataMemoryInterface):ISimulable(id,name){
     // Create functional units and data structures to manage them
-    
+    this->processor = processor;
+    initializeFunctionalUnits(intAluCount, intAluLatency, 
+        intMultiplierCount, intMultiplierLatency, fpAluCount, fpAluLatency, 
+        fpMultiplierCount, fpMultiplierLatency, loadStoreUnitCount, dataMemoryInterface);
+}
+
+void ExecuteStage::initializeFunctionalUnits(int intAluCount, int intAluLatency, 
+        int intMultiplierCount, int intMultiplierLatency, int fpAluCount, int fpAluLatency, 
+        int fpMultiplierCount, int fpMultiplierLatency, int loadStoreUnitCount,
+        InterconnectionNetwork* dataMemoryInterface){
     // Integer alus
     this->integerAluCount = intAluCount;
     this->integerAluFUnits = new IntALU*[intAluCount];
@@ -58,9 +79,18 @@ ExecuteStage::ExecuteStage(unsigned long id, char* name, Processor* processor,
                 fpMultiplierLatency);
         this->availableFpMultiplierFUnits->queue(this->fpMultiplierFUnits[i]);
     }
-    
-    this->processor = processor;
-    
+    // LoadStore units
+    this->loadStoreUnitCount = loadStoreUnitCount;
+    this->loadStoreFunctionalUnits = new LoadStoreUnit*[loadStoreUnitCount];
+    this->availableLoadStoreUnits = new Queue<LoadStoreUnit*>(loadStoreUnitCount);
+    for (int i = 0; i < loadStoreUnitCount ; i++){
+        this->loadStoreFunctionalUnits[i] = new LoadStoreUnit(ISimulable::getNextAvailableId(),
+                (char*)"loadStoreUni",
+                this,
+                0);
+        loadStoreFunctionalUnits[i]->setDataMemoryInterface(dataMemoryInterface);
+        this->availableLoadStoreUnits->queue(this->loadStoreFunctionalUnits[i]);
+    }
     // Auxiliary variables
     int totalFunctionalUnits = intAluCount + intMultiplierCount + fpAluCount + fpMultiplierCount;
     releasedFunctionalUnits = new Queue<FunctionalUnit*>(totalFunctionalUnits);
@@ -71,13 +101,40 @@ ExecuteStage::ExecuteStage(unsigned long id, char* name, Processor* processor,
 void ExecuteStage::executeInstruction(Instruction* instruction){
     FunctionalUnit* executingFUnit = NULL;
     ALUInstruction* aluInst;
+    JumpInstruction* jumpInstruction;
     IntALU* intAlu;
+    LoadStoreUnit* loadStoreUnit;
+    LoadStoreInstruction* loadStoreInstruction;
     switch(instruction->getArchetype()->getInstructionType()){
         case INSTRUCTION_TYPE_INT_ALU:
             aluInst = (ALUInstruction*) instruction;
             intAlu = availableIntegerAluFUnits->dequeue();
             intAlu->setALUFunction(aluInst->getALUFunction());
+            intAlu->setFirstOperand(aluInst->getSourceOperand(0)->getOperandBinaryValue());
+            intAlu->setSecondOperand(aluInst->getSourceOperand(1)->getOperandBinaryValue());
             executingFUnit = intAlu;
+            break;
+        case INSTRUCTION_TYPE_JUMP:
+            jumpInstruction = (JumpInstruction*) instruction;
+            intAlu = availableIntegerAluFUnits->dequeue();
+            intAlu->setALUFunction(ALU_FUNCTION_MOV);
+            intAlu->setFirstOperand(jumpInstruction->getSourceOperand(0)->getOperandBinaryValue());
+            executingFUnit = intAlu;
+            break;
+        case INSTRUCTION_TYPE_LOAD_STORE:
+            loadStoreInstruction = (LoadStoreInstruction*) instruction; 
+            loadStoreUnit = availableLoadStoreUnits->dequeue();
+            int targetAddress = loadStoreInstruction->getAddressOperand()->getOperandBinaryValue();
+            MemoryRequest* request = new MemoryRequest(targetAddress,loadStoreInstruction->getLoadStoreSize(),loadStoreInstruction->getLoadStoreType(),processor->getId());
+            if (request->getMessageType() == MEMORY_REQUEST_MEMORY_WRITE){
+                request->setRawData(
+                        MemoryChunk::fromInt(
+                                loadStoreInstruction->getReadWriteOperand()->getOperandBinaryValue(),
+                                request->getRequestSize(),
+                                processor->getISA()->isLittleEndian()));
+            }
+            loadStoreUnit->setLoadStoreOperation(request);
+            executingFUnit = loadStoreUnit;
             break;
     }
     executingFUnit->initExecution();
@@ -111,3 +168,20 @@ void ExecuteStage::initCycle(){
     
 }
 
+Processor* ExecuteStage::getProcessor(){
+    return processor;
+}
+
+LoadStoreUnit** ExecuteStage::getLoadStoreUnits(){
+    return loadStoreFunctionalUnits;
+}
+
+int ExecuteStage::getLoadStoreUnitCount(){
+    return loadStoreUnitCount;
+}
+
+void ExecuteStage::setDataMemoryInteface(InterconnectionNetwork* interface){
+    for (int i = 0; i < loadStoreUnitCount; i++){
+        loadStoreFunctionalUnits[i]->setDataMemoryInterface(interface);
+    }
+}

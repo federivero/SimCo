@@ -9,6 +9,7 @@
 #define	REGISTERFILE_H
 
 #include "Register.h"
+#include "../simulator/TraceManager.h"
 
 /* This class encapsulates the functionality of the register file.*/
 class RegisterFile{
@@ -32,6 +33,8 @@ class RegisterFile{
         int getIntegerRegisterValue(int registerNumber);
         void setIntegerRegisterValue(int registerNumber, int value);
         
+        // Tracing methods
+        void traceRegisterFile(unsigned long processosId, TraceManager* tracer);
     
 };
 

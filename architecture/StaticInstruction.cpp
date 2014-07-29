@@ -1,12 +1,16 @@
 
 #include "StaticInstruction.h"
 
-StaticInstruction::StaticInstruction(int operCount, InstructionType type):operandCount(operCount),instType(type){
+StaticInstruction::StaticInstruction(int sourceOperCount, int destOperandCount, InstructionType type):sourceOperandCount(sourceOperCount),destinationOperandCount(destOperandCount), instType(type){
     
 }
 
-int StaticInstruction::getOperandCount(){
-    return operandCount;
+int StaticInstruction::getSourceOperandCount(){
+    return sourceOperandCount;
+}
+
+int StaticInstruction::getDestinationOperandCounts(){
+    return destinationOperandCount;
 }
 
 InstructionType StaticInstruction::getInstructionType(){

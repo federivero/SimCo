@@ -52,14 +52,17 @@ class MemoryDevice : public IMessageDispatcher{
         // Queued to be processed on subsecuent clock cycles
         Queue<MemoryRequest*> *unattendedMemoryRequests;
         // List of MemoryRequests waiting for simulated delay to end
-        List<WaitingMemoryRequest> *pendingMemoryRequests;
+        List<WaitingMemoryRequest*> *pendingMemoryRequests;
         
         // Attends a memoryRequest, should be invoked when latency = 0
         virtual void attendMemoryRequest(MemoryRequest* requets) = 0;
         // Assigns a memory port to a request, it'll be held for 'latency' cycless
         virtual void assignPortToMemoryRequest(MemoryRequest* request) = 0;
     public:
+        MemoryDevice();
         MemoryDevice(unsigned long id, int portNumber, int latencyCycles, char* name = 0);
+        virtual void initialize();
+        
         virtual void setMemoryContent(MemoryChunk* data, unsigned long address) = 0;
         virtual MemoryChunk* getMemoryContent(unsigned long address, unsigned int requestLength) = 0;
         // Submits a memory request for the event system to handle 

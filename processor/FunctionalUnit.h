@@ -8,16 +8,18 @@
 #ifndef FUNCTIONALUNIT_H
 #define	FUNCTIONALUNIT_H
 
-#include "Register.h"
 #include "../architecture/Instruction.h"
 #include "../simulator/ISimulable.h"
+#include "../memory/IMessageDispatcher.h"
 
 enum FunctionalUnitType{
     FUNCTIONAL_UNIT_INT_ALU, FUNCTIONAL_UNIT_INT_MULTIPLIER,
-    FUNCTIONAL_UNIT_FP_ALU, FUNCTIONAL_UNIT_FP_MULTIPLIER
+    FUNCTIONAL_UNIT_FP_ALU, FUNCTIONAL_UNIT_FP_MULTIPLIER,
+    FUNCTIONAL_UNIT_LOADSTOREUNIT
 };
 
 class ExecuteStage;
+class InterconnectionNetwork;
 
 class FunctionalUnit : public ISimulable{
     
@@ -37,8 +39,8 @@ class FunctionalUnit : public ISimulable{
         FunctionalUnitType getType();
     
         // Simulator operations
-        virtual void initExecution();
-        virtual void endExecution();
+        virtual void initExecution(){};
+        virtual void endExecution(){};
         
         virtual InstructionResult* getInstructionResult();
         
@@ -56,6 +58,38 @@ class FunctionalUnitEvent : public IEventCallback{
     public:
         FunctionalUnitEvent(EventName name, FunctionalUnit* funit);
         void simulate();
+};
+
+class LoadStoreUnit; // Forward declaration
+
+class LoadStoreUnitMemoryAdapter: public IMessageDispatcher{
+    private:
+        InterconnectionNetwork* memoryInterface;
+        // LoadStoreUnits can send one message during execution, so no need to have a queue
+        Message* message;
+        LoadStoreUnit* loadStoreUnit;
+    public:
+        LoadStoreUnitMemoryAdapter(LoadStoreUnit* loadStoreUnit, InterconnectionNetwork* port);
+        void sendMessageThroughInterface(Message* message);
+        void initCycle(){};
+        void accessGranted(InterconnectionNetwork* port);
+        void submitMessage(Message* message, InterconnectionNetwork* port);
+};
+
+class LoadStoreUnit : public FunctionalUnit{
+    private:
+        LoadStoreUnitMemoryAdapter* dataMemoryAdapter;
+        MemoryRequest* targetRequest;   // Message to send to the memory system
+        MemoryResponse* memoryResponse; // Response from message
+    public:
+        LoadStoreUnit(unsigned long id, char* name, ExecuteStage* execStage, int latency);
+        void setDataMemoryInterface(InterconnectionNetwork* dataMemoryInterface);
+        void setLoadStoreOperation(MemoryRequest* request);
+        void setMemoryResponse(MemoryResponse* memoryResponse);
+        void initExecution();
+        void endExecution();
+        InstructionResult* getInstructionResult();
+        LoadStoreUnitMemoryAdapter* getMemoryAdapter();
 };
 
 class ALU : public FunctionalUnit{

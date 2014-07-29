@@ -1,8 +1,9 @@
 #include "Message.h"
 #include "../simulator/TraceManager.h"
 
-Message::Message(MessageType type){
+Message::Message(MessageType type, unsigned long originDeviceId){
     messageType = type;
+    this->originDeviceId = originDeviceId;
     this->messageId = TraceManager::getInstance()->getNextDynamicId();
 }
 
@@ -38,7 +39,7 @@ Message::~Message(){
 
 /* InvalidateMessage */
 
-InvalidateMessage::InvalidateMessage(unsigned int address, MessageType type):Message(type){ 
+InvalidateMessage::InvalidateMessage(unsigned int address, MessageType type, unsigned long originDeviceId):Message(type,originDeviceId){ 
     invalidateAddress = address;
 }
 

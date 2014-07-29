@@ -13,16 +13,16 @@ class MemoryDevice;
 class MemoryMapEntry{
 private:
     /* Global memory map, use binary global adresses */
-    unsigned long initialAdress;
-    unsigned long endAdress;
+    unsigned long initialAddress;
+    unsigned long endAddress;
     MemoryDevice* device;
 public:
     MemoryMapEntry();
-    void setInitialAdress(unsigned long adress);
-    void setEndAdress(unsigned long adress);
+    void setInitialAddress(unsigned long address);
+    void setEndAddress(unsigned long address);
     void setMemoryDevice(MemoryDevice* mDevice);
-    unsigned long getInitialAdress();
-    unsigned long getEndAdress();
+    unsigned long getInitialAddress();
+    unsigned long getEndAddress();
     MemoryDevice* getMemoryDevice();
 };
 

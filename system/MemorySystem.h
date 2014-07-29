@@ -9,7 +9,6 @@
 #define	MEMORYSYSTEM_H
 
 #include "ComputationalSystem.h"
-#include "../memory/MemoryAddress.h"
 #include "../memory/MemoryChunk.h"
 #include "MemoryMapEntry.h"
 
@@ -33,7 +32,7 @@ class MemorySystem{
         int memoryDeviceCount;
     public:
         MemorySystem(ComputationalSystem* compSystem, int memoryDeviceCount, int distributedMemoryDeviceCount);
-        void setMemoryContent(MemoryChunk* content, MemoryAddress* initialAdress);
+        void setMemoryContent(MemoryChunk* content, unsigned long initialAdress);
         
         // Getters and setters
         void addMemoryDevice(MemoryDevice* device, int position);

@@ -1,0 +1,24 @@
+# Código del procesador 1
+	ORG 0x5000
+# Iniciación de variables
+	ANDI R2, R2, 0
+	ANDI R1, R1, 0
+	LLO R2, 35
+# Carga de dirección 0
+	SW R2, 0, R1
+# Instrucciones de relleno para demorar
+	ADDI R2, R2, 1
+	ADDI R2, R2, 1
+	SW R2, 0, R1
+	HALT	
+
+# Código del procesador 2
+	ORG 0x6000
+# Iniciación de variables
+	ANDI R2, R2, 0
+	ANDI R1, R1, 0
+	LLO  R2, 10
+	ANDI R1, R1, 0     
+	ANDI R1, R1, 0
+	LW R2, 0, R1
+	HALT

@@ -6,6 +6,8 @@
 #include "ExecutionManager.h"
 #include "../system/ComputationalSystem.h"
 #include "../system/MemorySystem.h"
+#include "../exceptions/RuntimeException.h"
+#include "../processor/Processor.h"
 
 StatisticManager* StatisticManager::instance = NULL;
 
@@ -32,9 +34,19 @@ void StatisticManager::setMemorySystem(MemorySystem* system){
 void StatisticManager::printStatistics(char* fileName){
     ofstream* file = new ofstream();
     file->open(fileName);
+    if (!file->is_open()){
+        throw new RuntimeException("Problem opening statistics file");
+    }
+    
     ExecutionManager* simulator = ExecutionManager::getInstance();
     *file << "SIMULATION STATS" << endl;
     *file << "Total simulated clock cycles " << simulator->getCurrentCycle() << endl << endl;
+    
+    Processor** processors = compSystem->getProcessors();
+    int processorCount = compSystem->getProcessorCount();
+    for (int i = 0; i < processorCount; i++){
+        processors[i]->printStatistics(file);
+    }
     
     MemoryDevice** devices = memSystem->getDevices();
     int memDeviceCount = memSystem->getMemoryDeviceCount();
@@ -42,6 +54,7 @@ void StatisticManager::printStatistics(char* fileName){
     for (int i = 0 ; i < memDeviceCount; i++){
         devices[i]->printStatistics(file);
     }
+    
     file->close();
 }
 

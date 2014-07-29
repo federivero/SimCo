@@ -16,6 +16,7 @@
 
 class Instruction;
 class Processor;
+class InterconnectionNetwork;
 
 class ExecuteStage : public ISimulable{
     private:
@@ -39,13 +40,25 @@ class ExecuteStage : public ISimulable{
         FunctionalUnit** fpMultiplierFUnits;
         Queue<FunctionalUnit*> *availableFpMultiplierFUnits;
         
+        int loadStoreUnitCount;
+        LoadStoreUnit** loadStoreFunctionalUnits;
+        Queue<LoadStoreUnit*> *availableLoadStoreUnits;
+        
         // Queue to hold Functional Units the cycle they end execution
         Queue<FunctionalUnit*> *releasedFunctionalUnits;
         // Mapping of functional units and instructions
         GenMap<FunctionalUnit*,Instruction*> *instructionMapping;
     public:
+        ExecuteStage(Processor* processor, int intAluCount, int intAluLatency, int intMultiplierCount, int intMultiplierLatency, 
+                int fpAluCount, int fpAluLatency, int fpMultiplierCount, int fpMultiplierLatency, int loadStoreUnitCount, InterconnectionNetwork* dataMemoryInterface);
+        
         ExecuteStage(unsigned long id, char* name, Processor* processor, int intAluCount, int intAluLatency, int intMultiplierCount, int intMultiplierLatency, 
-        int fpAluCount, int fpAluLatency, int fpMultiplierCount, int fpMultiplierLatency);
+                int fpAluCount, int fpAluLatency, int fpMultiplierCount, int fpMultiplierLatency, int loadStoreUnitCount, InterconnectionNetwork* dataMemoryInterface);
+        
+        void initializeFunctionalUnits(int intAluCount, int intAluLatency, int intMultiplierCount, 
+                int intMultiplierLatency, int fpAluCount, int fpAluLatency, int fpMultiplierCount,
+                int fpMultiplierLatency, int loadStoreUnitCount, InterconnectionNetwork* dataMemoryInterface);
+        
         void executeInstruction(Instruction* instruction);
         
         // Function called by a functional unit when it finishes execution
@@ -53,6 +66,13 @@ class ExecuteStage : public ISimulable{
         
         // ISimulable Operations
         void initCycle();
+        
+        // Data memory interface setter
+        void setDataMemoryInteface(InterconnectionNetwork* interface);
+        
+        Processor* getProcessor();
+        LoadStoreUnit** getLoadStoreUnits();
+        int getLoadStoreUnitCount();
 };
 
 #endif	/* EXECUTESTAGE_H */

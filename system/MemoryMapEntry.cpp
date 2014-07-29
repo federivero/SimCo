@@ -5,24 +5,24 @@ MemoryMapEntry::MemoryMapEntry(){
     
 }
 
-unsigned long MemoryMapEntry::getInitialAdress(){
-    return initialAdress;
+unsigned long MemoryMapEntry::getInitialAddress(){
+    return initialAddress;
 }
 
-unsigned long MemoryMapEntry::getEndAdress(){
-    return endAdress;
+unsigned long MemoryMapEntry::getEndAddress(){
+    return endAddress;
 }
 
 MemoryDevice* MemoryMapEntry::getMemoryDevice(){
     return device;
 }
 
-void MemoryMapEntry::setInitialAdress(unsigned long adress){
-    initialAdress = adress;
+void MemoryMapEntry::setInitialAddress(unsigned long address){
+    initialAddress = address;
 }
 
-void MemoryMapEntry::setEndAdress(unsigned long adress){
-    endAdress = adress;
+void MemoryMapEntry::setEndAddress(unsigned long address){
+    endAddress = address;
 }
 
 void MemoryMapEntry::setMemoryDevice(MemoryDevice* mDevice){

@@ -3,6 +3,10 @@
 #include "../exceptions/UnsuportedEventException.h"
 #include <stdlib.h>
 
+InterconnectionNetwork::InterconnectionNetwork(){
+    
+}
+
 InterconnectionNetwork::InterconnectionNetwork(unsigned long id):ISimulable(id){
     
 }

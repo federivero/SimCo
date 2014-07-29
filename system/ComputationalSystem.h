@@ -8,27 +8,30 @@
 #ifndef COMPUTATIONALSYSTEM_H
 #define	COMPUTATIONALSYSTEM_H
 
-#include "MemorySystem.h"
-#include "../interconnect/InterconnectionNetwork.h"
-
-class InterconnectionNetwork;
-class MemorySystem;
 class Processor;
 
 class ComputationalSystem{
 private:
-    InterconnectionNetwork*     network;
-    MemorySystem*       memory;
-    Processor*  processors;
+    Processor** processors;
     int processorCount;
-    bool finishedExec;
+    // Keeps count of processors that have not ended execution
+    int executingProcessors;
     
 public:
     ComputationalSystem();
-    /* Simulates execution of one clock, calculating the state */
-    void advanceClock(ComputationalSystem*);
+
     /* Returns true if execution has finished */
     bool finishedExecution();
+    
+    /* Called by processors when they end execution */
+    void markProcessorAsFinished();
+    
+    /* Access operations*/
+    Processor** getProcessors();
+    int getProcessorCount();
+    /* Adds a processor to the computational system, with number 'processorNumber' */
+    void addProcessor(Processor* processor, int processorNumber);
+    void setProcessorCount(int processorCount);
 };
 
 #endif	/* COMPUTATIONALSYSTEM_H */

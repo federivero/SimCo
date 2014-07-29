@@ -31,7 +31,7 @@ class Bus: public InterconnectionNetwork{
         // Map from meesages being sent in this bus to the owners and slots
         GenMap<MemoryRequest*,BusOwnership*>* currentMessages;
         // Logical bus width, dictates how many addressable messages can be sent in parallel through the bus
-        unsigned int busWidth;
+        unsigned int transfersPerCycle;
         int availableSlotCount;
         Queue<int>* unusedSlots;
         // Slots freed during last cycle
@@ -48,16 +48,24 @@ class Bus: public InterconnectionNetwork{
         void submitInfoMessage(Message* message, IMessageDispatcher* submitter);
         void broadcastMessage(Message* message, IMessageDispatcher* submitter);
     public:
+        Bus();
         Bus(unsigned long id, char* name, int deviceCount,int width);
         virtual void submitMessage(Message* message, IMessageDispatcher* submitter);
         virtual void requestAccess(IMessageDispatcher* requester);
         virtual void initCycle();
         
         /* getters */
-        unsigned int getBusWidth();
+        unsigned int getTransfersPerCycle();
         
         /* Construction Methods */
-        void addDevice(IMessageDispatcher* device, unsigned int deviceNumber);
+        void setTransfersPerCycle(int transfersPerCycle);
+        void setDeviceCount(int deviceCount);
+        void initialize();
+        void addDevice(IMessageDispatcher* device, int deviceNumber);
+        
+        void printStatistics(ofstream* file);
+        void traceSimulable();
+        
 };
 
 #endif	/* BUS_H */

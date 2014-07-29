@@ -14,7 +14,7 @@
 class MemoryRequest : public Message{
     /* Class For memory read - write request Meessages */
     private:
-        unsigned int adress;
+        unsigned int address;
         // Number of bytes requested
         unsigned int requestSize;
         MemoryChunk* rawData;
@@ -24,9 +24,9 @@ class MemoryRequest : public Message{
         // an entire memory block
         MemoryRequest* originalRequest;
     public:
-        MemoryRequest(unsigned int adress, unsigned int size, MessageType type);
+        MemoryRequest(unsigned int address, unsigned int size, MessageType type, unsigned long originDeviceId);
         MemoryChunk* getRawData();
-        unsigned int getMemoryAdress();
+        unsigned int getMemoryAddress();
         unsigned int getRequestSize();
         void setRawData(MemoryChunk* data);
         MemoryRequest* getOriginalRequest();

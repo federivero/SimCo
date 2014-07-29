@@ -8,20 +8,22 @@
 
 using namespace std;
 
+Cache::Cache(){
+    
+}
+
 Cache::Cache(unsigned long id, unsigned int s, unsigned int a, unsigned int ls, int portCount, int delayClocks, char* name)
         :MemoryDevice(id, portCount,delayClocks,name)
 {
-    if (!isPowerOf2(s)){
-        throw new IllegalCacheArgumentException("Set number must be a power of 2 ");
-    }
-    if (!isPowerOf2(ls)){
-        throw new IllegalCacheArgumentException("Line Size must be a power of 2");
-    }
-    this->sets = s;
-    this->associativity = a;
-    this->lineSize = ls;
-    log2lineSize = intlog2(ls);
-    log2setCount = intlog2(s);
+    setSetCount(s);
+    setAssociativity(a);
+    setLineSize(ls);
+    initialize();
+}
+
+void Cache::initialize(){
+    log2lineSize = intlog2(lineSize);
+    log2setCount = intlog2(sets);
     byteMask = ((1 << ((int) log2lineSize)) - 1);
     if (sets > 1){
         setMask = ((1 << log2setCount) - 1) << log2lineSize;
@@ -33,17 +35,18 @@ Cache::Cache(unsigned long id, unsigned int s, unsigned int a, unsigned int ls, 
     for (int i = 0; i < lineCount; i++){
         cacheLineEntry[i] = NULL;
     }
-    upperMemoryHierarchyPort = NULL;
-    lowerMemoryHierarchyPort = NULL;
-    requestedAccesses = new ListMap<InterconnectionNetwork*,bool>(1);
     
-    pendingLineRequests = new ListMap<MemoryRequest*,unsigned int>(10); 
-    lowerHierarchyAccessQueue = new Queue<Message*>(10);
-  
     // Initialize stats
     hitCount = 0;
     missCount = 0;
     replaceCount = 0;
+    
+    pendingLineRequests = new ListMap<MemoryRequest*,unsigned int>(10); 
+    lowerHierarchyAccessQueue = new Queue<Message*>(10);
+    upperMemoryHierarchyPort = NULL;
+    lowerMemoryHierarchyPort = NULL;
+    requestedAccesses = new ListMap<InterconnectionNetwork*,bool>(1);
+    MemoryDevice::initialize();
 }
 
 void Cache::submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* port){
@@ -55,7 +58,7 @@ void Cache::submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* 
             writeCount++;
         }
         // MemoryRequest comming from upper memory hiearchy (or CPU)
-        unsigned int address = request->getMemoryAdress();
+        unsigned int address = request->getMemoryAddress();
         unsigned int tag, set, byte;
         getTagSetAndByteFromAddress(address,tag,set,byte);
         // Search on set for tag
@@ -74,12 +77,12 @@ void Cache::submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* 
                 dispatchCoherenceMessages(request,cacheLineEntry[victimLine],request->getMessageType(),hit);
             unsigned int blockStartAdress = (tag << (log2lineSize + log2setCount)) | 
                                             (set << (log2lineSize)); // Ignore byte
-            MemoryRequest* req = new MemoryRequest(blockStartAdress,lineSize,MEMORY_REQUEST_MEMORY_READ);
+            MemoryRequest* req = new MemoryRequest(blockStartAdress,lineSize,MEMORY_REQUEST_MEMORY_READ,this->id);
             req->setOriginalRequest(request);
             // Save request until response arrives, mapped to victim line number )
             pendingLineRequests->put(request,victimLine);
             // Request access to bus and hold request until access is granted
-            tracer->traceNewMemoryRequest(req->getMessageId(),req->getMemoryAdress(),req->getMessageType());
+            tracer->traceNewMemoryRequest(req->getMessageId(),req->getMemoryAddress(),req->getMessageType());
             requestAccessToNetwork(lowerMemoryHierarchyPort);
             lowerHierarchyAccessQueue->queue(req);
         }
@@ -89,8 +92,8 @@ void Cache::submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* 
 }
 
 void Cache::snoopRequest(MemoryRequest* request){
-    // MemoryRequest comming from upper memory hiearchy (or CPU)
-    unsigned int address = request->getMemoryAdress();
+    // Lower request broadcast to memory all memory
+    unsigned int address = request->getMemoryAddress();
     unsigned int tag, set, byte;
     getTagSetAndByteFromAddress(address,tag,set,byte);
     bool hit; unsigned int lineHit;
@@ -104,7 +107,7 @@ void Cache::snoopRequest(MemoryRequest* request){
                  switch(cacheLineEntry[lineHit]->getState()){
                      case CACHE_LINE_MODIFIED:
                          // Access to modified line, set as shared, provide value and invalidate lower memory resonse!
-                         resp = new InvalidatingMemoryResponse(address,INVALIDATING_MEMORY_RESPONSE,request);
+                         resp = new InvalidatingMemoryResponse(address,INVALIDATING_MEMORY_RESPONSE,request,this->id);
                          data = new unsigned char[request->getRequestSize()];
                          rawData = new MemoryChunk(data,request->getRequestSize());
                          rawData->copyFrom(&cacheLineEntry[lineHit]->getLineData()[byte]);
@@ -115,6 +118,7 @@ void Cache::snoopRequest(MemoryRequest* request){
                              tracer->traceCacheLineChange(id,lineHit,cacheLineEntry[lineHit]);
                          }
                      case CACHE_LINE_SHARED:
+                         // if its a write mesage, cache line state should be invalid 
                          if (request->getMessageType() == MEMORY_REQUEST_MEMORY_WRITE){
                              cacheLineEntry[lineHit]->setCacheLineState(CACHE_LINE_INVALID);
                              tracer->traceCacheLineChange(id,lineHit,cacheLineEntry[lineHit]);
@@ -163,6 +167,7 @@ void Cache::invalidateLine(InvalidateMessage* message){
     for (int i = startIndex; i < endIndex; i++){
         if (cacheLineEntry[i] != NULL && (cacheLineEntry[i]->getTag() == tag)){
             cacheLineEntry[i]->setCacheLineState(CACHE_LINE_INVALID);
+            tracer->traceCacheLineChange(id,i,cacheLineEntry[i]);
         }
     }
 }
@@ -187,7 +192,8 @@ void Cache::submitMemoryResponse(MemoryResponse* response, InterconnectionNetwor
                     unsigned int setBits = (lineToReplace / associativity);
                     unsigned int dirtyLineAdress = cacheLineEntry[lineToReplace]->getTag() << (log2lineSize + log2setCount) | 
                                                    (setBits << (log2lineSize));
-                    MemoryRequest* dirtyLineReq = new MemoryRequest(dirtyLineAdress,log2setCount,MEMORY_REQUEST_MEMORY_WRITE);
+                    MemoryRequest* dirtyLineReq = new MemoryRequest(dirtyLineAdress,log2setCount,MEMORY_REQUEST_MEMORY_WRITE,this->id);
+                    // TODO: infinite write buffers
                     // TODO: Major memory leaks
                     unsigned char* data = new unsigned char[lineSize];
                     MemoryChunk* rawData = new MemoryChunk(data,lineSize);
@@ -195,17 +201,17 @@ void Cache::submitMemoryResponse(MemoryResponse* response, InterconnectionNetwor
                     dirtyLineReq->setRawData(rawData);
                     lowerHierarchyAccessQueue->queue(dirtyLineReq);
                     requestAccessToNetwork(lowerMemoryHierarchyPort);
-                    tracer->traceNewMemoryRequest(dirtyLineReq->getMessageId(),dirtyLineReq->getMemoryAdress(),dirtyLineReq->getMessageType());
+                    tracer->traceNewMemoryRequest(dirtyLineReq->getMessageId(),dirtyLineReq->getMemoryAddress(),dirtyLineReq->getMessageType());
                 }
                 // Copy memory from response to line
                 response->getRawData()->copyTo(cacheLineEntry[lineToReplace]->getLineData());
                 // Copy TAG onto cacheLineEntry
-                cacheLineEntry[lineToReplace]->setTag(originalRequest->getMemoryAdress() >> (log2lineSize + log2setCount));
+                cacheLineEntry[lineToReplace]->setTag(originalRequest->getMemoryAddress() >> (log2lineSize + log2setCount));
                 // Has new content, no longer dirty
                 cacheLineEntry[lineToReplace]->setDirty(false);
                 // Now the access is a hit! Process it as so
                 // TODO: erase request to lower hiearchy
-                unsigned int byte = byteMask & originalRequest->getMemoryAdress();
+                unsigned int byte = byteMask & originalRequest->getMemoryAddress();
                 processAccessHit(originalRequest,cacheLineEntry[lineToReplace],byte);
                 // Trace cache change
                 tracer->traceCacheLineChange(id,lineToReplace,cacheLineEntry[lineToReplace]);
@@ -224,7 +230,7 @@ void Cache::processAccessHit(MemoryRequest* request, CacheLineEntry* cacheLine, 
         if ((byte + request->getRequestSize()) > lineSize){
             throw new UnalignedMemoryAccessException("Multiple cache line access");
         }
-        MemoryResponse* response = new MemoryResponse(request->getMemoryAdress(),MEMORY_RESPONSE,request);
+        MemoryResponse* response = new MemoryResponse(request->getMemoryAddress(),MEMORY_RESPONSE,request,this->id);
         if (request->getMessageType() == MEMORY_REQUEST_MEMORY_READ){
             MemoryChunk* data = new MemoryChunk(&cacheLineData[byte],request->getRequestSize());
             if (replacementPolicy == CACHE_REPLACEMENT_LRU){
@@ -239,9 +245,9 @@ void Cache::processAccessHit(MemoryRequest* request, CacheLineEntry* cacheLine, 
             if (writePolicy == CACHE_WRITE_WRITEBACK){
                 cacheLine->setDirty(true);
             }else if (writePolicy == CACHE_WRITE_WRITETHROUGH){
-                MemoryRequest* writeRequest = new MemoryRequest(request->getMemoryAdress(),request->getRawData()->getBytesLength(),MEMORY_REQUEST_MEMORY_WRITE);
+                MemoryRequest* writeRequest = new MemoryRequest(request->getMemoryAddress(),request->getRawData()->getBytesLength(),MEMORY_REQUEST_MEMORY_WRITE,this->id);
                 writeRequest->setRawData(request->getRawData());
-                tracer->traceNewMemoryRequest(writeRequest->getMessageId(),writeRequest->getMemoryAdress(),writeRequest->getMessageType());
+                tracer->traceNewMemoryRequest(writeRequest->getMessageId(),writeRequest->getMemoryAddress(),writeRequest->getMessageType());
                 requestAccessToNetwork(lowerMemoryHierarchyPort);
                 lowerHierarchyAccessQueue->queue(writeRequest);
             }
@@ -356,6 +362,36 @@ void Cache::printStatistics(ofstream* file){
     *file << "Repl. Count: " << replaceCount << endl << endl;
 }
 
+void Cache::traceSimulable(){
+    tracer->traceNewCache(this);
+}
+
+void Cache::setSetCount(unsigned int setCount){
+    if (!isPowerOf2(setCount)){
+        throw new IllegalCacheArgumentException("Set number must be a power of 2 ");
+    }
+    this->sets = setCount;
+}
+
+void Cache::setLineSize(unsigned int lineSize){
+    if (!isPowerOf2(lineSize)){
+        throw new IllegalCacheArgumentException("Line Size must be a power of 2");
+    }
+    this->lineSize = lineSize;
+}
+
+void Cache::setAssociativity(unsigned int associativity){
+    this->associativity = associativity;
+}
+
+void Cache::setPortCount(unsigned int portCount){
+    this->portCount = portCount;
+}
+
+void Cache::setLatency(unsigned int latency){
+    this->latency = latency;    
+}
+
 void Cache::setReplacementPolicy(CacheReplacementPolicy policy){
     replacementPolicy = policy;
 }
@@ -416,7 +452,7 @@ void Cache::dispatchCoherenceMessages(MemoryRequest* request, CacheLineEntry* ca
                 case CACHE_LINE_SHARED:
                     if ((type == MEMORY_REQUEST_MEMORY_WRITE) && hit){
                         // Write on a shared block, place invalidate message!
-                        InvalidateMessage* invalidateMessage = new InvalidateMessage(request->getMemoryAdress(),CACHE_COHERENCE_INVALIDATE);
+                        InvalidateMessage* invalidateMessage = new InvalidateMessage(request->getMemoryAddress(),CACHE_COHERENCE_INVALIDATE,this->id);
                         requestAccessToNetwork(lowerMemoryHierarchyPort);
                         lowerHierarchyAccessQueue->queue(invalidateMessage);
                     }

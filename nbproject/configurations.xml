@@ -5,15 +5,23 @@
                    displayName="Header Files"
                    projectFiles="true">
       <logicalFolder name="f7" displayName="architecture" projectFiles="true">
+        <itemPath>architecture/ISA.h</itemPath>
         <itemPath>../ESimCO/architecture/Instruction.h</itemPath>
         <itemPath>architecture/Loader.h</itemPath>
+        <itemPath>architecture/MIPS32ISA.h</itemPath>
+        <itemPath>architecture/MIPS32Loader.h</itemPath>
+        <itemPath>architecture/Operand.h</itemPath>
         <itemPath>../ESimCO/architecture/StaticInstruction.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f6" displayName="common" projectFiles="true">
+        <itemPath>common/CustomMacros.h</itemPath>
+        <itemPath>common/Iterator.h</itemPath>
         <itemPath>common/List.h</itemPath>
         <itemPath>common/Map.h</itemPath>
         <itemPath>../ESimCO/common/Queue.h</itemPath>
         <itemPath>common/SimpleFileParser.h</itemPath>
+        <itemPath>common/Stack.h</itemPath>
+        <itemPath>common/Utils.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f8" displayName="debug" projectFiles="true">
         <itemPath>debug/DummyDispatcher.h</itemPath>
@@ -28,8 +36,12 @@
       </logicalFolder>
       <logicalFolder name="f2" displayName="interconnect" projectFiles="true">
         <itemPath>interconnect/Bus.h</itemPath>
+        <itemPath>interconnect/GlobalInterconnectionNetwork.h</itemPath>
         <itemPath>interconnect/InterconnectionNetwork.h</itemPath>
         <itemPath>interconnect/Message.h</itemPath>
+        <itemPath>interconnect/P2PLink.h</itemPath>
+        <itemPath>interconnect/PacketSwitch.h</itemPath>
+        <itemPath>interconnect/RoutingAlgorithm.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="memory" projectFiles="true">
         <itemPath>memory/Cache.h</itemPath>
@@ -37,6 +49,7 @@
         <itemPath>memory/IMessageDispatcher.h</itemPath>
         <itemPath>memory/MemoryAddress.h</itemPath>
         <itemPath>memory/MemoryAddress32Bit.h</itemPath>
+        <itemPath>memory/MemoryChunk.h</itemPath>
         <itemPath>memory/MemoryDevice.h</itemPath>
         <itemPath>../ESimCO/memory/MemoryRequest.h</itemPath>
         <itemPath>../ESimCO/memory/MemoryResponse.h</itemPath>
@@ -46,17 +59,17 @@
       <logicalFolder name="f4" displayName="processor" projectFiles="true">
         <itemPath>../ESimCO/processor/ControlUnit.h</itemPath>
         <itemPath>../ESimCO/processor/ExecuteStage.h</itemPath>
-        <itemPath>processor/FPRegister.h</itemPath>
         <itemPath>../ESimCO/processor/FetchStage.h</itemPath>
         <itemPath>../ESimCO/processor/FunctionalUnit.h</itemPath>
-        <itemPath>../ESimCO/processor/IntRegister.h</itemPath>
         <itemPath>../ESimCO/processor/IssueQueueEntry.h</itemPath>
         <itemPath>../ESimCO/processor/IssueStage.h</itemPath>
         <itemPath>../ESimCO/processor/PipelineStage.h</itemPath>
         <itemPath>../ESimCO/processor/Processor.h</itemPath>
         <itemPath>processor/ROBEntry.h</itemPath>
+        <itemPath>processor/RegisterFile.h</itemPath>
         <itemPath>../ESimCO/processor/RetireStage.h</itemPath>
         <itemPath>../ESimCO/processor/ScoreboardEntry.h</itemPath>
+        <itemPath>processor/SimpleUnpipedProcessor.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="simulator" projectFiles="true">
         <itemPath>simulator/ConfigManager.h</itemPath>
@@ -79,13 +92,15 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f6" displayName="architecture" projectFiles="true">
-        <itemPath>../ESimCO/architecture/Instrucition.cpp</itemPath>
+        <itemPath>../ESimCO/architecture/Instruction.cpp</itemPath>
         <itemPath>architecture/Loader.cpp</itemPath>
         <itemPath>architecture/MIPS32ISA.cpp</itemPath>
         <itemPath>architecture/MIPS32Loader.cpp</itemPath>
+        <itemPath>architecture/Operand.cpp</itemPath>
         <itemPath>architecture/StaticInstruction.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="common" projectFiles="true">
+        <itemPath>common/Queue.cpp</itemPath>
         <itemPath>common/SimpleFileParser.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="debug" projectFiles="true">
@@ -93,8 +108,12 @@
       </logicalFolder>
       <logicalFolder name="f2" displayName="interconnect" projectFiles="true">
         <itemPath>interconnect/Bus.cpp</itemPath>
+        <itemPath>interconnect/GlobalInterconnectionNetwork.cpp</itemPath>
         <itemPath>interconnect/InterconnectionNetwork.cpp</itemPath>
         <itemPath>interconnect/Message.cpp</itemPath>
+        <itemPath>interconnect/P2PLink.cpp</itemPath>
+        <itemPath>interconnect/PacketSwitch.cpp</itemPath>
+        <itemPath>interconnect/RoutingAlgorithm.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="memory" projectFiles="true">
         <itemPath>memory/Cache.cpp</itemPath>
@@ -107,8 +126,13 @@
         <itemPath>memory/RAM.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f5" displayName="processor" projectFiles="true">
+        <itemPath>processor/ExecuteStage.cpp</itemPath>
         <itemPath>../ESimCO/processor/FetchStage.cpp</itemPath>
+        <itemPath>processor/FunctionalUnit.cpp</itemPath>
         <itemPath>../ESimCO/processor/Processor.cpp</itemPath>
+        <itemPath>processor/Register.cpp</itemPath>
+        <itemPath>processor/RegisterFile.cpp</itemPath>
+        <itemPath>processor/SimpleUnpipedProcessor.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f8" displayName="simulator" projectFiles="true">
         <itemPath>simulator/ConfigManager.cpp</itemPath>
@@ -145,6 +169,18 @@
                      kind="TEST">
         <itemPath>tests/MultipleProcessorTest.cpp</itemPath>
       </logicalFolder>
+      <logicalFolder name="f5"
+                     displayName="RoutingAlgorithmTests"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/RoutingAlgorithmTests.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f6"
+                     displayName="SimpleUnpipedProcessorTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/SimpleUnpipedProcessorTest.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f1"
                      displayName="UnitTests"
                      projectFiles="true"
@@ -170,7 +206,7 @@
       </toolsSet>
       <compileType>
       </compileType>
-      <item path="../ESimCO/architecture/Instrucition.cpp"
+      <item path="../ESimCO/architecture/Instruction.cpp"
             ex="false"
             tool="1"
             flavor2="0">
@@ -216,8 +252,6 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="../ESimCO/processor/IntRegister.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../ESimCO/processor/IssueQueueEntry.h"
             ex="false"
             tool="3"
@@ -241,23 +275,43 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="architecture/ISA.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="architecture/Loader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="architecture/Loader.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="architecture/MIPS32ISA.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="architecture/MIPS32ISA.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="architecture/MIPS32Loader.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="architecture/MIPS32Loader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="architecture/Operand.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="architecture/Operand.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="architecture/StaticInstruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="common/CustomMacros.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="common/Iterator.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="common/List.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="common/Map.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="common/Queue.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="common/SimpleFileParser.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="common/SimpleFileParser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="common/Stack.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="common/Utils.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="debug/DummyDispatcher.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -351,9 +405,49 @@
           <output>${TESTDIR}/TestFiles/f4</output>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f5">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f5</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f6">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f6</output>
+        </linkerTool>
+      </folder>
       <item path="interconnect/Bus.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="interconnect/Bus.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="interconnect/GlobalInterconnectionNetwork.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="interconnect/GlobalInterconnectionNetwork.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="interconnect/InterconnectionNetwork.cpp"
             ex="false"
@@ -368,6 +462,18 @@
       <item path="interconnect/Message.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="interconnect/Message.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="interconnect/P2PLink.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="interconnect/P2PLink.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="interconnect/PacketSwitch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="interconnect/PacketSwitch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="interconnect/RoutingAlgorithm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="interconnect/RoutingAlgorithm.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -385,6 +491,8 @@
       </item>
       <item path="memory/MemoryAddress32Bit.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="memory/MemoryChunk.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="memory/MemoryDevice.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="memory/MemoryDevice.h" ex="false" tool="3" flavor2="0">
@@ -397,9 +505,24 @@
       </item>
       <item path="memory/RAM.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="processor/FPRegister.h" ex="false" tool="3" flavor2="0">
+      <item path="processor/ExecuteStage.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="processor/FunctionalUnit.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="processor/ROBEntry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/Register.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="processor/RegisterFile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="processor/RegisterFile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/SimpleUnpipedProcessor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="processor/SimpleUnpipedProcessor.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="simulator/ConfigManager.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -440,6 +563,13 @@
       <item path="tests/MemoryHierarchyTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/MultipleProcessorTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/RoutingAlgorithmTests.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/SimpleUnpipedProcessorTest.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
     </conf>
   </confs>

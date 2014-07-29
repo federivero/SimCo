@@ -24,29 +24,17 @@ private:
     static MIPS32ISA* instance;
     
     /* INT_ALU Instructions */
-    StaticInstruction* add_;
-    StaticInstruction* nop_;
-    StaticInstruction* and_;
-    StaticInstruction* or_;
-    StaticInstruction* li_;
-    StaticInstruction* sub_;
-    StaticInstruction* sll_;
-    StaticInstruction* srl_;
-    StaticInstruction* xor_;
-    
+    StaticInstruction* add_, *nop_, *and_, *or_, *li_, *sub_, *sll_, *sllv_, *sra_, 
+            *srl_, *srav_, *srlv_, *xor_, *llo_, *lhi_, *xori_, *ori_, *andi_, *addi_, *addiu_;
+            
     /* READ_MODIFY_WRITE Instructions (for semaphore implementation) */
-    StaticInstruction* ll_;
-    StaticInstruction* sc_;
+    StaticInstruction* ll_, *sc_;
     
     /* JUMP_BRANCH Instrucitons */
-    StaticInstruction* jal_;
-    StaticInstruction* jalr_;
-    StaticInstruction* bne_;
-    StaticInstruction* bnez_;
+    StaticInstruction* jal_, *jalr_, *bne_, *bnez_;
     
     /* LOAD_STORE Instructions */
-    StaticInstruction* lw_;
-    StaticInstruction* sw_;
+    StaticInstruction* lw_, *sw_, *lb_, *lbu_, *lh_, *lhu_, *sb_, *sh_;
     
     /* Fake instruction to end execution */
     StaticInstruction* syscall_;
@@ -54,10 +42,11 @@ private:
     MIPS32ISA();
 public:
     static MIPS32ISA* getInstance();
-    Instruction* buildInstruction(char* opcode, char** operands, int operandsLength);
+    MemoryChunk* buildInstruction(char* opcode, char** operands, int operandsLength);
     Instruction* decodeInstruction(MemoryChunk* rawInst);
     MemoryChunk* encodeInstruction(Instruction* inst);
     RegisterFile* createArchitectedRegisterFile();
+    bool isLittleEndian();
     int getInstructionLength();
 };
 
@@ -93,10 +82,10 @@ enum InstructionOpcode{ /* Matches Mnemonic text with instruction opcode */
     OP_BNE,              /* opcode: 000101b */
     OP_BLEZ,             /* opcode: 000110b */
     OP_BGTZ,             /* opcode: 000111b */
-    OP_JR,               /* opcode: 001000b */
-    OP_JALR,             /* opcode: 001001b */
+    OP_ADDI,             /* opcode: 001000b */
+    OP_ADDIU,            /* opcode: 001001b */
     OP_SLTI,             /* opcode: 001010b */
-    NO_OP11,             /* opcode: 001011b */
+    OP_SLTIU,            /* opcode: 001011b */
     OP_ANDI,             /* opcode: 001100b */
     OP_ORI,              /* opcode: 001101b */
     OP_XORI,             /* opcode: 001110b */
@@ -109,8 +98,8 @@ enum InstructionOpcode{ /* Matches Mnemonic text with instruction opcode */
     NO_OP21,             /* opcode: 010101b */
     NO_OP22,             /* opcode: 010110b */
     NO_OP23,             /* opcode: 010111b */
-    OP_LLI,              /* opcode: 011000b */
-    OP_LLHI,             /* opcode: 011001b */
+    OP_LLO,              /* opcode: 011000b */
+    OP_LHI,              /* opcode: 011001b */
     OP_TRAP,             /* opcode: 011010b */
     NO_OP27,             /* opcode: 011011b */
     NO_OPZ8,             /* opcode: 011100b */
@@ -149,6 +138,53 @@ enum InstructionOpcode{ /* Matches Mnemonic text with instruction opcode */
     NO_OP61,             /* opcode: 111101b */
     NO_OP62,             /* opcode: 111110b */
     NO_OP63,             /* opcode: 111111b */
+};
+
+enum MIPS32_ALU_FUNCTION{
+    MIPS32FUNCTION_SLL,   /* 000000 */
+    NOFUNCTION1,          /* 000001 */
+    MIPS32FUNCTION_SRL,   /* 000010 */
+    MIPS32FUNCTION_SRA,   /* 000011 */
+    MIPS32FUNCTION_SLLV,  /* 000100 */
+    NOFUNCTION2,          /* 000101 */
+    MIPS32FUNCTION_SRLV,  /* 000110 */
+    MIPS32FUNCTION_SRAV,  /* 000111 */
+    MIPS32FUNCTION_JR,    /* 001000 */
+    MIPS32FUNCTION_JALR,  /* 001001 */
+    NOFUNCTION3,          /* 001010 */
+    NOFUNCTION4,          /* 001011 */
+    NOFUNCTION5,          /* 001100 */
+    NOFUNCTION6,          /* 001101 */
+    NOFUNCTION7,          /* 001110 */
+    NOFUNCTION8,          /* 001111 */
+    MIPS32FUNCTION_MFHI,  /* 010000 */
+    MIPS32FUNCTION_MTHI,  /* 010001 */
+    MIPS32FUNCTION_MFLO,  /* 010010 */
+    MIPS32FUNCTION_MTLO,  /* 010011 */
+    NOFUNCTION9,          /* 010100 */
+    NOFUNCTION10,         /* 010101 */
+    NOFUNCTION11,         /* 010110 */
+    NOFUNCTION12,         /* 010111 */
+    MIPS32FUNCTION_MULT,  /* 011000 */
+    MIPS32FUNCTION_MULTU, /* 011001 */
+    MIPS32FUNCTION_DIV,   /* 011010 */
+    MIPS32FUNCTION_DIVU,  /* 011011 */
+    NOFUNCTION13,         /* 011100 */
+    NOFUNCTION14,         /* 011101 */
+    NOFUNCTION15,         /* 011110 */
+    NOFUNCTION16,         /* 011111 */
+    MIPS32FUNCTION_ADD,   /* 100000 */
+    MIPS32FUNCTION_ADDU,  /* 100001 */
+    MIPS32FUNCTION_SUB,   /* 100010 */
+    MIPS32FUNCTION_SUBU,  /* 100011 */
+    MIPS32FUNCTION_AND,   /* 100100 */
+    MIPS32FUNCTION_OR,    /* 100101 */
+    MIPS32FUNCTION_XOR,   /* 100110 */
+    MIPS32FUNCTION_NOR,   /* 100111 */
+    NOFUNCTION17,         /* 100000 */
+    NOFUNCTION18,         /* 100001 */
+    MIPS32FUNCTION_SLT,   /* 100010 */
+    MIPS32FUNCTION_SLTU   /* 100011 */
 };
 
 #endif	/* MIPS32ISA_H */

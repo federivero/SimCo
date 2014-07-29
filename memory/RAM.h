@@ -32,17 +32,32 @@ class RAM: public MemoryDevice{
         virtual void attendMemoryRequest(MemoryRequest* request);
         virtual void assignPortToMemoryRequest(MemoryRequest* request);
     public:
+        // Constructors:
+        RAM();
         RAM(unsigned long id, unsigned long capacity, int ports, int latency, InterconnectionNetwork* interface, char* name = 0);
+        void initialize();
         
+        // Getters & Setters
+        unsigned long getCapacity();
+        void setCapacity(unsigned long capacity);
+        void setPorts(int portCount);
+        void setLatency(int latency);
+        void setInterface(InterconnectionNetwork* interface);
+        
+        
+        // Direct memory content operations 
         void setMemoryContent(MemoryChunk* data, unsigned long address);
         MemoryChunk* getMemoryContent(unsigned long address, unsigned int requestLength);
+        
+        // Simulation operations
         void initCycle();
         void accessGranted(InterconnectionNetwork* port);
         void submitMemoryRequest(MemoryRequest* request, InterconnectionNetwork* port);
         void submitMemoryResponse(MemoryResponse* response, InterconnectionNetwork* port);
         void submitMessage(Message* message, InterconnectionNetwork* port);
         
-        virtual void printStatistics(ofstream* file);
+        void printStatistics(ofstream* file);
+        void traceSimulable();
 };
 
 #endif	/* RAM_H */

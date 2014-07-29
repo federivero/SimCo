@@ -2,12 +2,14 @@
 #include "stdio.h"
 #include "../simulator/ISimulable.h"
 #include "../memory/Cache.h"
+#include "../memory/RAM.h"
 #include "../interconnect/Bus.h"
 #include "../memory/MemoryRequest.h"
 #include "../memory/MemoryResponse.h"
 #include "../interconnect/Message.h"
 #include "../processor/Register.h"
 #include "../architecture/Instruction.h"
+#include "../common/Utils.h"
 #include "../processor/SimpleUnpipedProcessor.h"
 
 using namespace std;
@@ -50,9 +52,9 @@ void TraceManager::traceNewMessage(unsigned long messageId){
     }
 }
 
-void TraceManager::traceNewRAM(unsigned long deviceId){
+void TraceManager::traceNewRAM(RAM* ram){
     if (enabled){
-        *file << "RAM-" << deviceId << endl;
+        *file << "RAM-id:" << ram->getId() << endl;
     }
 }
 
@@ -74,8 +76,7 @@ void TraceManager::traceCacheLineChange(unsigned long cacheId, unsigned int line
                 << "-tag:" << cacheLine->getTag()
                 << "-state:" << cacheLine->getState()
                 << "-data:";
-        for (int j = 0; j < cacheLine->getLineSize() ; j++)
-            *file << cacheLine->getLineData()[j];
+        traceByteArrayAsHex(cacheLine->getLineData(),cacheLine->getLineSize());
         *file << endl;
     }
 }
@@ -84,7 +85,7 @@ void TraceManager::traceNewBus(Bus* bus){
     if (enabled){
         *file << "Bus-id:" << bus->getId() 
                 << "-name:" << bus->getName()
-                << "-width:" << bus->getBusWidth()
+                << "-width:" << bus->getTransfersPerCycle()
                 << endl;
     }
 }
@@ -93,13 +94,14 @@ void TraceManager::traceSubmittedMessageToBus(Bus* bus, Message* message){
     if (enabled){
         *file << "BusMessage-busId:" << bus->getId() 
                 << "-messageId:" << message->getMessageId()
-                << "-messageType:" << message->getMessageType();
+                << "-messageType:" << message->getMessageType()
+                << "-submitter:" << message->getOriginDeviceId();
         MemoryRequest* req;
         MemoryResponse* resp;
         switch(message->getMessageType()){
             case MEMORY_REQUEST_MEMORY_WRITE:
                 req = (MemoryRequest*) message;
-                *file << "-address:" << req->getMemoryAdress()
+                *file << "-address:" << req->getMemoryAddress()
                         << "-data:";
                 traceMemoryChunk(req->getRawData());
                 *file << endl;
@@ -107,10 +109,11 @@ void TraceManager::traceSubmittedMessageToBus(Bus* bus, Message* message){
             case MEMORY_REQUEST_MEMORY_READ:
             case CACHE_COHERENCE_INVALIDATE:
                 req = (MemoryRequest*) message;
-                *file << "-address:" << req->getMemoryAdress()
+                *file << "-address:" << req->getMemoryAddress()
                 << endl;
                 break;
             case MEMORY_RESPONSE:
+            case INVALIDATING_MEMORY_RESPONSE:
                 resp = (MemoryResponse*) message;
                 if (resp->getRawData()!=NULL){
                     // Null body responses come from acks to memory writes
@@ -127,9 +130,17 @@ void TraceManager::traceSubmittedMessageToBus(Bus* bus, Message* message){
 
 /* Internal operation for tracing MemoryChunks to traceFile*/
 void TraceManager::traceMemoryChunk(MemoryChunk* chunk){
-    unsigned char* data = chunk->getBytes();
-    for (int j = 0; j < chunk->getBytesLength() ; j++)
-        *file << data[j];
+    traceByteArrayAsHex(chunk->getBytes(), chunk->getBytesLength());
+}
+
+void TraceManager::traceByteArrayAsHex(unsigned char* data, int length){
+    unsigned char outVal1 = 0;
+    unsigned char outVal2 = 0;
+    *file << "0x";
+    for (int j = 0; j < length ; j++){
+        Utils::toHexChar(data[j],outVal1,outVal2);
+        *file << outVal1 << outVal2;
+    }
 }
 
 void TraceManager::traceNewMemoryRequest(unsigned long messageId, unsigned long address, MessageType type){
@@ -159,6 +170,14 @@ void TraceManager::traceNewSimpleUnpipedProcessor(SimpleUnpipedProcessor* simple
     }
 }
 
+void TraceManager::traceNewRegister(unsigned long processorId, Register* reg){
+    if (enabled){
+        *file << "Register-processorId:" << processorId
+                << "-registerNumber:" << reg->getRegisterNumber()
+                << "-registerType:" << reg->getRegisterType() << endl;
+    }
+}
+
 void TraceManager::traceNewPCValue(unsigned long processorId, unsigned long pcValue){
     if (enabled){
         *file << "PCValue-processorId:" << processorId 
@@ -178,7 +197,8 @@ void TraceManager::traceInstructionRegisterValue(unsigned long processorId, Inst
 void TraceManager::traceRegisterValue(unsigned long processorId, Register* reg){
     if (enabled){
         *file << "RegisterValue-processorId:" << processorId
-                << "-registerNumber:" << reg->getRegisterNumber() 
+                << "-registerNumber:" << reg->getRegisterNumber()
+                << "-registerType:" << reg->getRegisterType()
                 << "-value:";
         reg->printRegisterValue(file);
         *file << endl;

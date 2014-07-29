@@ -1,18 +1,18 @@
 
 #include "MemoryRequest.h"
 
-MemoryRequest::MemoryRequest(unsigned int adr, unsigned int size, MessageType type):       
-        adress(adr),
+MemoryRequest::MemoryRequest(unsigned int adr, unsigned int size, MessageType type, unsigned long originDeviceId):       
+        address(adr),
         requestSize(size),
-        Message(type)
+        Message(type,originDeviceId)
 { }
 
 MemoryChunk* MemoryRequest::getRawData(){
     return rawData;
 }
 
-unsigned int MemoryRequest::getMemoryAdress(){
-    return adress;
+unsigned int MemoryRequest::getMemoryAddress(){
+    return address;
 }
 
 unsigned int MemoryRequest::getRequestSize(){

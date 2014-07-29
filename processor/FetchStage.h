@@ -32,7 +32,11 @@ class FetchStage : public IMessageDispatcher{
         int fetchWidth;
         int decodeWidth;
         
+        // Current request to memory hierarchy
+        MemoryRequest* currentRequest; 
+        
     public:
+        FetchStage(Processor* processor, int instructionFetchQueueSize);
         FetchStage(unsigned long id, char* name, Processor* processor, InterconnectionNetwork* instructionMemoryInterface, int instructionFetchQueueSize);
         void accessGranted(InterconnectionNetwork* port);
         void submitMessage(Message* message, InterconnectionNetwork* port);
@@ -47,9 +51,8 @@ class FetchStage : public IMessageDispatcher{
         int getInstructionFetchQueueSize();
         Instruction* getNextInstructionFetched();
         
-        //void pipeInstruction(Instruction*);
-        //void simulateStage(PipelineStage* retValue);
-        //void addIntructionToInstructionWindow(Instruction* inst);
+        // Setters
+        void setMemoryInterface(InterconnectionNetwork* interface);
 };
 
 #endif	/* FETCHSTAGE_H */

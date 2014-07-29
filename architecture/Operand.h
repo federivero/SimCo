@@ -9,7 +9,7 @@
 #define	OPERAND_H
 
 enum OperandType{
-    OPERAND_TYPE_IMMEDIATE, OPERAND_TYPE_REGISTER
+    OPERAND_TYPE_IMMEDIATE, OPERAND_TYPE_REGISTER, OPERAND_TYPE_SPECIAL_REGISTER, OPERAND_TYPE_INDEXED
 };
 
 #include "../processor/Register.h"
@@ -17,23 +17,30 @@ enum OperandType{
 class Operand{
     private:
         OperandType type;
-    
+        unsigned long operandValue;
     public:
         Operand(OperandType opType);
         OperandType getType();
+        unsigned long getOperandBinaryValue();
+        void setOperandBinaryValue(unsigned long binaryOperandValue);
+};
+
+class SpecialRegisterOperand: public Operand{
+    private:
+        SpecialRegisterType type;
+    public:
+        SpecialRegisterOperand(SpecialRegisterType regType);
+        SpecialRegisterType getSpecialRegisterType();
 };
 
 class RegisterOperand: public Operand{
     
     private:
-        Register* reg;
         int registerNumber;
         RegisterType registerType;
     public:
-        RegisterOperand();
-        Register* getRegister();
-        void setRegister(Register* reg);
-        RegisterType getType();
+        RegisterOperand(int registerNumber, RegisterType regType);
+        RegisterType getRegisterType();
         void setRegisterType(RegisterType type);
         int getRegisterNumber();
         void setRegisterNumber(int registerNumber);
@@ -42,14 +49,20 @@ class RegisterOperand: public Operand{
 class ImmediateOperand: public Operand{
 
     private:
-
-        long operandValue;
-
+        
     public:
-    
         ImmediateOperand(long operandValue);
 };
 
+class IndexedOperand: public Operand{
+    private:
+        int registerNumber; // Only int registers allowed
+        long immediate;
+    public:
+        IndexedOperand(long immediateValue, int registerNumber);
+        int getRegisterNumber();
+        long getImmediateValue();
+};
 
 #endif	/* OPERAND_H */
 

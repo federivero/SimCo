@@ -12,7 +12,11 @@
 #include <fstream>
 
 enum RegisterType{
-    REGISTER_TYPE_INT, REGISTER_TYPE_FP
+    REGISTER_TYPE_INT, REGISTER_TYPE_FP, REGISTER_TYPE_PC
+};
+
+enum SpecialRegisterType{
+    SPECIAL_REGISTER_PC
 };
 
 using namespace std;
