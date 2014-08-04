@@ -9,7 +9,7 @@
 #include "RegisterFile.h"
 
 SimpleUnpipedProcessor::SimpleUnpipedProcessor(){
-    this->currentStage = SP_STAGE_FETCH;
+    this->currentStage = SP_STAGE_IDLE;
     this->nextStage = SP_STAGE_FETCH;
     this->fetchStage = new FetchStage(this,1);
     this->executeStage = new ExecuteStage(this,1,1,1,1,1,1,1,1,1, NULL);
@@ -19,7 +19,7 @@ SimpleUnpipedProcessor::SimpleUnpipedProcessor(unsigned long id, char* name, ISA
                 InterconnectionNetwork* instructionMemoryInterface, InterconnectionNetwork* dataMemoryInterface)
 : Processor(id, name, isa) {
     this->architectedRegisterFile = isa->createArchitectedRegisterFile();
-    this->currentStage = SP_STAGE_FETCH;
+    this->currentStage = SP_STAGE_IDLE;
     this->nextStage = SP_STAGE_FETCH;
     this->fetchStage = new FetchStage(ISimulable::getNextAvailableId(),(char*)"simpleProcessorFetchStage",this,instructionMemoryInterface,1);
     char* executeStageName = (char*)"simpleProcessorExecuteStage";
@@ -72,6 +72,7 @@ void SimpleUnpipedProcessor::scheduleNextCycleDoAction() {
 
 void SimpleUnpipedProcessor::doCycleAction() {
     RegisterOperand* operand;
+    IndexedOperand* indexedOperand;
     int i;
     switch (currentStage) {
         case SP_STAGE_FETCH:
@@ -102,11 +103,20 @@ void SimpleUnpipedProcessor::doCycleAction() {
                         }
                         break;
                     case OPERAND_TYPE_INDEXED:
-                        IndexedOperand* indexedOperand = (IndexedOperand*) instructionRegister->getSourceOperand(i);
+                        indexedOperand = (IndexedOperand*) instructionRegister->getSourceOperand(i);
                         // Operand has register number, now get the real register and pass it as the operand.
                         // On pipelined processors, care should be taken that the corresponding register is available        
                         indexedOperand->setOperandBinaryValue(architectedRegisterFile->getIntegerRegister
                                 (indexedOperand->getRegisterNumber())->getRegisterValue() + indexedOperand->getImmediateValue());
+                        break;
+                    case OPERAND_TYPE_SPECIAL_REGISTER:
+                        SpecialRegisterOperand* specialRegisterOperand = (SpecialRegisterOperand*) instructionRegister->getSourceOperand(i);
+                        switch(specialRegisterOperand->getSpecialRegisterType()){
+                            case SPECIAL_REGISTER_PC:
+                                // Assign PC value to operand
+                                specialRegisterOperand->setOperandBinaryValue(this->PC);
+                                break;
+                        }
                         break;
                     //case OPERAND_TYPE_MEMORY:
                         // Not possible on MIPS32
@@ -186,6 +196,9 @@ void SimpleUnpipedProcessor::doCycleAction() {
 }
 
 void SimpleUnpipedProcessor::initCycle() {
+    if (currentStage != nextStage){
+        tracer->traceSimpleUnpipedProcessorStage(this->id,nextStage);
+    }
     currentStage = nextStage;
 }
 

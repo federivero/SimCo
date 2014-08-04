@@ -11,6 +11,7 @@ build/Debug/MinGW_TDM-Windows/_ext/997839248/Processor.o: \
  ../ESimCO/processor/../simulator/../common/Iterator.h \
  ../ESimCO/processor/../simulator/TraceManager.h \
  ../ESimCO/processor/../simulator/../interconnect/Message.h \
+ ../ESimCO/processor/../simulator/../processor/SimpleProcessorStage.h \
  ../ESimCO/processor/../architecture/Instruction.h \
  ../ESimCO/processor/../architecture/StaticInstruction.h \
  ../ESimCO/processor/../architecture/../memory/MemoryChunk.h \
@@ -44,6 +45,8 @@ build/Debug/MinGW_TDM-Windows/_ext/997839248/Processor.o: \
 ../ESimCO/processor/../simulator/TraceManager.h:
 
 ../ESimCO/processor/../simulator/../interconnect/Message.h:
+
+../ESimCO/processor/../simulator/../processor/SimpleProcessorStage.h:
 
 ../ESimCO/processor/../architecture/Instruction.h:
 

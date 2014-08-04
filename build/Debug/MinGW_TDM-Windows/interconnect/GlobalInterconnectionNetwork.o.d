@@ -13,6 +13,7 @@ build/Debug/MinGW_TDM-Windows/interconnect/GlobalInterconnectionNetwork.o: \
  interconnect/../memory/../simulator/../common/List.h \
  interconnect/../memory/../simulator/TraceManager.h \
  interconnect/../memory/../simulator/../interconnect/Message.h \
+ interconnect/../memory/../simulator/../processor/SimpleProcessorStage.h \
  interconnect/../memory/../interconnect/Message.h \
  interconnect/../memory/MemoryResponse.h \
  interconnect/../memory/MemoryRequest.h \
@@ -60,6 +61,8 @@ interconnect/../memory/../simulator/../common/List.h:
 interconnect/../memory/../simulator/TraceManager.h:
 
 interconnect/../memory/../simulator/../interconnect/Message.h:
+
+interconnect/../memory/../simulator/../processor/SimpleProcessorStage.h:
 
 interconnect/../memory/../interconnect/Message.h:
 

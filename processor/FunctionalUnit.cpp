@@ -140,6 +140,10 @@ void IntALU::setSecondOperand(long operand){
     this->secondOperand = operand;
 }
 
+void IntALU::setThirdOperand(long thirdOperand){
+    this->thirdOperand = thirdOperand;
+}
+
 InstructionResult* IntALU::getInstructionResult(){
     return instructionResult;
 }
@@ -207,6 +211,36 @@ void IntALU::initExecution(){
             break;
         case ALU_FUNCTION_MOV_UPPER_16_BITS:
             result = (firstOperand & 0x0000FFFF) | (secondOperand << 16);
+            break;
+        case ALU_FUNCTION_CONDITIONAL_MOV_EQUALS:
+            if (firstOperand == secondOperand){
+                result = 1;
+            }else{
+                result = 0;
+            }
+            break;
+        case ALU_FUNCTION_CONDITIONAL_MOV_NOT_EQUALS:
+            if (firstOperand != secondOperand){
+                result = 1;
+            }else{
+                result = 0;
+            }
+            break;
+        case ALU_FUNCTION_CONDITIONAL_MOV_GREATER:
+            // two's complement comparison
+            if (firstOperand > secondOperand){
+                result = 1;
+            }else{
+                result = 0;
+            }
+            break;
+        case ALU_FUNCTION_CONDITIONAL_MOV_LESS_OR_EQUAL:
+            // two's complement comparison
+            if (firstOperand <= secondOperand){
+                result = 1;
+            }else{
+                result = 0;
+            }
             break;
         default:
             // TODO: Throw exception

@@ -10,6 +10,7 @@ build/Debug/MinGW_TDM-Windows/interconnect/Bus.o: interconnect/Bus.cpp \
  interconnect/../simulator/../common/Iterator.h \
  interconnect/../simulator/TraceManager.h \
  interconnect/../simulator/../interconnect/Message.h \
+ interconnect/../simulator/../processor/SimpleProcessorStage.h \
  interconnect/../system/ComputationalSystem.h \
  interconnect/../memory/MemoryRequest.h \
  interconnect/../memory/../interconnect/Message.h \
@@ -58,6 +59,8 @@ interconnect/../simulator/../common/Iterator.h:
 interconnect/../simulator/TraceManager.h:
 
 interconnect/../simulator/../interconnect/Message.h:
+
+interconnect/../simulator/../processor/SimpleProcessorStage.h:
 
 interconnect/../system/ComputationalSystem.h:
 

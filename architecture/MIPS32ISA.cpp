@@ -42,8 +42,10 @@ MIPS32ISA::MIPS32ISA(){
     
     jal_  = new StaticInstruction(1,1, INSTRUCTION_TYPE_JUMP);
     jalr_ = new StaticInstruction(2,1, INSTRUCTION_TYPE_JUMP);
-    bne_  = new StaticInstruction(2,1,INSTRUCTION_TYPE_BRANCH);
-    bnez_ = new StaticInstruction(2,1,INSTRUCTION_TYPE_BRANCH);
+    bne_  = new StaticInstruction(4,1,INSTRUCTION_TYPE_BRANCH);
+    beq_ =  new StaticInstruction(4,1,INSTRUCTION_TYPE_BRANCH);
+    bgtz_ = new StaticInstruction(4,1,INSTRUCTION_TYPE_BRANCH);
+    blez_ = new StaticInstruction(4,1,INSTRUCTION_TYPE_BRANCH);
     
     lb_   = new StaticInstruction(1,1,INSTRUCTION_TYPE_LOAD_STORE);
     lbu_  = new StaticInstruction(1,1,INSTRUCTION_TYPE_LOAD_STORE);
@@ -120,6 +122,18 @@ MemoryChunk* MIPS32ISA::buildInstruction(char* opcode, char** operands, int oper
         encodingSubtype = MIPS32_BRANCH;
         binOpcode = OP_BNE;
         encodingType = MIPS32_I_FORMAT;
+    }else if (strcmp(opcode,"BLEZ") == 0){
+        binOpcode = OP_BLEZ;
+        encodingType = MIPS32_I_FORMAT;
+        encodingSubtype = MIPS32_BRANCHZ;
+    }else if (strcmp(opcode,"BEQ") == 0){
+        binOpcode = OP_BEQ;
+        encodingType = MIPS32_I_FORMAT;
+        encodingSubtype = MIPS32_BRANCH;
+    }else if (strcmp(opcode,"BGTZ") == 0){
+        binOpcode = OP_BGTZ;
+        encodingType = MIPS32_I_FORMAT;
+        encodingSubtype = MIPS32_BRANCHZ;
     }else if (strcmp(opcode,"JAL") == 0){
         encodingSubtype = MIPS32_JUMP;
         binOpcode = OP_JAL;
@@ -203,6 +217,8 @@ MemoryChunk* MIPS32ISA::buildInstruction(char* opcode, char** operands, int oper
         bytes[1] = 255;
         bytes[2] = 255;
         bytes[3] = 255;
+        encodingType = MIPS32_NO_FORMAT;
+        encodingSubtype = MIPS32_NO_SUBFORMAT;
         rawInstruction = new MemoryChunk(bytes,4);
     }else{
         throw new IllegalInstructionSyntaxException("Illegal opcode");
@@ -210,39 +226,39 @@ MemoryChunk* MIPS32ISA::buildInstruction(char* opcode, char** operands, int oper
     if (encodingType == MIPS32_R_FORMAT){
         if (encodingSubtype == MIPS32_ARITHLOG){
             if (operandsLength < 3){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 ARITHLOG instruction");
             }
             destinationRegister = decodeRegisterOperand(operands[0]);
             sourceRegisterOne = decodeRegisterOperand(operands[1]);
             sourceRegisterTwo = decodeRegisterOperand(operands[2]);
         }else if (encodingSubtype == MIPS32_DIVMULT){
             if (operandsLength < 2){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 DIVMULT instruction");
             }
             sourceRegisterOne = decodeRegisterOperand(operands[0]);
             sourceRegisterTwo = decodeRegisterOperand(operands[1]);
         }else if (encodingSubtype == MIPS32_SHIFT){
             if (operandsLength < 3){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 SHIFT instruction");
             }
             destinationRegister = decodeRegisterOperand(operands[0]);
             sourceRegisterTwo = decodeRegisterOperand(operands[1]);
             shiftAmmount = decodeIntOperand(operands[2]);
         }else if (encodingSubtype == MIPS32_SHIFTV){
             if (operandsLength < 3){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 SHIFTV instruction");
             }
             destinationRegister = decodeRegisterOperand(operands[0]);
             sourceRegisterTwo = decodeRegisterOperand(operands[1]);
             sourceRegisterOne = decodeRegisterOperand(operands[2]);
         }else if (encodingSubtype == MIPS32_JUMPR || encodingSubtype == MIPS32_MOVETO){
             if (operandsLength < 1){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 JUMPR - MOVETO instruction");
             }
             sourceRegisterOne = decodeRegisterOperand(operands[0]);
         }else if (encodingSubtype == MIPS32_MOVEFROM){
             if (operandsLength < 1){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 MOVEFROM instruction");
             }
             sourceRegisterOne = decodeRegisterOperand(operands[0]);
         }
@@ -255,33 +271,33 @@ MemoryChunk* MIPS32ISA::buildInstruction(char* opcode, char** operands, int oper
     }else if (encodingType == MIPS32_I_FORMAT){
         if (encodingSubtype == MIPS32_ARITHLOGI){
             if (operandsLength < 3){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 ARITHLOGI instruction");
             }
             sourceRegisterTwo = decodeRegisterOperand(operands[0]);
             sourceRegisterOne = decodeRegisterOperand(operands[1]);
             immediate = decodeIntOperand(operands[2]);
         }else if (encodingSubtype == MIPS32_LOADI){
             if (operandsLength < 2){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 LOADI instruction");
             }
             sourceRegisterTwo = decodeRegisterOperand(operands[0]);
             immediate = decodeIntOperand(operands[1]);
         }else if (encodingSubtype == MIPS32_BRANCH){
             if (operandsLength < 3){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 BRANCH instruction");
             }
             sourceRegisterOne = decodeRegisterOperand(operands[0]);
             sourceRegisterTwo = decodeRegisterOperand(operands[1]);
-            immediate = decodeIntOperand(operands[2]);
+            immediate = decodeLabelOperand(operands[2],loader);
         }else if (encodingSubtype == MIPS32_BRANCHZ){
             if (operandsLength < 2){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 BRANCHZ instruction");
             }
             sourceRegisterOne = decodeRegisterOperand(operands[0]);
-            immediate = decodeIntOperand(operands[1]);
+            immediate = decodeLabelOperand(operands[1],loader);
         }else if (encodingSubtype == MIPS32_LOADSTORE){
             if (operandsLength < 3){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 LOADSTORE instruction");
             }
             sourceRegisterTwo = decodeRegisterOperand(operands[0]);
             immediate = decodeIntOperand(operands[1]);
@@ -296,12 +312,12 @@ MemoryChunk* MIPS32ISA::buildInstruction(char* opcode, char** operands, int oper
     }else if (encodingType == MIPS32_J_FORMAT){
         if (encodingSubtype == MIPS32_JUMP){
             if (operandsLength < 1){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 JUMP instruction");
             }
             immediate = decodeLabelOperand(operands[0],loader);
         }else if (encodingSubtype == MIPS32_TRAP){
             if (operandsLength < 1){
-                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for instruction");
+                throw new IllegalInstructionSyntaxException("Incorrect number of arguments for MIPS32 TRAP instruction");
             }
             immediate = decodeIntOperand(operands[0]);
         }
@@ -510,10 +526,45 @@ Instruction* MIPS32ISA::decodeInstruction(MemoryChunk* rawInst){
                 inst->setOperand(destinationOperand,2);
                 // end encodingSubtype LOADI
             }else if (encodingSubtype == MIPS32_BRANCH){
-                
-                
+                ConditionType conditionType;
+                switch(opcode){
+                    case OP_BEQ:
+                        conditionType = CONDITION_TYPE_EQUALS;
+                        break;
+                    case OP_BNE:
+                        conditionType = CONDITION_TYPE_NOT_EQUALS;
+                        break;
+                        // Other options not possible
+                }
+                BranchInstruction* branchInst = new BranchInstruction();
+                inst = branchInst;
+                branchInst->setConditionType(conditionType);
+                // MIPS32_BRANCH subtype use two registers
+                branchInst->setFirstComparator(new RegisterOperand(sourceRegisterOne,REGISTER_TYPE_INT));
+                branchInst->setSecondComparator(new RegisterOperand(sourceRegisterTwo,REGISTER_TYPE_INT));
+                branchInst->setPCValueTakenOperand(new ImmediateOperand(immediate));
+                branchInst->setPCValueNotTakenOperand(new SpecialRegisterOperand(SPECIAL_REGISTER_PC));
+                branchInst->setDestinationOperand(0,new SpecialRegisterOperand(SPECIAL_REGISTER_PC));
             }else if (encodingSubtype == MIPS32_BRANCHZ){
-                
+                ConditionType conditionType;
+                switch(opcode){
+                    case OP_BLEZ:
+                        conditionType = CONDITION_TYPE_LESS_THAN_OR_EQUALS;
+                        break;
+                    case OP_BGTZ:
+                        conditionType = CONDITION_TYPE_GREATER;
+                        break;
+                        // Other options not possible
+                }
+                BranchInstruction* branchInst = new BranchInstruction();
+                inst = branchInst;
+                branchInst->setConditionType(conditionType);
+                // MIPS32_BRANCH subtype use two registers
+                branchInst->setFirstComparator(new RegisterOperand(sourceRegisterOne,REGISTER_TYPE_INT));
+                branchInst->setSecondComparator(new RegisterOperand(sourceRegisterTwo,REGISTER_TYPE_INT));
+                branchInst->setPCValueTakenOperand(new ImmediateOperand(immediate));
+                branchInst->setPCValueNotTakenOperand(new SpecialRegisterOperand(SPECIAL_REGISTER_PC));
+                branchInst->setDestinationOperand(0,new SpecialRegisterOperand(SPECIAL_REGISTER_PC));
             }else if (encodingSubtype == MIPS32_LOADSTORE){
                 int loadStoreSize = -1; // How many bytes are going to be read or written
                 MessageType loadStore;
@@ -692,13 +743,13 @@ Instruction* MIPS32ISA::decodeInstruction(MemoryChunk* rawInst){
             case OP_LHI:
                 archetype = lhi_; break;
             case OP_BEQ:
-                //archetype = beq_; break;
+                archetype = beq_; break;
             case OP_BNE:
                 archetype = bne_; break;
             case OP_BGTZ:
-                // archetype = bgtz; break;
+                archetype = bgtz_; break;
             case OP_BLEZ:
-                //archetype = blez_; break;
+                archetype = blez_; break;
             case OP_LB:
                 archetype = lb_; break;
             case OP_LBU:

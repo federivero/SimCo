@@ -215,6 +215,13 @@ void TraceManager::traceFlagsValue(unsigned long processorId, bool zflag, bool n
     }
 }
 
+void TraceManager::traceSimpleUnpipedProcessorStage(unsigned long processorId, SimpleProcessorStage stage){
+    if (enabled){
+        *file << "SimpleProcessorStep-processorId:" << processorId
+                << "-step:" << stage << endl;
+    }
+}
+
 void TraceManager::finishTracing(){
     file->close();
 }

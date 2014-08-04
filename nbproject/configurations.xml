@@ -6,12 +6,12 @@
                    projectFiles="true">
       <logicalFolder name="f7" displayName="architecture" projectFiles="true">
         <itemPath>architecture/ISA.h</itemPath>
-        <itemPath>../ESimCO/architecture/Instruction.h</itemPath>
+        <itemPath>architecture/Instruction.h</itemPath>
         <itemPath>architecture/Loader.h</itemPath>
         <itemPath>architecture/MIPS32ISA.h</itemPath>
         <itemPath>architecture/MIPS32Loader.h</itemPath>
         <itemPath>architecture/Operand.h</itemPath>
-        <itemPath>../ESimCO/architecture/StaticInstruction.h</itemPath>
+        <itemPath>architecture/StaticInstruction.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f6" displayName="common" projectFiles="true">
         <itemPath>common/CustomMacros.h</itemPath>
@@ -69,6 +69,7 @@
         <itemPath>processor/RegisterFile.h</itemPath>
         <itemPath>../ESimCO/processor/RetireStage.h</itemPath>
         <itemPath>../ESimCO/processor/ScoreboardEntry.h</itemPath>
+        <itemPath>processor/SimpleProcessorStage.h</itemPath>
         <itemPath>processor/SimpleUnpipedProcessor.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="simulator" projectFiles="true">
@@ -92,7 +93,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f6" displayName="architecture" projectFiles="true">
-        <itemPath>../ESimCO/architecture/Instruction.cpp</itemPath>
+        <itemPath>architecture/Instruction.cpp</itemPath>
         <itemPath>architecture/Loader.cpp</itemPath>
         <itemPath>architecture/MIPS32ISA.cpp</itemPath>
         <itemPath>architecture/MIPS32Loader.cpp</itemPath>
@@ -206,21 +207,6 @@
       </toolsSet>
       <compileType>
       </compileType>
-      <item path="../ESimCO/architecture/Instruction.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../ESimCO/architecture/Instruction.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../ESimCO/architecture/StaticInstruction.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../ESimCO/common/Queue.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../ESimCO/exceptions/RuntimeException.h"
@@ -277,6 +263,10 @@
       </item>
       <item path="architecture/ISA.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="architecture/Instruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="architecture/Instruction.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="architecture/Loader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="architecture/Loader.h" ex="false" tool="3" flavor2="0">
@@ -294,6 +284,8 @@
       <item path="architecture/Operand.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="architecture/StaticInstruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="architecture/StaticInstruction.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="common/CustomMacros.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -516,6 +508,8 @@
       <item path="processor/RegisterFile.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="processor/RegisterFile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/SimpleProcessorStage.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="processor/SimpleUnpipedProcessor.cpp"
             ex="false"

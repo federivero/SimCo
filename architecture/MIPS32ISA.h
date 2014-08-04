@@ -31,7 +31,7 @@ private:
     StaticInstruction* ll_, *sc_;
     
     /* JUMP_BRANCH Instrucitons */
-    StaticInstruction* jal_, *jalr_, *bne_, *bnez_;
+    StaticInstruction* jal_, *jalr_, *bne_, *blez_, *beq_, *bgtz_;
     
     /* LOAD_STORE Instructions */
     StaticInstruction* lw_, *sw_, *lb_, *lbu_, *lh_, *lhu_, *sb_, *sh_;
@@ -53,7 +53,8 @@ public:
 enum InstructionEncodingType{
     MIPS32_R_FORMAT, /* Register Format:  ooooooss sssttttt dddddaaa aaffffff*/ 
     MIPS32_I_FORMAT, /* Immediate Format: ooooooss sssttttt iiiiiiii iiiiiiii*/
-    MIPS32_J_FORMAT  /* Jump Format:      ooooooii iiiiiiii iiiiiiii iiiiiiii*/
+    MIPS32_J_FORMAT, /* Jump Format:      ooooooii iiiiiiii iiiiiiii iiiiiiii*/
+    MIPS32_NO_FORMAT
 };
 
 enum MIPS32_InstructionEncodingSubtype{
@@ -70,7 +71,8 @@ enum MIPS32_InstructionEncodingSubtype{
     MIPS32_BRANCHZ,
     MIPS32_LOADSTORE,
     MIPS32_JUMP,
-    MIPS32_TRAP
+    MIPS32_TRAP,
+    MIPS32_NO_SUBFORMAT
 };
 
 enum InstructionOpcode{ /* Matches Mnemonic text with instruction opcode */

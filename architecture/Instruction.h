@@ -28,7 +28,11 @@ enum ALUFunction{
     ALU_FUNCTION_INT_MUL,               // Integer Multiplication
     ALU_FUNCTION_INT_DIV,               // Integer Division
     ALU_FUNCTION_MOV_UPPER_16_BITS,     // Set the upper 16 bits of the register
-    ALU_FUNCTION_MOV_LOWER_16_BITS      // Set the lower 16 bits of the register
+    ALU_FUNCTION_MOV_LOWER_16_BITS,     // Set the lower 16 bits of the register
+    ALU_FUNCTION_CONDITIONAL_MOV_EQUALS,        // Performs a MOV operation if the first argument equals the second one
+    ALU_FUNCTION_CONDITIONAL_MOV_NOT_EQUALS,    // Performs a MOV operation if the first argument does not equals the second one
+    ALU_FUNCTION_CONDITIONAL_MOV_GREATER,       // Performs a MOV operation if the first argument is greater than the second one
+    ALU_FUNCTION_CONDITIONAL_MOV_LESS_OR_EQUAL  // Performs a MOV operation if the first argument is less than or equals the second one
 };
 
 enum InstructionResultType{
@@ -59,10 +63,11 @@ public:
     virtual Operand* getSourceOperand(int operandNumber);
     virtual Operand* getDestinationOperand(int operandNumber);
     virtual void setOperand(Operand* operand, int operandNumber);
+    virtual void setDestinationOperand(int destinationOperandNumber, Operand* operand){};
     
     // Access Methods
     virtual void setInstructionResult(InstructionResult* result);
-    InstructionResult* getInstructionResult();
+    virtual InstructionResult* getInstructionResult();
     unsigned short getInstructionOpcode();
     void setInstructionOpcode(unsigned short value);
     MemoryChunk* getRawInstruction();
@@ -90,6 +95,9 @@ class InstructionResultInt : public InstructionResult{
                 ,result(instructionResult){};
         int getResult(){
             return result;
+        }
+        void setResult(int result){
+            this->result = result;
         }
 };
 
@@ -121,7 +129,9 @@ class ALUInstruction: public Instruction{
 
 class JumpInstruction : public Instruction{
     private:
+        // The 'pcValueOperand' represents the value to be stored in the PC (normally will be 'ImmediateOperand or RegisterOperand)
         Operand* pcValueOperand;
+        // The 'destinationOperand' indicates where the value is going to be stored, tipically is of type 'SpecialRegisterOperand'
         Operand* destinationOperand;
         
     public:
@@ -129,6 +139,39 @@ class JumpInstruction : public Instruction{
         Operand* getSourceOperand(int operandNumber);
         Operand* getDestinationOperand(int operandNumber);
         void setOperand(Operand* oper, int operandNumber);
+};
+
+enum ConditionType{
+    CONDITION_TYPE_EQUALS, CONDITION_TYPE_GREATER, CONDITION_TYPE_LESS_THAN_OR_EQUALS, CONDITION_TYPE_NOT_EQUALS
+};
+
+class BranchInstruction: public Instruction{
+    private:
+        // The 'pcValueTakenOperand' represents the value to be stored in the PC if the branch is taken
+        // (normally will be 'ImmediateOperand or RegisterOperand)
+        Operand* pcValueTakenOperand;
+        // The 'pcValueNotTakenOperand' represents the value to be stored in the PC if the branch is not taken
+        // (normally will be 'ImmediateOperand or RegisterOperand)
+        Operand* pcValueNotTakenOperand;
+        // The 'destinationOperand' indicates where the value is going to be stored, tipically is of type 'SpecialRegisterOperand'
+        Operand* destinationOperand;
+        // The comparators are the operands that have to be compared. Can be registers, memory locations or immediate values
+        Operand* firstComparator;
+        Operand* secondComparator;
+        ConditionType conditionType;
+        
+    public:
+        BranchInstruction();
+        Operand* getSourceOperand(int operandNumber);
+        Operand* getDestinationOperand(int operandNumber);
+        void setDestinationOperand(int destinationOperandNumber, Operand* operand);
+        ConditionType getConditionType();
+        void setConditionType(ConditionType type);
+        void setFirstComparator(Operand* comparator);
+        void setSecondComparator(Operand* comparator);
+        void setPCValueTakenOperand(Operand* operand);
+        void setPCValueNotTakenOperand(Operand* operand);
+        void setInstructionResult(InstructionResult* result);
 };
 
 class LoadStoreInstruction : public Instruction{

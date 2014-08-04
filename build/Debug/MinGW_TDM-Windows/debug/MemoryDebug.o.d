@@ -15,6 +15,7 @@ build/Debug/MinGW_TDM-Windows/debug/MemoryDebug.o: debug/MemoryDebug.cpp \
  debug/../memory/../simulator/../common/Iterator.h \
  debug/../memory/../simulator/TraceManager.h \
  debug/../memory/../simulator/../interconnect/Message.h \
+ debug/../memory/../simulator/../processor/SimpleProcessorStage.h \
  debug/../memory/MemoryResponse.h debug/../memory/../common/Map.h \
  debug/../memory/../interconnect/InterconnectionNetwork.h \
  debug/../memory/../interconnect/../simulator/ISimulable.h \
@@ -67,6 +68,8 @@ debug/../memory/../simulator/../common/Iterator.h:
 debug/../memory/../simulator/TraceManager.h:
 
 debug/../memory/../simulator/../interconnect/Message.h:
+
+debug/../memory/../simulator/../processor/SimpleProcessorStage.h:
 
 debug/../memory/MemoryResponse.h:
 

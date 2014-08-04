@@ -8,7 +8,8 @@
 #ifndef TRACEMANAGER_H
 #define	TRACEMANAGER_H
 
-#include "../interconnect/Message.h"
+#include "../interconnect/Message.h"        
+#include "../processor/SimpleProcessorStage.h"
 
 #include <iostream>
 #include <fstream>
@@ -18,10 +19,10 @@ class CacheLineEntry;
 class Bus;
 class MemoryChunk;
 class Register;
-class SimpleUnpipedProcessor;
 class Instruction;
 class RAM;
-        
+class SimpleUnpipedProcessor;
+
 using namespace std;
 
 /* The TraceManager class is responsible for storing the information the 
@@ -67,6 +68,7 @@ class TraceManager{
         void traceRegisterValue(unsigned long processorId, Register* reg);
         void traceFlagsValue(unsigned long processorId, bool zflag, bool nflag, bool cflag, bool vflag);
         void traceInstructionRegisterValue(unsigned long processorId, Instruction* registerValue);
+        void traceSimpleUnpipedProcessorStage(unsigned long processorId, SimpleProcessorStage stage);
         
         void traceSubmittedMessageToBus(Bus* bus, Message* message);
         void traceCacheLineChange(unsigned long id, unsigned int cacheLineNumber, CacheLineEntry* cacheLine);

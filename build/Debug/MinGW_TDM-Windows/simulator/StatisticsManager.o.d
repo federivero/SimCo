@@ -12,6 +12,7 @@ build/Debug/MinGW_TDM-Windows/simulator/StatisticsManager.o: \
  simulator/../memory/../simulator/../common/Iterator.h \
  simulator/../memory/../simulator/TraceManager.h \
  simulator/../memory/../simulator/../interconnect/Message.h \
+ simulator/../memory/../simulator/../processor/SimpleProcessorStage.h \
  simulator/../memory/../interconnect/Message.h \
  simulator/../memory/MemoryResponse.h simulator/../memory/MemoryRequest.h \
  simulator/../memory/MemoryChunk.h \
@@ -64,6 +65,8 @@ simulator/../memory/../simulator/../common/Iterator.h:
 simulator/../memory/../simulator/TraceManager.h:
 
 simulator/../memory/../simulator/../interconnect/Message.h:
+
+simulator/../memory/../simulator/../processor/SimpleProcessorStage.h:
 
 simulator/../memory/../interconnect/Message.h:
 

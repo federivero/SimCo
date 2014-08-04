@@ -85,7 +85,7 @@ void ExecuteStage::initializeFunctionalUnits(int intAluCount, int intAluLatency,
     this->availableLoadStoreUnits = new Queue<LoadStoreUnit*>(loadStoreUnitCount);
     for (int i = 0; i < loadStoreUnitCount ; i++){
         this->loadStoreFunctionalUnits[i] = new LoadStoreUnit(ISimulable::getNextAvailableId(),
-                (char*)"loadStoreUni",
+                (char*)"loadStoreUnit",
                 this,
                 0);
         loadStoreFunctionalUnits[i]->setDataMemoryInterface(dataMemoryInterface);
@@ -102,7 +102,10 @@ void ExecuteStage::executeInstruction(Instruction* instruction){
     FunctionalUnit* executingFUnit = NULL;
     ALUInstruction* aluInst;
     JumpInstruction* jumpInstruction;
-    IntALU* intAlu;
+    BranchInstruction* branchInstruction;
+    IntALU* intAlu; 
+    MemoryRequest* request;
+    int targetAddress;
     LoadStoreUnit* loadStoreUnit;
     LoadStoreInstruction* loadStoreInstruction;
     switch(instruction->getArchetype()->getInstructionType()){
@@ -124,8 +127,8 @@ void ExecuteStage::executeInstruction(Instruction* instruction){
         case INSTRUCTION_TYPE_LOAD_STORE:
             loadStoreInstruction = (LoadStoreInstruction*) instruction; 
             loadStoreUnit = availableLoadStoreUnits->dequeue();
-            int targetAddress = loadStoreInstruction->getAddressOperand()->getOperandBinaryValue();
-            MemoryRequest* request = new MemoryRequest(targetAddress,loadStoreInstruction->getLoadStoreSize(),loadStoreInstruction->getLoadStoreType(),processor->getId());
+            targetAddress = loadStoreInstruction->getAddressOperand()->getOperandBinaryValue();
+            request = new MemoryRequest(targetAddress,loadStoreInstruction->getLoadStoreSize(),loadStoreInstruction->getLoadStoreType(),processor->getId());
             if (request->getMessageType() == MEMORY_REQUEST_MEMORY_WRITE){
                 request->setRawData(
                         MemoryChunk::fromInt(
@@ -135,6 +138,28 @@ void ExecuteStage::executeInstruction(Instruction* instruction){
             }
             loadStoreUnit->setLoadStoreOperation(request);
             executingFUnit = loadStoreUnit;
+            break;
+        case INSTRUCTION_TYPE_BRANCH:
+            branchInstruction = (BranchInstruction*) instruction;
+            intAlu = availableIntegerAluFUnits->dequeue();
+            // Set apropiate conditional MOV to ALU
+            switch(branchInstruction->getConditionType()){
+                case CONDITION_TYPE_EQUALS:
+                    intAlu->setALUFunction(ALU_FUNCTION_CONDITIONAL_MOV_EQUALS);
+                    break;
+                case CONDITION_TYPE_GREATER:
+                    intAlu->setALUFunction(ALU_FUNCTION_CONDITIONAL_MOV_GREATER);
+                    break;
+                case CONDITION_TYPE_LESS_THAN_OR_EQUALS:
+                    intAlu->setALUFunction(ALU_FUNCTION_CONDITIONAL_MOV_LESS_OR_EQUAL);
+                    break;
+                case CONDITION_TYPE_NOT_EQUALS:
+                    intAlu->setALUFunction(ALU_FUNCTION_CONDITIONAL_MOV_NOT_EQUALS);
+                    break;
+            }
+            intAlu->setFirstOperand(branchInstruction->getSourceOperand(0)->getOperandBinaryValue());
+            intAlu->setSecondOperand(branchInstruction->getSourceOperand(1)->getOperandBinaryValue());
+            executingFUnit = intAlu;
             break;
     }
     executingFUnit->initExecution();

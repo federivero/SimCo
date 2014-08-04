@@ -117,7 +117,7 @@ class IntALU : public ALU{
         // TODO: Using 64 bit variables but could be of a more generic type (IntOperand?)
         long firstOperand;
         long secondOperand;        
-    
+        long thirdOperand; // Used for instructions that need a third operand
     public:
         IntALU(unsigned long id, char* name, ExecuteStage* execStage, int latency);
         
@@ -129,6 +129,7 @@ class IntALU : public ALU{
         void setALUFunction(ALUFunction function);
         void setFirstOperand(long firstOperand);
         void setSecondOperand(long secondOperand);
+        void setThirdOperand(long thirdOperand);
         InstructionResult* getInstructionResult();
 };
 

@@ -61,8 +61,8 @@ unsigned int DimensionOrderRouting::getNextOutputLink(unsigned long originId, un
                         returnValue = DIMENSION_ORDER_LEFT;
                     }
                     break;
-                case DIMENSION_ORDER_CLOSEST_FIRST:
-                    if (abs(xDistance) > abs(yDistance)){
+                case DIMENSION_ORDER_CLOSEST_FIRST:   
+                    if (abs((int)xDistance) > abs((int)yDistance)){
                         if (xDistance < 0){ 
                             returnValue = DIMENSION_ORDER_LEFT;
                         }else{

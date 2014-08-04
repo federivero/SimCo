@@ -35,11 +35,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/1966265013/Instruction.o \
 	${OBJECTDIR}/_ext/1422153699/MemoryRequest.o \
 	${OBJECTDIR}/_ext/1422153699/MemoryResponse.o \
 	${OBJECTDIR}/_ext/997839248/FetchStage.o \
 	${OBJECTDIR}/_ext/997839248/Processor.o \
+	${OBJECTDIR}/architecture/Instruction.o \
 	${OBJECTDIR}/architecture/Loader.o \
 	${OBJECTDIR}/architecture/MIPS32ISA.o \
 	${OBJECTDIR}/architecture/MIPS32Loader.o \
@@ -111,200 +111,200 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/esimco.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/esimco ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/1966265013/Instruction.o: ../ESimCO/architecture/Instruction.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1966265013
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1966265013/Instruction.o ../ESimCO/architecture/Instruction.cpp
-
 ${OBJECTDIR}/_ext/1422153699/MemoryRequest.o: ../ESimCO/memory/MemoryRequest.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1422153699
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1422153699/MemoryRequest.o ../ESimCO/memory/MemoryRequest.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1422153699/MemoryRequest.o ../ESimCO/memory/MemoryRequest.cpp
 
 ${OBJECTDIR}/_ext/1422153699/MemoryResponse.o: ../ESimCO/memory/MemoryResponse.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1422153699
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1422153699/MemoryResponse.o ../ESimCO/memory/MemoryResponse.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1422153699/MemoryResponse.o ../ESimCO/memory/MemoryResponse.cpp
 
 ${OBJECTDIR}/_ext/997839248/FetchStage.o: ../ESimCO/processor/FetchStage.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/997839248
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/997839248/FetchStage.o ../ESimCO/processor/FetchStage.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/997839248/FetchStage.o ../ESimCO/processor/FetchStage.cpp
 
 ${OBJECTDIR}/_ext/997839248/Processor.o: ../ESimCO/processor/Processor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/997839248
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/997839248/Processor.o ../ESimCO/processor/Processor.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/997839248/Processor.o ../ESimCO/processor/Processor.cpp
+
+${OBJECTDIR}/architecture/Instruction.o: architecture/Instruction.cpp 
+	${MKDIR} -p ${OBJECTDIR}/architecture
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/Instruction.o architecture/Instruction.cpp
 
 ${OBJECTDIR}/architecture/Loader.o: architecture/Loader.cpp 
 	${MKDIR} -p ${OBJECTDIR}/architecture
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/architecture/Loader.o architecture/Loader.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/Loader.o architecture/Loader.cpp
 
 ${OBJECTDIR}/architecture/MIPS32ISA.o: architecture/MIPS32ISA.cpp 
 	${MKDIR} -p ${OBJECTDIR}/architecture
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/architecture/MIPS32ISA.o architecture/MIPS32ISA.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/MIPS32ISA.o architecture/MIPS32ISA.cpp
 
 ${OBJECTDIR}/architecture/MIPS32Loader.o: architecture/MIPS32Loader.cpp 
 	${MKDIR} -p ${OBJECTDIR}/architecture
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/architecture/MIPS32Loader.o architecture/MIPS32Loader.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/MIPS32Loader.o architecture/MIPS32Loader.cpp
 
 ${OBJECTDIR}/architecture/Operand.o: architecture/Operand.cpp 
 	${MKDIR} -p ${OBJECTDIR}/architecture
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/architecture/Operand.o architecture/Operand.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/Operand.o architecture/Operand.cpp
 
 ${OBJECTDIR}/architecture/StaticInstruction.o: architecture/StaticInstruction.cpp 
 	${MKDIR} -p ${OBJECTDIR}/architecture
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/architecture/StaticInstruction.o architecture/StaticInstruction.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/StaticInstruction.o architecture/StaticInstruction.cpp
 
 ${OBJECTDIR}/common/Queue.o: common/Queue.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/Queue.o common/Queue.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/common/Queue.o common/Queue.cpp
 
 ${OBJECTDIR}/common/SimpleFileParser.o: common/SimpleFileParser.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/SimpleFileParser.o common/SimpleFileParser.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/common/SimpleFileParser.o common/SimpleFileParser.cpp
 
 ${OBJECTDIR}/debug/MemoryDebug.o: debug/MemoryDebug.cpp 
 	${MKDIR} -p ${OBJECTDIR}/debug
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/debug/MemoryDebug.o debug/MemoryDebug.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/debug/MemoryDebug.o debug/MemoryDebug.cpp
 
 ${OBJECTDIR}/interconnect/Bus.o: interconnect/Bus.cpp 
 	${MKDIR} -p ${OBJECTDIR}/interconnect
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/Bus.o interconnect/Bus.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/Bus.o interconnect/Bus.cpp
 
 ${OBJECTDIR}/interconnect/GlobalInterconnectionNetwork.o: interconnect/GlobalInterconnectionNetwork.cpp 
 	${MKDIR} -p ${OBJECTDIR}/interconnect
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/GlobalInterconnectionNetwork.o interconnect/GlobalInterconnectionNetwork.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/GlobalInterconnectionNetwork.o interconnect/GlobalInterconnectionNetwork.cpp
 
 ${OBJECTDIR}/interconnect/InterconnectionNetwork.o: interconnect/InterconnectionNetwork.cpp 
 	${MKDIR} -p ${OBJECTDIR}/interconnect
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/InterconnectionNetwork.o interconnect/InterconnectionNetwork.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/InterconnectionNetwork.o interconnect/InterconnectionNetwork.cpp
 
 ${OBJECTDIR}/interconnect/Message.o: interconnect/Message.cpp 
 	${MKDIR} -p ${OBJECTDIR}/interconnect
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/Message.o interconnect/Message.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/Message.o interconnect/Message.cpp
 
 ${OBJECTDIR}/interconnect/P2PLink.o: interconnect/P2PLink.cpp 
 	${MKDIR} -p ${OBJECTDIR}/interconnect
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/P2PLink.o interconnect/P2PLink.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/P2PLink.o interconnect/P2PLink.cpp
 
 ${OBJECTDIR}/interconnect/PacketSwitch.o: interconnect/PacketSwitch.cpp 
 	${MKDIR} -p ${OBJECTDIR}/interconnect
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/PacketSwitch.o interconnect/PacketSwitch.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/PacketSwitch.o interconnect/PacketSwitch.cpp
 
 ${OBJECTDIR}/interconnect/RoutingAlgorithm.o: interconnect/RoutingAlgorithm.cpp 
 	${MKDIR} -p ${OBJECTDIR}/interconnect
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/RoutingAlgorithm.o interconnect/RoutingAlgorithm.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/RoutingAlgorithm.o interconnect/RoutingAlgorithm.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/memory/Cache.o: memory/Cache.cpp 
 	${MKDIR} -p ${OBJECTDIR}/memory
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/memory/Cache.o memory/Cache.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/memory/Cache.o memory/Cache.cpp
 
 ${OBJECTDIR}/memory/IMessageDispatcher.o: memory/IMessageDispatcher.cpp 
 	${MKDIR} -p ${OBJECTDIR}/memory
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/memory/IMessageDispatcher.o memory/IMessageDispatcher.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/memory/IMessageDispatcher.o memory/IMessageDispatcher.cpp
 
 ${OBJECTDIR}/memory/MemoryDevice.o: memory/MemoryDevice.cpp 
 	${MKDIR} -p ${OBJECTDIR}/memory
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/memory/MemoryDevice.o memory/MemoryDevice.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/memory/MemoryDevice.o memory/MemoryDevice.cpp
 
 ${OBJECTDIR}/memory/MemoryTable.o: memory/MemoryTable.cpp 
 	${MKDIR} -p ${OBJECTDIR}/memory
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/memory/MemoryTable.o memory/MemoryTable.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/memory/MemoryTable.o memory/MemoryTable.cpp
 
 ${OBJECTDIR}/memory/RAM.o: memory/RAM.cpp 
 	${MKDIR} -p ${OBJECTDIR}/memory
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/memory/RAM.o memory/RAM.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/memory/RAM.o memory/RAM.cpp
 
 ${OBJECTDIR}/processor/ExecuteStage.o: processor/ExecuteStage.cpp 
 	${MKDIR} -p ${OBJECTDIR}/processor
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/processor/ExecuteStage.o processor/ExecuteStage.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/processor/ExecuteStage.o processor/ExecuteStage.cpp
 
 ${OBJECTDIR}/processor/FunctionalUnit.o: processor/FunctionalUnit.cpp 
 	${MKDIR} -p ${OBJECTDIR}/processor
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/processor/FunctionalUnit.o processor/FunctionalUnit.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/processor/FunctionalUnit.o processor/FunctionalUnit.cpp
 
 ${OBJECTDIR}/processor/Register.o: processor/Register.cpp 
 	${MKDIR} -p ${OBJECTDIR}/processor
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/processor/Register.o processor/Register.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/processor/Register.o processor/Register.cpp
 
 ${OBJECTDIR}/processor/RegisterFile.o: processor/RegisterFile.cpp 
 	${MKDIR} -p ${OBJECTDIR}/processor
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/processor/RegisterFile.o processor/RegisterFile.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/processor/RegisterFile.o processor/RegisterFile.cpp
 
 ${OBJECTDIR}/processor/SimpleUnpipedProcessor.o: processor/SimpleUnpipedProcessor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/processor
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/processor/SimpleUnpipedProcessor.o processor/SimpleUnpipedProcessor.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/processor/SimpleUnpipedProcessor.o processor/SimpleUnpipedProcessor.cpp
 
 ${OBJECTDIR}/simulator/ConfigManager.o: simulator/ConfigManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/simulator
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulator/ConfigManager.o simulator/ConfigManager.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulator/ConfigManager.o simulator/ConfigManager.cpp
 
 ${OBJECTDIR}/simulator/ExecutionManager.o: simulator/ExecutionManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/simulator
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulator/ExecutionManager.o simulator/ExecutionManager.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulator/ExecutionManager.o simulator/ExecutionManager.cpp
 
 ${OBJECTDIR}/simulator/ISimulable.o: simulator/ISimulable.cpp 
 	${MKDIR} -p ${OBJECTDIR}/simulator
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulator/ISimulable.o simulator/ISimulable.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulator/ISimulable.o simulator/ISimulable.cpp
 
 ${OBJECTDIR}/simulator/StatisticsManager.o: simulator/StatisticsManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/simulator
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulator/StatisticsManager.o simulator/StatisticsManager.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulator/StatisticsManager.o simulator/StatisticsManager.cpp
 
 ${OBJECTDIR}/simulator/TraceManager.o: simulator/TraceManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/simulator
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulator/TraceManager.o simulator/TraceManager.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulator/TraceManager.o simulator/TraceManager.cpp
 
 ${OBJECTDIR}/system/ComputationalSystem.o: system/ComputationalSystem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/system
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/system/ComputationalSystem.o system/ComputationalSystem.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/system/ComputationalSystem.o system/ComputationalSystem.cpp
 
 ${OBJECTDIR}/system/MemoryMapEntry.o: system/MemoryMapEntry.cpp 
 	${MKDIR} -p ${OBJECTDIR}/system
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/system/MemoryMapEntry.o system/MemoryMapEntry.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/system/MemoryMapEntry.o system/MemoryMapEntry.cpp
 
 ${OBJECTDIR}/system/MemorySystem.o: system/MemorySystem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/system
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/system/MemorySystem.o system/MemorySystem.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/system/MemorySystem.o system/MemorySystem.cpp
 
 # Subprojects
 .build-subprojects:
@@ -338,52 +338,39 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/MainTests.o ${OBJECTFILES:%.o=%_nomain
 
 ${TESTDIR}/tests/MemoryHierarchyTests.o: tests/MemoryHierarchyTests.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
-	${RM} $@.d
-	$(COMPILE.cc) -g -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/MemoryHierarchyTests.o tests/MemoryHierarchyTests.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/MemoryHierarchyTests.o tests/MemoryHierarchyTests.cpp
 
 
 ${TESTDIR}/tests/MIPS32ISAUnitTest.o: tests/MIPS32ISAUnitTest.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
-	${RM} $@.d
-	$(COMPILE.cc) -g -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/MIPS32ISAUnitTest.o tests/MIPS32ISAUnitTest.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/MIPS32ISAUnitTest.o tests/MIPS32ISAUnitTest.cpp
 
 
 ${TESTDIR}/tests/MultipleProcessorTest.o: tests/MultipleProcessorTest.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
-	${RM} $@.d
-	$(COMPILE.cc) -g -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/MultipleProcessorTest.o tests/MultipleProcessorTest.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/MultipleProcessorTest.o tests/MultipleProcessorTest.cpp
 
 
 ${TESTDIR}/tests/RoutingAlgorithmTests.o: tests/RoutingAlgorithmTests.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
-	${RM} $@.d
-	$(COMPILE.cc) -g -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/RoutingAlgorithmTests.o tests/RoutingAlgorithmTests.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/RoutingAlgorithmTests.o tests/RoutingAlgorithmTests.cpp
 
 
 ${TESTDIR}/tests/SimpleUnpipedProcessorTest.o: tests/SimpleUnpipedProcessorTest.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
-	${RM} $@.d
-	$(COMPILE.cc) -g -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/SimpleUnpipedProcessorTest.o tests/SimpleUnpipedProcessorTest.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/SimpleUnpipedProcessorTest.o tests/SimpleUnpipedProcessorTest.cpp
 
 
 ${TESTDIR}/tests/MainTests.o: tests/MainTests.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
-	${RM} $@.d
-	$(COMPILE.cc) -g -I. -I. -I. -MMD -MP -MF $@.d -o ${TESTDIR}/tests/MainTests.o tests/MainTests.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/MainTests.o tests/MainTests.cpp
 
-
-${OBJECTDIR}/_ext/1966265013/Instruction_nomain.o: ${OBJECTDIR}/_ext/1966265013/Instruction.o ../ESimCO/architecture/Instruction.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1966265013
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/1966265013/Instruction.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1966265013/Instruction_nomain.o ../ESimCO/architecture/Instruction.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/_ext/1966265013/Instruction.o ${OBJECTDIR}/_ext/1966265013/Instruction_nomain.o;\
-	fi
 
 ${OBJECTDIR}/_ext/1422153699/MemoryRequest_nomain.o: ${OBJECTDIR}/_ext/1422153699/MemoryRequest.o ../ESimCO/memory/MemoryRequest.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1422153699
@@ -392,8 +379,8 @@ ${OBJECTDIR}/_ext/1422153699/MemoryRequest_nomain.o: ${OBJECTDIR}/_ext/142215369
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1422153699/MemoryRequest_nomain.o ../ESimCO/memory/MemoryRequest.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1422153699/MemoryRequest_nomain.o ../ESimCO/memory/MemoryRequest.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/_ext/1422153699/MemoryRequest.o ${OBJECTDIR}/_ext/1422153699/MemoryRequest_nomain.o;\
 	fi
@@ -405,8 +392,8 @@ ${OBJECTDIR}/_ext/1422153699/MemoryResponse_nomain.o: ${OBJECTDIR}/_ext/14221536
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1422153699/MemoryResponse_nomain.o ../ESimCO/memory/MemoryResponse.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1422153699/MemoryResponse_nomain.o ../ESimCO/memory/MemoryResponse.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/_ext/1422153699/MemoryResponse.o ${OBJECTDIR}/_ext/1422153699/MemoryResponse_nomain.o;\
 	fi
@@ -418,8 +405,8 @@ ${OBJECTDIR}/_ext/997839248/FetchStage_nomain.o: ${OBJECTDIR}/_ext/997839248/Fet
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/997839248/FetchStage_nomain.o ../ESimCO/processor/FetchStage.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/997839248/FetchStage_nomain.o ../ESimCO/processor/FetchStage.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/_ext/997839248/FetchStage.o ${OBJECTDIR}/_ext/997839248/FetchStage_nomain.o;\
 	fi
@@ -431,10 +418,23 @@ ${OBJECTDIR}/_ext/997839248/Processor_nomain.o: ${OBJECTDIR}/_ext/997839248/Proc
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/997839248/Processor_nomain.o ../ESimCO/processor/Processor.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/997839248/Processor_nomain.o ../ESimCO/processor/Processor.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/_ext/997839248/Processor.o ${OBJECTDIR}/_ext/997839248/Processor_nomain.o;\
+	fi
+
+${OBJECTDIR}/architecture/Instruction_nomain.o: ${OBJECTDIR}/architecture/Instruction.o architecture/Instruction.cpp 
+	${MKDIR} -p ${OBJECTDIR}/architecture
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/architecture/Instruction.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/Instruction_nomain.o architecture/Instruction.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/architecture/Instruction.o ${OBJECTDIR}/architecture/Instruction_nomain.o;\
 	fi
 
 ${OBJECTDIR}/architecture/Loader_nomain.o: ${OBJECTDIR}/architecture/Loader.o architecture/Loader.cpp 
@@ -444,8 +444,8 @@ ${OBJECTDIR}/architecture/Loader_nomain.o: ${OBJECTDIR}/architecture/Loader.o ar
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/architecture/Loader_nomain.o architecture/Loader.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/Loader_nomain.o architecture/Loader.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/architecture/Loader.o ${OBJECTDIR}/architecture/Loader_nomain.o;\
 	fi
@@ -457,8 +457,8 @@ ${OBJECTDIR}/architecture/MIPS32ISA_nomain.o: ${OBJECTDIR}/architecture/MIPS32IS
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/architecture/MIPS32ISA_nomain.o architecture/MIPS32ISA.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/MIPS32ISA_nomain.o architecture/MIPS32ISA.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/architecture/MIPS32ISA.o ${OBJECTDIR}/architecture/MIPS32ISA_nomain.o;\
 	fi
@@ -470,8 +470,8 @@ ${OBJECTDIR}/architecture/MIPS32Loader_nomain.o: ${OBJECTDIR}/architecture/MIPS3
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/architecture/MIPS32Loader_nomain.o architecture/MIPS32Loader.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/MIPS32Loader_nomain.o architecture/MIPS32Loader.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/architecture/MIPS32Loader.o ${OBJECTDIR}/architecture/MIPS32Loader_nomain.o;\
 	fi
@@ -483,8 +483,8 @@ ${OBJECTDIR}/architecture/Operand_nomain.o: ${OBJECTDIR}/architecture/Operand.o 
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/architecture/Operand_nomain.o architecture/Operand.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/Operand_nomain.o architecture/Operand.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/architecture/Operand.o ${OBJECTDIR}/architecture/Operand_nomain.o;\
 	fi
@@ -496,8 +496,8 @@ ${OBJECTDIR}/architecture/StaticInstruction_nomain.o: ${OBJECTDIR}/architecture/
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/architecture/StaticInstruction_nomain.o architecture/StaticInstruction.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/architecture/StaticInstruction_nomain.o architecture/StaticInstruction.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/architecture/StaticInstruction.o ${OBJECTDIR}/architecture/StaticInstruction_nomain.o;\
 	fi
@@ -509,8 +509,8 @@ ${OBJECTDIR}/common/Queue_nomain.o: ${OBJECTDIR}/common/Queue.o common/Queue.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/Queue_nomain.o common/Queue.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/common/Queue_nomain.o common/Queue.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/common/Queue.o ${OBJECTDIR}/common/Queue_nomain.o;\
 	fi
@@ -522,8 +522,8 @@ ${OBJECTDIR}/common/SimpleFileParser_nomain.o: ${OBJECTDIR}/common/SimpleFilePar
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/SimpleFileParser_nomain.o common/SimpleFileParser.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/common/SimpleFileParser_nomain.o common/SimpleFileParser.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/common/SimpleFileParser.o ${OBJECTDIR}/common/SimpleFileParser_nomain.o;\
 	fi
@@ -535,8 +535,8 @@ ${OBJECTDIR}/debug/MemoryDebug_nomain.o: ${OBJECTDIR}/debug/MemoryDebug.o debug/
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/debug/MemoryDebug_nomain.o debug/MemoryDebug.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/debug/MemoryDebug_nomain.o debug/MemoryDebug.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/debug/MemoryDebug.o ${OBJECTDIR}/debug/MemoryDebug_nomain.o;\
 	fi
@@ -548,8 +548,8 @@ ${OBJECTDIR}/interconnect/Bus_nomain.o: ${OBJECTDIR}/interconnect/Bus.o intercon
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/Bus_nomain.o interconnect/Bus.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/Bus_nomain.o interconnect/Bus.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/interconnect/Bus.o ${OBJECTDIR}/interconnect/Bus_nomain.o;\
 	fi
@@ -561,8 +561,8 @@ ${OBJECTDIR}/interconnect/GlobalInterconnectionNetwork_nomain.o: ${OBJECTDIR}/in
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/GlobalInterconnectionNetwork_nomain.o interconnect/GlobalInterconnectionNetwork.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/GlobalInterconnectionNetwork_nomain.o interconnect/GlobalInterconnectionNetwork.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/interconnect/GlobalInterconnectionNetwork.o ${OBJECTDIR}/interconnect/GlobalInterconnectionNetwork_nomain.o;\
 	fi
@@ -574,8 +574,8 @@ ${OBJECTDIR}/interconnect/InterconnectionNetwork_nomain.o: ${OBJECTDIR}/intercon
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/InterconnectionNetwork_nomain.o interconnect/InterconnectionNetwork.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/InterconnectionNetwork_nomain.o interconnect/InterconnectionNetwork.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/interconnect/InterconnectionNetwork.o ${OBJECTDIR}/interconnect/InterconnectionNetwork_nomain.o;\
 	fi
@@ -587,8 +587,8 @@ ${OBJECTDIR}/interconnect/Message_nomain.o: ${OBJECTDIR}/interconnect/Message.o 
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/Message_nomain.o interconnect/Message.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/Message_nomain.o interconnect/Message.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/interconnect/Message.o ${OBJECTDIR}/interconnect/Message_nomain.o;\
 	fi
@@ -600,8 +600,8 @@ ${OBJECTDIR}/interconnect/P2PLink_nomain.o: ${OBJECTDIR}/interconnect/P2PLink.o 
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/P2PLink_nomain.o interconnect/P2PLink.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/P2PLink_nomain.o interconnect/P2PLink.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/interconnect/P2PLink.o ${OBJECTDIR}/interconnect/P2PLink_nomain.o;\
 	fi
@@ -613,8 +613,8 @@ ${OBJECTDIR}/interconnect/PacketSwitch_nomain.o: ${OBJECTDIR}/interconnect/Packe
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/PacketSwitch_nomain.o interconnect/PacketSwitch.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/PacketSwitch_nomain.o interconnect/PacketSwitch.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/interconnect/PacketSwitch.o ${OBJECTDIR}/interconnect/PacketSwitch_nomain.o;\
 	fi
@@ -626,8 +626,8 @@ ${OBJECTDIR}/interconnect/RoutingAlgorithm_nomain.o: ${OBJECTDIR}/interconnect/R
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/interconnect/RoutingAlgorithm_nomain.o interconnect/RoutingAlgorithm.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/interconnect/RoutingAlgorithm_nomain.o interconnect/RoutingAlgorithm.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/interconnect/RoutingAlgorithm.o ${OBJECTDIR}/interconnect/RoutingAlgorithm_nomain.o;\
 	fi
@@ -639,8 +639,8 @@ ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/main_nomain.o main.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main_nomain.o main.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/main.o ${OBJECTDIR}/main_nomain.o;\
 	fi
@@ -652,8 +652,8 @@ ${OBJECTDIR}/memory/Cache_nomain.o: ${OBJECTDIR}/memory/Cache.o memory/Cache.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/memory/Cache_nomain.o memory/Cache.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/memory/Cache_nomain.o memory/Cache.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/memory/Cache.o ${OBJECTDIR}/memory/Cache_nomain.o;\
 	fi
@@ -665,8 +665,8 @@ ${OBJECTDIR}/memory/IMessageDispatcher_nomain.o: ${OBJECTDIR}/memory/IMessageDis
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/memory/IMessageDispatcher_nomain.o memory/IMessageDispatcher.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/memory/IMessageDispatcher_nomain.o memory/IMessageDispatcher.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/memory/IMessageDispatcher.o ${OBJECTDIR}/memory/IMessageDispatcher_nomain.o;\
 	fi
@@ -678,8 +678,8 @@ ${OBJECTDIR}/memory/MemoryDevice_nomain.o: ${OBJECTDIR}/memory/MemoryDevice.o me
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/memory/MemoryDevice_nomain.o memory/MemoryDevice.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/memory/MemoryDevice_nomain.o memory/MemoryDevice.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/memory/MemoryDevice.o ${OBJECTDIR}/memory/MemoryDevice_nomain.o;\
 	fi
@@ -691,8 +691,8 @@ ${OBJECTDIR}/memory/MemoryTable_nomain.o: ${OBJECTDIR}/memory/MemoryTable.o memo
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/memory/MemoryTable_nomain.o memory/MemoryTable.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/memory/MemoryTable_nomain.o memory/MemoryTable.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/memory/MemoryTable.o ${OBJECTDIR}/memory/MemoryTable_nomain.o;\
 	fi
@@ -704,8 +704,8 @@ ${OBJECTDIR}/memory/RAM_nomain.o: ${OBJECTDIR}/memory/RAM.o memory/RAM.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/memory/RAM_nomain.o memory/RAM.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/memory/RAM_nomain.o memory/RAM.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/memory/RAM.o ${OBJECTDIR}/memory/RAM_nomain.o;\
 	fi
@@ -717,8 +717,8 @@ ${OBJECTDIR}/processor/ExecuteStage_nomain.o: ${OBJECTDIR}/processor/ExecuteStag
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/processor/ExecuteStage_nomain.o processor/ExecuteStage.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/processor/ExecuteStage_nomain.o processor/ExecuteStage.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/processor/ExecuteStage.o ${OBJECTDIR}/processor/ExecuteStage_nomain.o;\
 	fi
@@ -730,8 +730,8 @@ ${OBJECTDIR}/processor/FunctionalUnit_nomain.o: ${OBJECTDIR}/processor/Functiona
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/processor/FunctionalUnit_nomain.o processor/FunctionalUnit.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/processor/FunctionalUnit_nomain.o processor/FunctionalUnit.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/processor/FunctionalUnit.o ${OBJECTDIR}/processor/FunctionalUnit_nomain.o;\
 	fi
@@ -743,8 +743,8 @@ ${OBJECTDIR}/processor/Register_nomain.o: ${OBJECTDIR}/processor/Register.o proc
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/processor/Register_nomain.o processor/Register.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/processor/Register_nomain.o processor/Register.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/processor/Register.o ${OBJECTDIR}/processor/Register_nomain.o;\
 	fi
@@ -756,8 +756,8 @@ ${OBJECTDIR}/processor/RegisterFile_nomain.o: ${OBJECTDIR}/processor/RegisterFil
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/processor/RegisterFile_nomain.o processor/RegisterFile.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/processor/RegisterFile_nomain.o processor/RegisterFile.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/processor/RegisterFile.o ${OBJECTDIR}/processor/RegisterFile_nomain.o;\
 	fi
@@ -769,8 +769,8 @@ ${OBJECTDIR}/processor/SimpleUnpipedProcessor_nomain.o: ${OBJECTDIR}/processor/S
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/processor/SimpleUnpipedProcessor_nomain.o processor/SimpleUnpipedProcessor.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/processor/SimpleUnpipedProcessor_nomain.o processor/SimpleUnpipedProcessor.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/processor/SimpleUnpipedProcessor.o ${OBJECTDIR}/processor/SimpleUnpipedProcessor_nomain.o;\
 	fi
@@ -782,8 +782,8 @@ ${OBJECTDIR}/simulator/ConfigManager_nomain.o: ${OBJECTDIR}/simulator/ConfigMana
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulator/ConfigManager_nomain.o simulator/ConfigManager.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulator/ConfigManager_nomain.o simulator/ConfigManager.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/simulator/ConfigManager.o ${OBJECTDIR}/simulator/ConfigManager_nomain.o;\
 	fi
@@ -795,8 +795,8 @@ ${OBJECTDIR}/simulator/ExecutionManager_nomain.o: ${OBJECTDIR}/simulator/Executi
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulator/ExecutionManager_nomain.o simulator/ExecutionManager.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulator/ExecutionManager_nomain.o simulator/ExecutionManager.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/simulator/ExecutionManager.o ${OBJECTDIR}/simulator/ExecutionManager_nomain.o;\
 	fi
@@ -808,8 +808,8 @@ ${OBJECTDIR}/simulator/ISimulable_nomain.o: ${OBJECTDIR}/simulator/ISimulable.o 
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulator/ISimulable_nomain.o simulator/ISimulable.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulator/ISimulable_nomain.o simulator/ISimulable.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/simulator/ISimulable.o ${OBJECTDIR}/simulator/ISimulable_nomain.o;\
 	fi
@@ -821,8 +821,8 @@ ${OBJECTDIR}/simulator/StatisticsManager_nomain.o: ${OBJECTDIR}/simulator/Statis
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulator/StatisticsManager_nomain.o simulator/StatisticsManager.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulator/StatisticsManager_nomain.o simulator/StatisticsManager.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/simulator/StatisticsManager.o ${OBJECTDIR}/simulator/StatisticsManager_nomain.o;\
 	fi
@@ -834,8 +834,8 @@ ${OBJECTDIR}/simulator/TraceManager_nomain.o: ${OBJECTDIR}/simulator/TraceManage
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/simulator/TraceManager_nomain.o simulator/TraceManager.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulator/TraceManager_nomain.o simulator/TraceManager.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/simulator/TraceManager.o ${OBJECTDIR}/simulator/TraceManager_nomain.o;\
 	fi
@@ -847,8 +847,8 @@ ${OBJECTDIR}/system/ComputationalSystem_nomain.o: ${OBJECTDIR}/system/Computatio
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/system/ComputationalSystem_nomain.o system/ComputationalSystem.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/system/ComputationalSystem_nomain.o system/ComputationalSystem.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/system/ComputationalSystem.o ${OBJECTDIR}/system/ComputationalSystem_nomain.o;\
 	fi
@@ -860,8 +860,8 @@ ${OBJECTDIR}/system/MemoryMapEntry_nomain.o: ${OBJECTDIR}/system/MemoryMapEntry.
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/system/MemoryMapEntry_nomain.o system/MemoryMapEntry.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/system/MemoryMapEntry_nomain.o system/MemoryMapEntry.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/system/MemoryMapEntry.o ${OBJECTDIR}/system/MemoryMapEntry_nomain.o;\
 	fi
@@ -873,8 +873,8 @@ ${OBJECTDIR}/system/MemorySystem_nomain.o: ${OBJECTDIR}/system/MemorySystem.o sy
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
-	    ${RM} $@.d;\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/system/MemorySystem_nomain.o system/MemorySystem.cpp;\
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/system/MemorySystem_nomain.o system/MemorySystem.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/system/MemorySystem.o ${OBJECTDIR}/system/MemorySystem_nomain.o;\
 	fi

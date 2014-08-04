@@ -15,6 +15,7 @@ build/Debug/MinGW_TDM-Windows/processor/FunctionalUnit.o: \
  processor/../simulator/../common/Iterator.h \
  processor/../simulator/TraceManager.h \
  processor/../simulator/../interconnect/Message.h \
+ processor/../simulator/../processor/SimpleProcessorStage.h \
  processor/../memory/IMessageDispatcher.h \
  processor/../memory/../simulator/IEventCallback.h \
  processor/../memory/../simulator/ISimulable.h \
@@ -67,6 +68,8 @@ processor/../simulator/../common/Iterator.h:
 processor/../simulator/TraceManager.h:
 
 processor/../simulator/../interconnect/Message.h:
+
+processor/../simulator/../processor/SimpleProcessorStage.h:
 
 processor/../memory/IMessageDispatcher.h:
 

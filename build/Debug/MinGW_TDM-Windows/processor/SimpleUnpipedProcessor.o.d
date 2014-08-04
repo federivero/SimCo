@@ -9,6 +9,7 @@ build/Debug/MinGW_TDM-Windows/processor/SimpleUnpipedProcessor.o: \
  processor/../simulator/../common/Iterator.h \
  processor/../simulator/TraceManager.h \
  processor/../simulator/../interconnect/Message.h \
+ processor/../simulator/../processor/SimpleProcessorStage.h \
  processor/../memory/IMessageDispatcher.h \
  processor/../memory/../simulator/IEventCallback.h \
  processor/../memory/../simulator/ISimulable.h \
@@ -38,8 +39,8 @@ build/Debug/MinGW_TDM-Windows/processor/SimpleUnpipedProcessor.o: \
  processor/ExecuteStage.h processor/../architecture/Operand.h \
  processor/../architecture/../processor/Register.h \
  processor/FunctionalUnit.h processor/../common/Map.h \
- processor/SimpleUnpipedProcessor.h processor/RegisterFile.h \
- processor/../simulator/TraceManager.h
+ processor/SimpleUnpipedProcessor.h processor/SimpleProcessorStage.h \
+ processor/RegisterFile.h processor/../simulator/TraceManager.h
 
 processor/../simulator/ISimulable.h:
 
@@ -60,6 +61,8 @@ processor/../simulator/../common/Iterator.h:
 processor/../simulator/TraceManager.h:
 
 processor/../simulator/../interconnect/Message.h:
+
+processor/../simulator/../processor/SimpleProcessorStage.h:
 
 processor/../memory/IMessageDispatcher.h:
 
@@ -138,6 +141,8 @@ processor/FunctionalUnit.h:
 processor/../common/Map.h:
 
 processor/SimpleUnpipedProcessor.h:
+
+processor/SimpleProcessorStage.h:
 
 processor/RegisterFile.h:
 

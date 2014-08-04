@@ -13,6 +13,7 @@ build/Debug/MinGW_TDM-Windows/main.o: main.cpp simulator/ConfigManager.h \
  memory/../simulator/../common/Iterator.h \
  memory/../simulator/TraceManager.h \
  memory/../simulator/../interconnect/Message.h \
+ memory/../simulator/../processor/SimpleProcessorStage.h \
  memory/../interconnect/Message.h memory/MemoryResponse.h \
  memory/MemoryRequest.h memory/MemoryChunk.h memory/../common/Map.h \
  memory/../interconnect/InterconnectionNetwork.h \
@@ -32,9 +33,10 @@ build/Debug/MinGW_TDM-Windows/main.o: main.cpp simulator/ConfigManager.h \
  interconnect/../memory/MemoryRequest.h interconnect/../common/Map.h \
  interconnect/../common/Queue.h exceptions/RuntimeException.h \
  processor/SimpleUnpipedProcessor.h processor/Processor.h \
- processor/../simulator/ISimulable.h processor/Processor.h \
- architecture/MIPS32ISA.h architecture/Instruction.h \
- architecture/StaticInstruction.h architecture/../memory/MemoryChunk.h \
+ processor/../simulator/ISimulable.h processor/SimpleProcessorStage.h \
+ processor/Processor.h architecture/MIPS32ISA.h \
+ architecture/Instruction.h architecture/StaticInstruction.h \
+ architecture/../memory/MemoryChunk.h \
  architecture/../interconnect/Message.h architecture/ISA.h memory/RAM.h \
  memory/MemoryTable.h architecture/MIPS32Loader.h \
  architecture/../system/MemorySystem.h \
@@ -80,6 +82,8 @@ memory/../simulator/../common/Iterator.h:
 memory/../simulator/TraceManager.h:
 
 memory/../simulator/../interconnect/Message.h:
+
+memory/../simulator/../processor/SimpleProcessorStage.h:
 
 memory/../interconnect/Message.h:
 
@@ -144,6 +148,8 @@ processor/SimpleUnpipedProcessor.h:
 processor/Processor.h:
 
 processor/../simulator/ISimulable.h:
+
+processor/SimpleProcessorStage.h:
 
 processor/Processor.h:
 

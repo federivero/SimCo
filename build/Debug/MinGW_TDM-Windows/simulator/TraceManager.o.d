@@ -1,6 +1,8 @@
 build/Debug/MinGW_TDM-Windows/simulator/TraceManager.o: \
  simulator/TraceManager.cpp simulator/TraceManager.h \
- simulator/../interconnect/Message.h simulator/../simulator/ISimulable.h \
+ simulator/../interconnect/Message.h \
+ simulator/../processor/SimpleProcessorStage.h \
+ simulator/../simulator/ISimulable.h \
  simulator/../simulator/IEventCallback.h \
  simulator/../simulator/StatisticManager.h \
  simulator/../simulator/../common/Map.h \
@@ -48,11 +50,14 @@ build/Debug/MinGW_TDM-Windows/simulator/TraceManager.o: \
  simulator/../common/Utils.h \
  simulator/../processor/SimpleUnpipedProcessor.h \
  simulator/../processor/Processor.h \
- simulator/../processor/../simulator/ISimulable.h
+ simulator/../processor/../simulator/ISimulable.h \
+ simulator/../processor/SimpleProcessorStage.h
 
 simulator/TraceManager.h:
 
 simulator/../interconnect/Message.h:
+
+simulator/../processor/SimpleProcessorStage.h:
 
 simulator/../simulator/ISimulable.h:
 
@@ -161,3 +166,5 @@ simulator/../processor/SimpleUnpipedProcessor.h:
 simulator/../processor/Processor.h:
 
 simulator/../processor/../simulator/ISimulable.h:
+
+simulator/../processor/SimpleProcessorStage.h:

@@ -9,17 +9,11 @@
 #define	SIMPLEUNPIPEDPROCESSOR_H
 
 #include "Processor.h"
+#include "SimpleProcessorStage.h"
 
 class RegisterFile;
 class InterconnectionNetwork;
 
-enum SimpleProcessorStage{
-    SP_STAGE_FETCH,
-    SP_STAGE_DECODE,
-    SP_STAGE_EXECUTE,
-    SP_STAGE_WRITEBACK,
-    SP_STAGE_IDLE // Used to stop de processor
-};
 
 /* Class Simple Unpiped Processor simulates a CPU with no pipeline registers. 
    Instructions take 4 cycles at minimum to execute, since fetching takes at

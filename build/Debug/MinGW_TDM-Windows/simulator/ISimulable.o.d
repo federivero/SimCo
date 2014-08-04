@@ -5,6 +5,7 @@ build/Debug/MinGW_TDM-Windows/simulator/ISimulable.o: \
  simulator/../common/Queue.h simulator/../common/List.h \
  simulator/../common/Iterator.h simulator/TraceManager.h \
  simulator/../interconnect/Message.h \
+ simulator/../processor/SimpleProcessorStage.h \
  simulator/../exceptions/UnsuportedEventException.h
 
 simulator/ISimulable.h:
@@ -26,5 +27,7 @@ simulator/../common/Iterator.h:
 simulator/TraceManager.h:
 
 simulator/../interconnect/Message.h:
+
+simulator/../processor/SimpleProcessorStage.h:
 
 simulator/../exceptions/UnsuportedEventException.h:

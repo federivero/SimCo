@@ -11,6 +11,7 @@ build/Debug/MinGW_TDM-Windows/_ext/997839248/FetchStage.o: \
  ../ESimCO/processor/../interconnect/../simulator/../common/Iterator.h \
  ../ESimCO/processor/../interconnect/../simulator/TraceManager.h \
  ../ESimCO/processor/../interconnect/../simulator/../interconnect/Message.h \
+ ../ESimCO/processor/../interconnect/../simulator/../processor/SimpleProcessorStage.h \
  ../ESimCO/processor/../interconnect/../system/ComputationalSystem.h \
  ../ESimCO/processor/../interconnect/../memory/MemoryRequest.h \
  ../ESimCO/processor/../interconnect/../memory/../interconnect/Message.h \
@@ -65,6 +66,8 @@ build/Debug/MinGW_TDM-Windows/_ext/997839248/FetchStage.o: \
 ../ESimCO/processor/../interconnect/../simulator/TraceManager.h:
 
 ../ESimCO/processor/../interconnect/../simulator/../interconnect/Message.h:
+
+../ESimCO/processor/../interconnect/../simulator/../processor/SimpleProcessorStage.h:
 
 ../ESimCO/processor/../interconnect/../system/ComputationalSystem.h:
 

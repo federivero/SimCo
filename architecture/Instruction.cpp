@@ -1,6 +1,7 @@
 
 #include "../exceptions/RuntimeException.h"
 #include "Instruction.h"
+#include "Operand.h"
 
 Instruction::Instruction(){
     
@@ -109,6 +110,78 @@ Operand* JumpInstruction::getSourceOperand(int operandNumber){
     }else{
         return destinationOperand;
     }
+}
+
+// BranchInstruction
+
+BranchInstruction::BranchInstruction(){
+    this->destinationOperand = new SpecialRegisterOperand(SPECIAL_REGISTER_PC);
+}
+
+Operand* BranchInstruction::getSourceOperand(int operandNumber){
+    if (operandNumber == 0){
+        return firstComparator;
+    }else if (operandNumber == 1){
+        return secondComparator;
+    }else if (operandNumber == 2){
+        return pcValueTakenOperand;
+    }else if (operandNumber == 3){
+        return pcValueNotTakenOperand;
+    }
+}
+
+Operand* BranchInstruction::getDestinationOperand(int operandNumber){
+    if (operandNumber == 0){
+        return destinationOperand;
+    }else{
+        throw new RuntimeException("Runtime error: trying to get second destination operand of a BranchInstruction");
+    }
+}
+
+void BranchInstruction::setDestinationOperand(int destinationOperandNumber, Operand* operand){
+    if (destinationOperandNumber == 0){
+        destinationOperand = operand;
+    }else{
+        throw new RuntimeException("Runtime error: trying to set second destination operand of a BranchInstruction");
+    }
+}
+ConditionType BranchInstruction::getConditionType(){
+    return conditionType;
+}
+
+void BranchInstruction::setConditionType(ConditionType type){
+    this->conditionType = type;
+}
+    
+void BranchInstruction::setFirstComparator(Operand* comparator){
+    this->firstComparator = comparator;
+}
+
+void BranchInstruction::setSecondComparator(Operand* comparator){
+    this->secondComparator = comparator;
+}
+
+void BranchInstruction::setPCValueTakenOperand(Operand* operand){
+    this->pcValueTakenOperand = operand;
+}
+
+void BranchInstruction::setPCValueNotTakenOperand(Operand* operand){
+    this->pcValueNotTakenOperand = operand;
+}
+
+void BranchInstruction::setInstructionResult(InstructionResult* result){
+    if (result->getType() != INSTRUCTION_RESULT_INT){
+        throw new RuntimeException("Non integer result being set to Branch Instruction");
+    }
+    InstructionResultInt* instResultInt = (InstructionResultInt*) result;
+    if (instResultInt->getResult() == 0){
+        // Branch not taken
+        instResultInt->setResult(pcValueNotTakenOperand->getOperandBinaryValue());
+    }else{
+        // Branch taken
+        instResultInt->setResult(pcValueTakenOperand->getOperandBinaryValue());
+    }
+    instructionResult = result;
 }
 
 // LoadStoreInstruction 

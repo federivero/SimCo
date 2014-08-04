@@ -15,6 +15,7 @@ build/Debug/MinGW_TDM-Windows/system/MemorySystem.o: \
  system/../memory/../simulator/../common/Iterator.h \
  system/../memory/../simulator/TraceManager.h \
  system/../memory/../simulator/../interconnect/Message.h \
+ system/../memory/../simulator/../processor/SimpleProcessorStage.h \
  system/../memory/../interconnect/Message.h \
  system/../memory/MemoryResponse.h system/../memory/MemoryRequest.h \
  system/../memory/MemoryChunk.h system/../memory/../common/Map.h \
@@ -68,6 +69,8 @@ system/../memory/../simulator/../common/Iterator.h:
 system/../memory/../simulator/TraceManager.h:
 
 system/../memory/../simulator/../interconnect/Message.h:
+
+system/../memory/../simulator/../processor/SimpleProcessorStage.h:
 
 system/../memory/../interconnect/Message.h:
 

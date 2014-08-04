@@ -3,6 +3,7 @@ build/Debug/MinGW_TDM-Windows/architecture/MIPS32ISA.o: \
  architecture/../processor/Register.h \
  architecture/../processor/../simulator/TraceManager.h \
  architecture/../processor/../simulator/../interconnect/Message.h \
+ architecture/../processor/../simulator/../processor/SimpleProcessorStage.h \
  architecture/MIPS32ISA.h architecture/Instruction.h \
  architecture/StaticInstruction.h architecture/../memory/MemoryChunk.h \
  architecture/../memory/../exceptions/RuntimeException.h \
@@ -25,6 +26,8 @@ architecture/../processor/Register.h:
 architecture/../processor/../simulator/TraceManager.h:
 
 architecture/../processor/../simulator/../interconnect/Message.h:
+
+architecture/../processor/../simulator/../processor/SimpleProcessorStage.h:
 
 architecture/MIPS32ISA.h:
 
