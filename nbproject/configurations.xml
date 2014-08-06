@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="89">
+<configurationDescriptor version="94">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -18,7 +18,7 @@
         <itemPath>common/Iterator.h</itemPath>
         <itemPath>common/List.h</itemPath>
         <itemPath>common/Map.h</itemPath>
-        <itemPath>../ESimCO/common/Queue.h</itemPath>
+        <itemPath>/../ESimCO/common/Queue.h</itemPath>
         <itemPath>common/SimpleFileParser.h</itemPath>
         <itemPath>common/Stack.h</itemPath>
         <itemPath>common/Utils.h</itemPath>
@@ -32,7 +32,7 @@
         <itemPath>exceptions/IllegalInstructionBinaryException.h</itemPath>
         <itemPath>exceptions/IllegalInstructionLengthException.h</itemPath>
         <itemPath>exceptions/IllegalInstructionSyntaxException.h</itemPath>
-        <itemPath>../ESimCO/exceptions/RuntimeException.h</itemPath>
+        <itemPath>/../ESimCO/exceptions/RuntimeException.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="interconnect" projectFiles="true">
         <itemPath>interconnect/Bus.h</itemPath>
@@ -51,24 +51,25 @@
         <itemPath>memory/MemoryAddress32Bit.h</itemPath>
         <itemPath>memory/MemoryChunk.h</itemPath>
         <itemPath>memory/MemoryDevice.h</itemPath>
-        <itemPath>../ESimCO/memory/MemoryRequest.h</itemPath>
-        <itemPath>../ESimCO/memory/MemoryResponse.h</itemPath>
+        <itemPath>memory/MemoryRequest.h</itemPath>
+        <itemPath>memory/MemoryResponse.h</itemPath>
         <itemPath>memory/MemoryTable.h</itemPath>
         <itemPath>memory/RAM.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="processor" projectFiles="true">
-        <itemPath>../ESimCO/processor/ControlUnit.h</itemPath>
-        <itemPath>../ESimCO/processor/ExecuteStage.h</itemPath>
-        <itemPath>../ESimCO/processor/FetchStage.h</itemPath>
-        <itemPath>../ESimCO/processor/FunctionalUnit.h</itemPath>
-        <itemPath>../ESimCO/processor/IssueQueueEntry.h</itemPath>
-        <itemPath>../ESimCO/processor/IssueStage.h</itemPath>
-        <itemPath>../ESimCO/processor/PipelineStage.h</itemPath>
-        <itemPath>../ESimCO/processor/Processor.h</itemPath>
+        <itemPath>processor/ControlUnit.h</itemPath>
+        <itemPath>processor/ExecuteStage.h</itemPath>
+        <itemPath>processor/FetchStage.h</itemPath>
+        <itemPath>processor/FunctionalUnit.h</itemPath>
+        <itemPath>processor/IssueQueueEntry.h</itemPath>
+        <itemPath>processor/IssueStage.h</itemPath>
+        <itemPath>processor/PipelineStage.h</itemPath>
+        <itemPath>processor/Processor.h</itemPath>
         <itemPath>processor/ROBEntry.h</itemPath>
+        <itemPath>processor/Register.h</itemPath>
         <itemPath>processor/RegisterFile.h</itemPath>
-        <itemPath>../ESimCO/processor/RetireStage.h</itemPath>
-        <itemPath>../ESimCO/processor/ScoreboardEntry.h</itemPath>
+        <itemPath>processor/RetireStage.h</itemPath>
+        <itemPath>processor/ScoreboardEntry.h</itemPath>
         <itemPath>processor/SimpleProcessorStage.h</itemPath>
         <itemPath>processor/SimpleUnpipedProcessor.h</itemPath>
       </logicalFolder>
@@ -121,16 +122,16 @@
         <itemPath>memory/IMessageDispatcher.cpp</itemPath>
         <itemPath>memory/MemoryDevice.cpp</itemPath>
         <itemPath>system/MemoryMapEntry.cpp</itemPath>
-        <itemPath>../ESimCO/memory/MemoryRequest.cpp</itemPath>
-        <itemPath>../ESimCO/memory/MemoryResponse.cpp</itemPath>
+        <itemPath>memory/MemoryRequest.cpp</itemPath>
+        <itemPath>memory/MemoryResponse.cpp</itemPath>
         <itemPath>memory/MemoryTable.cpp</itemPath>
         <itemPath>memory/RAM.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f5" displayName="processor" projectFiles="true">
         <itemPath>processor/ExecuteStage.cpp</itemPath>
-        <itemPath>../ESimCO/processor/FetchStage.cpp</itemPath>
+        <itemPath>processor/FetchStage.cpp</itemPath>
         <itemPath>processor/FunctionalUnit.cpp</itemPath>
-        <itemPath>../ESimCO/processor/Processor.cpp</itemPath>
+        <itemPath>processor/Processor.cpp</itemPath>
         <itemPath>processor/Register.cpp</itemPath>
         <itemPath>processor/RegisterFile.cpp</itemPath>
         <itemPath>processor/SimpleUnpipedProcessor.cpp</itemPath>
@@ -200,63 +201,15 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>MinGW_TDM|MinGW_TDM</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
       </compileType>
-      <item path="../ESimCO/common/Queue.h" ex="false" tool="3" flavor2="0">
+      <item path="/../ESimCO/common/Queue.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../ESimCO/exceptions/RuntimeException.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../ESimCO/memory/MemoryRequest.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../ESimCO/memory/MemoryRequest.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../ESimCO/memory/MemoryResponse.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../ESimCO/memory/MemoryResponse.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/ControlUnit.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/ExecuteStage.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/FetchStage.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/FetchStage.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/FunctionalUnit.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/IssueQueueEntry.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/IssueStage.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/PipelineStage.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/Processor.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/Processor.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/RetireStage.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../ESimCO/processor/ScoreboardEntry.h"
+      <item path="/../ESimCO/exceptions/RuntimeException.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -489,6 +442,14 @@
       </item>
       <item path="memory/MemoryDevice.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="memory/MemoryRequest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="memory/MemoryRequest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="memory/MemoryResponse.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="memory/MemoryResponse.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="memory/MemoryTable.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="memory/MemoryTable.h" ex="false" tool="3" flavor2="0">
@@ -497,17 +458,43 @@
       </item>
       <item path="memory/RAM.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="processor/ControlUnit.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="processor/ExecuteStage.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="processor/ExecuteStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/FetchStage.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="processor/FetchStage.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="processor/FunctionalUnit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="processor/FunctionalUnit.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/IssueQueueEntry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/IssueStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/PipelineStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/Processor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="processor/Processor.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="processor/ROBEntry.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="processor/Register.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="processor/Register.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="processor/RegisterFile.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="processor/RegisterFile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/RetireStage.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="processor/ScoreboardEntry.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="processor/SimpleProcessorStage.h" ex="false" tool="3" flavor2="0">
       </item>

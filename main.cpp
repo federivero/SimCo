@@ -81,7 +81,7 @@ enum DefinitionType{
 void printUsage(){
     cout << "SimCo usage: " << endl << endl;
     cout << "SimCo uses two files as input, a configuration File and a Program File. ";
-    cout << "Configuration File describes the target architecture to be used in the simulation ";
+    cout << "The configuration file describes the target architecture to be used in the simulation ";
     cout << "and the program file sets the initial memory content in the simulation. " << endl << endl;
 
     cout << "SimCo provides two output files at best, one with statistical information about the simulation ";
@@ -92,12 +92,51 @@ void printUsage(){
     cout << " -config             : path to the configuration file (required). " << endl;
     cout << " -program            : path to the program file (required). " << endl;
     cout << " -stats              : name of the output stats file (optional). " << endl;
-    cout << " -trace              : name of the output trace file (optional). " << endl;
+    cout << " -trace              : name of the output trace file (optional). " << endl << endl;
+
+    cout << "Configuration File Format: " << endl << endl;
+    cout << "SimpleUnpipedProcessor Definition: " << endl << endl;
+    cout << "simpleunpipedprocessor" << endl;
+    cout << "name                          : name of the processor " << endl;
+    cout << "datameminterface              : name of the bus or network to access data memory " << endl;
+    cout << "instmeminterface              : name of the bus or network to access instruction memory " << endl;
+    cout << "pcvalue                       : startup PC value " << endl;
+    cout << "end " << endl << endl;
+   
+    cout << "RAM Definition: " << endl << endl;
+    cout << "RAM " << endl;
+    cout << "name                          : name of the RAM chip " << endl;
+    cout << "capacity                      : memory capacity in bytes " << endl;
+    cout << "ports                         : number of R/W ports on memory" << endl;
+    cout << "latency                       : latency of the memory in cycles" << endl;
+    cout << "interface                     : name of the bus or networks which access this memory device " << endl << endl;
+
+    cout << "Cache Definition: " << endl << endl;
+    cout << "cache " << endl;
+    cout << "name                          : name of the cache " << endl;
+    cout << "setcount                      : number of sets in the cache (1 for fully associative caches, must be a power of two)" << endl;
+    cout << "associativity                 : number of ways in each set (1 for direct mapped)" << endl;
+    cout << "linesize                      : line size in bytes (must be a power of two) " << endl;
+    cout << "replpolicy                    : replacement policy being used (lru, fifo, random) " << endl;
+    cout << "writepolicy                   : write policy used by this cache (writethrough, writeback)" << endl;
+    cout << "coherence                     : coherence protocol being used (msi, mesi, nocoherence)" << endl;
+    cout << "ports                         : number of R/W ports on memory " << endl;
+    cout << "latency                       : hit latency of the memory in cycles " << endl;
+    cout << "upperinterface                : name of the bus or network to access upper memory hierarchy " << endl;
+    cout << "lowerinterface                : name of the bus or network to access lower memory hierarchy " << endl;
+    cout << "end" << endl << endl;
+
+    cout << "Bus definition " << endl << endl;
+    cout << "bus" << endl;
+    cout << "name                          : name of the bus " << endl;
+    cout << "width                         : bus width in bytes " << endl;
+    cout << "end" << endl << endl;
+
 }
 
-void printUsageAndClose(){
+void printUsageAndClose(int exitCode){
     printUsage();
-    exit(1);
+    exit(exitCode);
 }
 
 
@@ -112,24 +151,30 @@ int main(int argc, char** argv) {
     char* programFile = NULL;
     
     // Check for line parameters
-    for (int i = 1; i < argc; i+=2){
+    for (int i = 1; i < argc; i++){
         if (argv[i][0] != '-'){
             argumentError = true;
             break;
         }
-        if (strcmp(argv[i],"-traceFile") == 0){
+        if (strcmp(argv[i],"-trace") == 0){
             traceFile = argv[i+1];
+            i++;
         }else if (strcmp(argv[i],"-program") == 0){
-            programFile = argv[i+1];
+            programFile = argv[i+1];    
+            i++;
         }else if (strcmp(argv[i],"-config") == 0){
             configFile = argv[i+1];
+            i++;
         }else if (strcmp(argv[i],"-stats") == 0){
             statsFile = argv[i+1];
+            i++;
+        }else if (strcmp(argv[i],"-help") == 0){
+            printUsageAndClose(0);
         }
     }
     
     if (argumentError){
-        printUsageAndClose();
+        printUsageAndClose(1);
     }
     
     // Initialize config variables
@@ -166,7 +211,7 @@ int main(int argc, char** argv) {
     
     SimpleFileParser* sfp = new SimpleFileParser();
     if (!sfp->open(configFile)){
-        printUsageAndClose();
+        printUsageAndClose(1);
     } 
     sfp->set_single_char_tokens("=");
     

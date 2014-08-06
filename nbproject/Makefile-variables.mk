@@ -9,11 +9,11 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=MinGW_TDM-Windows
 CND_ARTIFACT_DIR_Debug=dist/Debug/MinGW_TDM-Windows
-CND_ARTIFACT_NAME_Debug=esimco
-CND_ARTIFACT_PATH_Debug=dist/Debug/MinGW_TDM-Windows/esimco
+CND_ARTIFACT_NAME_Debug=simco
+CND_ARTIFACT_PATH_Debug=dist/Debug/MinGW_TDM-Windows/simco
 CND_PACKAGE_DIR_Debug=dist/Debug/MinGW_TDM-Windows/package
-CND_PACKAGE_NAME_Debug=esimco.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/MinGW_TDM-Windows/package/esimco.tar
+CND_PACKAGE_NAME_Debug=simco.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/MinGW_TDM-Windows/package/simco.tar
 #
 # include compiler specific variables
 #
